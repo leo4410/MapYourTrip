@@ -1,10 +1,11 @@
 // src/pages/MapPage.js
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import NavigationBar from '../components/NavigationBar';
 
 // OpenLayers imports
 import 'ol/ol.css';
-import { Map, View } from 'ol';
+import { Map, View, Overlay } from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import VectorLayer from 'ol/layer/Vector';
@@ -30,7 +31,10 @@ register(proj4);
 
 function MapPage() {
   const mapRef = useRef(null);
+  const popupRef = useRef(null);
+  const mapInstance = useRef(null);
   const navigate = useNavigate();
+  const [selectedTransport, setSelectedTransport] = useState('');
 
   useEffect(() => {
     // Base map layer (OSM)
@@ -89,11 +93,11 @@ function MapPage() {
       strategy: bboxStrategy,
     });
 
-    // Custom style for segments (green stroke)
+    // Custom style for segments - thinner visible lines but still large hit area
     const segmentStyle = new Style({
       stroke: new Stroke({
         color: 'green',
-        width: 3,
+        width: 3, // Thinner visual width
       }),
     });
 
@@ -102,7 +106,18 @@ function MapPage() {
       style: segmentStyle,
     });
 
-    // Initialize the map with layers.
+    // Create popup overlay
+    const popup = new Overlay({
+      element: popupRef.current,
+      autoPan: true,
+      autoPanAnimation: {
+        duration: 250,
+      },
+      positioning: 'bottom-center',
+      offset: [0, -10],
+    });
+
+    // Initialize the map with layers and overlay
     const map = new Map({
       target: mapRef.current,
       layers: [osmLayer, segmentLayer, locationLayer],
@@ -110,6 +125,46 @@ function MapPage() {
         center: fromLonLat([8.2275, 46.8182]), // Temporary default center
         zoom: 0,
       }),
+      overlays: [popup]
+    });
+    
+    // Store map instance for use outside useEffect
+    mapInstance.current = map;
+
+    // Add click interaction to detect segment clicks
+    map.on('click', function(evt) {
+      // Hide popup by default
+      popup.setPosition(undefined);
+      
+      // Increase hit tolerance for thin lines
+      const hitTolerance = 10; // Pixel tolerance for click detection
+      
+      // Check if we clicked on a feature
+      const feature = map.forEachFeatureAtPixel(
+        evt.pixel, 
+        function(feature, layer) {
+          // Return only segments (line features)
+          if (layer === segmentLayer) {
+            return feature;
+          }
+          return null;
+        },
+        {
+          hitTolerance: hitTolerance
+        }
+      );
+      
+      if (feature) {
+        // It's a segment, show popup
+        const coordinates = evt.coordinate;
+        
+        // Make popup visible
+        popupRef.current.style.display = 'block';
+        popup.setPosition(coordinates);
+        
+        // Reset selection when showing the popup
+        setSelectedTransport('');
+      }
     });
 
     // Dynamically fit the view to the extent of the location features.
@@ -144,8 +199,30 @@ function MapPage() {
     alert('Karte wird exportiert...');
   };
 
-  const handleCalculate = () => {
-    navigate('/stats');
+  const handleTransportChange = (transport) => {
+    setSelectedTransport(transport);
+  };
+
+  const handleOptimizeRoute = () => {
+    // Check if a transport method is selected
+    if (selectedTransport) {
+      alert(`Route wird optimiert für: ${selectedTransport}`);
+    } else {
+      alert('Bitte wählen Sie eine Transportart');
+    }
+    
+    // Hide popup after optimization
+    if (mapInstance.current) {
+      const overlays = mapInstance.current.getOverlays().getArray();
+      overlays.forEach(overlay => {
+        overlay.setPosition(undefined);
+      });
+    }
+    
+    // Also ensure the popupRef element is hidden
+    if (popupRef.current) {
+      popupRef.current.style.display = 'none';
+    }
   };
 
   return (
@@ -153,19 +230,79 @@ function MapPage() {
       <div style={{ backgroundColor: '#333', color: 'white', padding: '0.5rem 1rem' }}>
         <h1 style={{ margin: 0, textAlign: 'center' }}>MapYourJourney</h1>
       </div>
-      <div style={{
-          backgroundColor: 'darkblue',
-          color: 'white',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '0.5rem 1rem',
-      }}>
-        <h2 style={{ margin: 0 }}>Journey</h2>
-        <button onClick={handleCalculate}>Calculate</button>
-      </div>
+      
+      {/* Navigation Bar */}
+      <NavigationBar />
+      
       <div style={{ flex: 1, position: 'relative' }}>
         <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
+        
+        {/* Popup Overlay Container */}
+        <div 
+          ref={popupRef} 
+          style={{ 
+            display: 'none', 
+            position: 'absolute',
+            backgroundColor: 'white',
+            boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
+            padding: '15px',
+            borderRadius: '10px',
+            border: '1px solid #cccccc',
+            minWidth: '180px',
+            zIndex: 1000
+          }}
+        >
+          <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>Transportmittel wählen:</div>
+          <div style={{ marginBottom: '5px' }}>
+            <label>
+              <input 
+                type="radio" 
+                name="transport"
+                value="auto"
+                checked={selectedTransport === 'auto'}
+                onChange={() => handleTransportChange('auto')}
+              /> Auto
+            </label>
+          </div>
+          <div style={{ marginBottom: '5px' }}>
+            <label>
+              <input 
+                type="radio" 
+                name="transport"
+                value="zug"
+                checked={selectedTransport === 'zug'}
+                onChange={() => handleTransportChange('zug')}
+              /> Zug
+            </label>
+          </div>
+          <div style={{ marginBottom: '15px' }}>
+            <label>
+              <input 
+                type="radio" 
+                name="transport"
+                value="zuFuss"
+                checked={selectedTransport === 'zuFuss'}
+                onChange={() => handleTransportChange('zuFuss')}
+              /> zu Fuss
+            </label>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <button 
+              onClick={handleOptimizeRoute}
+              style={{ 
+                padding: '5px 10px',
+                backgroundColor: '#4CAF50',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer'
+              }}
+            >
+              Optimiere Route
+            </button>
+          </div>
+        </div>
+
         <div style={{ position: 'absolute', bottom: '10px', left: '10px' }}>
           <button onClick={handleChangeMap}>Wechsel der Karte</button>
         </div>

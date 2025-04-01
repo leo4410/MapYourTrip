@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import NavigationBar from '../components/NavigationBar';
 
 // OpenLayers
 import 'ol/ol.css';
@@ -9,7 +9,6 @@ import OSM from 'ol/source/OSM';
 
 function StatsPage() {
   const mapRef = useRef(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Karte initialisieren
@@ -33,10 +32,6 @@ function StatsPage() {
 
   const handleExport = () => {
     alert('Export wird ausgeführt...');
-  };
-
-  const handleGoToMap = () => {
-    navigate('/map');
   };
 
   const handleChangeMap = () => {
@@ -63,19 +58,8 @@ function StatsPage() {
         <h1 style={{ margin: 0 }}>MapYourJourney</h1>
       </div>
 
-      {/* Dunkelblauer Balken */}
-      <div
-        style={{
-          backgroundColor: 'darkblue',
-          color: 'white',
-          display: 'flex',
-          alignItems: 'center',
-          padding: '0 1rem',
-        }}
-      >
-        <h2 style={{ margin: 0 }}>Calculate</h2>
-        <button onClick={handleGoToMap}>Journey</button>
-      </div>
+      {/* Navigation Bar */}
+      <NavigationBar />
 
       {/* Hauptbereich: Karte + Statistiken (restlicher Platz) */}
       <div

@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+.ol-overlay-container {
+  will-change: transform;
+  /* This ensures the popup is visible when shown by OpenLayers */
+}
+
+.ol-overlay-container .popup-content {
+  display: block !important;
+}

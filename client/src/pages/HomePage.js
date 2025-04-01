@@ -1,6 +1,7 @@
 // src/pages/HomePage.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import NavigationBar from '../components/NavigationBar';
 
 function HomePage() {
   const navigate = useNavigate();
@@ -33,6 +34,9 @@ function HomePage() {
           Upload
         </button>
       </div>
+
+      {/* Navigation Bar */}
+      <NavigationBar />
 
       {/* Main Content */}
       <div style={{ padding: '1rem' }}>
