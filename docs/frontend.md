@@ -22,5 +22,3 @@
 
 ### 5. Kontrolle der Layer
 #### Kontrolle der Publizierten Layer (Koordinatensystem und Bounding Box)
-
-### 6. WFS im Frontend einbauen
