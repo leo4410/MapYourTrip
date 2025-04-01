@@ -3,7 +3,9 @@
 
 # Verbindung DB mit Frontend
 
-### 1. Bennenung der DB -> MapYourTrip
+### 1. Bennenung der DB
+#### Name -> MapYourTrip
+#### Aufbau der DB gemäss backend
 
 ### 2. Erstellung eins neuen Arbeitsbereiches in dem GEoserver
 #### Name -> MapYourTrip 
