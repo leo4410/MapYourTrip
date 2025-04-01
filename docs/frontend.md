@@ -7,7 +7,7 @@
 #### Name -> MapYourTrip
 #### Aufbau der DB gemäss backend
 
-### 2. Erstellung eins neuen Arbeitsbereiches in dem GEoserver
+### 2. Erstellung eins neuen Arbeitsbereiches in dem Geoserver
 #### Name -> MapYourTrip 
 #### Namensraum URI -> http://localhost:8080/MapYourTrip
 
