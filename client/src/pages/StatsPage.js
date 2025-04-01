@@ -55,7 +55,7 @@ function StatsPage() {
           textAlign: 'center',
         }}
       >
-        <h1 style={{ margin: 0 }}>MapYourJourney</h1>
+        <h1 style={{ margin: 0 }}>MapYourTrip</h1>
       </div>
 
       {/* Navigation Bar */}

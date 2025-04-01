@@ -22,7 +22,7 @@ function HomePage() {
           padding: '0.5rem 1rem',
         }}
       >
-        <h1 style={{ margin: 0, textAlign: 'center' }}>MapYourJourney</h1>
+        <h1 style={{ margin: 0, textAlign: 'center' }}>MapYourTrip</h1>
         <button
           style={{
             position: 'absolute',
