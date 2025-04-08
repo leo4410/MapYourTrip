@@ -1,6 +1,6 @@
 /* HomePage.css */
 
-/* Header styling for the app title */
+/* Header styling for the app title (if any separate header is used) */
 .home-header {
   background: rgba(0, 0, 0, 0.8);
   color: #fff;
@@ -25,26 +25,27 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
-  max-width: 600px;  /* Matches journey list width */
+  max-width: 800px; /* Matches journey list width */
   margin-left: auto;
   margin-right: auto;
 }
 
 /* Page title styling */
 .page-title {
-  font-size: 1.5rem;
+  font-size: 30px;
   margin: 0;
 }
 
-/* Upload button styling (inside the list header now) */
+/* Upload button styling (inside the list header) */
 .upload-button {
-  background: #4e4376;
+  background: #7664b6;
   color: #fff;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s;
+  font-size: 25px;
 }
 
 .upload-button:hover {
@@ -56,7 +57,8 @@
   list-style: none;
   padding: 0;
   margin: 0 auto;
-  max-width: 600px; /* Adjust as desired */
+  max-width: 800px; /* Adjust as desired */
+  font-size: 25px;
 }
 
 /* Each journey item is limited in width and centered */
@@ -68,14 +70,61 @@
   margin-bottom: 1rem;
   padding: 0.5rem;
   border-radius: 4px;
-  max-width: 600px; /* Same as the container to align content */
+  max-width: 800px; /* Same as the container to align content */
   margin-left: auto;
   margin-right: auto;
 }
 
+/* Container for the action buttons */
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
 /* Button styling for each journey list item */
 .journey-item button {
-  background: #4e4376;
+  background: #7664b6;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 25px;
+}
+
+.journey-item button:hover {
+  background: #555;
+}
+
+/* Popup overlay covering the viewport */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Popup styling for edit map */
+.edit-popup {
+  background: #fff;
+  color: #000;
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+.edit-popup button {
+  margin: 0.5rem;
+  background: #7664b6;
   color: #fff;
   border: none;
   padding: 0.5rem 1rem;
@@ -84,6 +133,72 @@
   transition: background 0.3s;
 }
 
-.journey-item button:hover {
+.edit-popup button:hover {
+  background: #555;
+}
+
+/* Upload modal overlay */
+.upload-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+
+/* Upload modal styling */
+.upload-modal {
+  background: #fff;
+  color: #000;
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+}
+
+/* Drag and drop area styling */
+.upload-dropzone {
+  margin: 1rem auto;
+  padding: 2rem;
+  border: 2px dashed #7664b6;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.upload-dropzone.active {
+  background: rgba(118, 100, 182, 0.2);
+}
+
+/* Hide the default file input */
+.file-input {
+  display: none;
+}
+
+/* Buttons in the upload modal */
+.upload-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.upload-modal button {
+  background: #7664b6;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.upload-modal button:hover {
   background: #555;
 }

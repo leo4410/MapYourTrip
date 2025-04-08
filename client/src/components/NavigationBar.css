@@ -1,36 +1,70 @@
 /* NavigationBar.css */
-.nav-container {
+.navbar {
   background: linear-gradient(90deg, #1a237e, #3949ab);
-  padding: 0.5rem 1rem;
+  padding: 1.5rem 2rem;
   display: flex;
-  justify-content: center; /* centers the nav content horizontally */
   align-items: center;
+  justify-content: space-between;
   color: #fff;
 }
 
-.nav-list {
+/* Left section: Title and navigation menu grouped together */
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-title {
+  font-size: 50px;
+  cursor: pointer;
+  user-select: none;
+  margin-right: 4rem; /* Space between title and the menu */
+}
+
+/* Navigation menu styling */
+.navbar-menu {
   list-style: none;
   display: flex;
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
 }
 
-.nav-list li {
-  margin: 0 0.25rem;
+.navbar-menu li {
+  margin-left: 1.5rem;
 }
 
-.nav-list button {
-  padding: 0.5rem 1rem;
+.navbar-menu button {
   background: transparent;
   border: none;
+  color: #fff;
+  font-size: 30px;
+  padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
-  font-size: inherit;
-  color: #fff;
   transition: background 0.3s;
 }
 
-.nav-list button.active,
-.nav-list button:hover {
+.navbar-menu button:hover,
+.navbar-menu button.active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Right section: For login element */
+.navbar-right {
+  /* This container will stay on the right */
+}
+
+.login-button {
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 25px;
+}
+
+.login-button:hover {
   background: rgba(255, 255, 255, 0.2);
 }
