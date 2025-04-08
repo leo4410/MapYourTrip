@@ -1,0 +1,37 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #2b5876, #4e4376);
+    color: #fff;
+  }
+  
+  .header {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 0.75rem 1rem;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  }
+  
+
+  .button {
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    background: #4e4376;
+    color: #fff;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .button:hover {
+    background: #555;
+    transform: scale(1.05);
+  }
+  
+  .container {
+    padding: 1rem;
+  }
+
+  

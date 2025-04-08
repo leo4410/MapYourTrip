@@ -4,6 +4,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import MapPage from './pages/MapPage';
 import StatsPage from './pages/StatsPage';
+import './index.css';
+import './styles.css';
+
 
 function App() {
   return (

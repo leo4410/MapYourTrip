@@ -1,10 +1,6 @@
-// src/pages/MapPage.js
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavigationBar from '../components/NavigationBar';
-
-// OpenLayers imports
-import 'ol/ol.css';
 import { Map, View, Overlay } from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
@@ -13,16 +9,16 @@ import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { fromLonLat, transformExtent } from 'ol/proj';
-
-// Style imports for custom styling
 import Style from 'ol/style/Style';
 import CircleStyle from 'ol/style/Circle';
 import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
-
-// Import proj4 and register EPSG:2056
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
+import 'ol/ol.css';
+import './MapPage.css'; // Import the page-specific styles
+
+// Register EPSG:2056
 proj4.defs(
   'EPSG:2056',
   '+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +units=m +no_defs'
@@ -37,16 +33,15 @@ function MapPage() {
   const [selectedTransport, setSelectedTransport] = useState('');
 
   useEffect(() => {
-    // Base map layer (OSM)
     const osmLayer = new TileLayer({
       source: new OSM({ crossOrigin: 'anonymous' }),
     });
 
-    // --- Location Layer (Points in EPSG:4326) ---
+    // Location points
     const locationSource = new VectorSource({
       format: new GeoJSON({
-        dataProjection: 'EPSG:4326',      // Data is in WGS84
-        featureProjection: 'EPSG:3857',   // Reproject features to map view
+        dataProjection: 'EPSG:4326',
+        featureProjection: 'EPSG:3857',
       }),
       url: function (extent) {
         const epsg4326Extent = transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
@@ -61,7 +56,6 @@ function MapPage() {
       strategy: bboxStrategy,
     });
 
-    // Custom style for location points (blue circles)
     const locationStyle = new Style({
       image: new CircleStyle({
         radius: 6,
@@ -74,7 +68,7 @@ function MapPage() {
       style: locationStyle,
     });
 
-    // --- Segment Layer (Line features in EPSG:4326) ---
+    // Segment layer (line features)
     const segmentSource = new VectorSource({
       format: new GeoJSON({
         dataProjection: 'EPSG:4326',
@@ -93,11 +87,10 @@ function MapPage() {
       strategy: bboxStrategy,
     });
 
-    // Custom style for segments - thinner visible lines but still large hit area
     const segmentStyle = new Style({
       stroke: new Stroke({
         color: 'green',
-        width: 3, // Thinner visual width
+        width: 3,
       }),
     });
 
@@ -117,67 +110,51 @@ function MapPage() {
       offset: [0, -10],
     });
 
-    // Initialize the map with layers and overlay
+    // Initialize the map
     const map = new Map({
       target: mapRef.current,
       layers: [osmLayer, segmentLayer, locationLayer],
       view: new View({
-        center: fromLonLat([8.2275, 46.8182]), // Temporary default center
+        center: fromLonLat([8.2275, 46.8182]),
         zoom: 0,
       }),
-      overlays: [popup]
+      overlays: [popup],
     });
-    
-    // Store map instance for use outside useEffect
+
     mapInstance.current = map;
 
-    // Add click interaction to detect segment clicks
-    map.on('click', function(evt) {
-      // Hide popup by default
+    // Click event for feature detection
+    map.on('click', function (evt) {
       popup.setPosition(undefined);
-      
-      // Increase hit tolerance for thin lines
-      const hitTolerance = 10; // Pixel tolerance for click detection
-      
-      // Check if we clicked on a feature
+      const hitTolerance = 10;
       const feature = map.forEachFeatureAtPixel(
-        evt.pixel, 
-        function(feature, layer) {
-          // Return only segments (line features)
+        evt.pixel,
+        function (feature, layer) {
           if (layer === segmentLayer) {
             return feature;
           }
           return null;
         },
-        {
-          hitTolerance: hitTolerance
-        }
+        { hitTolerance }
       );
-      
       if (feature) {
-        // It's a segment, show popup
         const coordinates = evt.coordinate;
-        
-        // Make popup visible
+        // Use CSS class to handle the popup appearance
+        popupRef.current.classList.add('active');
         popupRef.current.style.display = 'block';
         popup.setPosition(coordinates);
-        
-        // Reset selection when showing the popup
         setSelectedTransport('');
       }
     });
 
-    // Dynamically fit the view to the extent of the location features.
-    // This event fires every time a feature is added.
+    // Adjust view when location features are added or changed
     locationSource.on('addfeature', () => {
       const extent = locationSource.getExtent();
-      // Only fit the view if the extent is valid
       if (extent && !isNaN(extent[0])) {
         map.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 1000 });
       }
     });
 
-    // Optionally, also update view when the source changes (e.g., on refresh)
     locationSource.on('change', () => {
       if (locationSource.getState() === 'ready') {
         const extent = locationSource.getExtent();
@@ -187,7 +164,6 @@ function MapPage() {
       }
     });
 
-    // Cleanup on component unmount
     return () => map.setTarget(null);
   }, [navigate]);
 
@@ -204,111 +180,82 @@ function MapPage() {
   };
 
   const handleOptimizeRoute = () => {
-    // Check if a transport method is selected
     if (selectedTransport) {
       alert(`Route wird optimiert für: ${selectedTransport}`);
     } else {
       alert('Bitte wählen Sie eine Transportart');
     }
-    
-    // Hide popup after optimization
     if (mapInstance.current) {
       const overlays = mapInstance.current.getOverlays().getArray();
-      overlays.forEach(overlay => {
-        overlay.setPosition(undefined);
-      });
+      overlays.forEach((overlay) => overlay.setPosition(undefined));
     }
-    
-    // Also ensure the popupRef element is hidden
     if (popupRef.current) {
-      popupRef.current.style.display = 'none';
+      popupRef.current.classList.remove('active');
     }
   };
 
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', margin: 0 }}>
-      <div style={{ backgroundColor: '#333', color: 'white', padding: '0.5rem 1rem' }}>
-        <h1 style={{ margin: 0, textAlign: 'center' }}>MapYourTrip</h1>
-      </div>
-      
-      {/* Navigation Bar */}
+    <div className="map-container">
+      <header className="map-header">
+        <h1>MapYourTrip</h1>
+      </header>
+
       <NavigationBar />
-      
-      <div style={{ flex: 1, position: 'relative' }}>
-        <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
-        
-        {/* Popup Overlay Container */}
-        <div 
-          ref={popupRef} 
-          style={{ 
-            display: 'none', 
-            position: 'absolute',
-            backgroundColor: 'white',
-            boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
-            padding: '15px',
-            borderRadius: '10px',
-            border: '1px solid #cccccc',
-            minWidth: '180px',
-            zIndex: 1000
-          }}
-        >
-          <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>Transportmittel wählen:</div>
-          <div style={{ marginBottom: '5px' }}>
+
+      <div className="map-main">
+        <div ref={mapRef} className="map-view"></div>
+
+        <div ref={popupRef} className="map-popup">
+          <div className="popup-title">Transportmittel wählen:</div>
+          <div className="popup-option">
             <label>
-              <input 
-                type="radio" 
+              <input
+                type="radio"
                 name="transport"
                 value="auto"
                 checked={selectedTransport === 'auto'}
                 onChange={() => handleTransportChange('auto')}
-              /> Auto
+              />
+              Auto
             </label>
           </div>
-          <div style={{ marginBottom: '5px' }}>
+          <div className="popup-option">
             <label>
-              <input 
-                type="radio" 
+              <input
+                type="radio"
                 name="transport"
                 value="zug"
                 checked={selectedTransport === 'zug'}
                 onChange={() => handleTransportChange('zug')}
-              /> Zug
+              />
+              Zug
             </label>
           </div>
-          <div style={{ marginBottom: '15px' }}>
+          <div className="popup-option">
             <label>
-              <input 
-                type="radio" 
+              <input
+                type="radio"
                 name="transport"
                 value="zuFuss"
                 checked={selectedTransport === 'zuFuss'}
                 onChange={() => handleTransportChange('zuFuss')}
-              /> zu Fuss
+              />
+              zu Fuss
             </label>
           </div>
-          <div style={{ textAlign: 'center' }}>
-            <button 
-              onClick={handleOptimizeRoute}
-              style={{ 
-                padding: '5px 10px',
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer'
-              }}
-            >
+          <div className="popup-button-container">
+            <button className="popup-button" onClick={handleOptimizeRoute}>
               Optimiere Route
             </button>
           </div>
         </div>
 
-        <div style={{ position: 'absolute', bottom: '10px', left: '10px' }}>
-          <button onClick={handleChangeMap}>Wechsel der Karte</button>
-        </div>
-        <div style={{ position: 'absolute', bottom: '10px', right: '10px' }}>
-          <button onClick={handleExportMap}>Export der Karte</button>
-        </div>
+        <button className="map-change-button" onClick={handleChangeMap}>
+          Wechsel der Karte
+        </button>
+        <button className="map-export-button" onClick={handleExportMap}>
+          Export der Karte
+        </button>
       </div>
     </div>
   );

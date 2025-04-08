@@ -1,26 +1,20 @@
 import React, { useEffect, useRef } from 'react';
 import NavigationBar from '../components/NavigationBar';
-
-// OpenLayers
-import 'ol/ol.css';
 import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
+import 'ol/ol.css';
+import './StatsPage.css'; // Import the page-specific styles
 
 function StatsPage() {
   const mapRef = useRef(null);
 
   useEffect(() => {
-    // Karte initialisieren
     const map = new Map({
       target: mapRef.current,
-      layers: [
-        new TileLayer({
-          source: new OSM(),
-        }),
-      ],
+      layers: [new TileLayer({ source: new OSM() })],
       view: new View({
-        center: [0, 0], // EPSG:3857
+        center: [0, 0],
         zoom: 2,
       }),
     });
@@ -39,78 +33,23 @@ function StatsPage() {
   };
 
   return (
-    <div
-      style={{
-        height: '100vh',         // Gesamte Höhe
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      {/* Oberer Balken (dunkel) */}
-      <div
-        style={{
-          backgroundColor: '#333',
-          color: 'white',
-          padding: '0.5rem 1rem',
-          textAlign: 'center',
-        }}
-      >
-        <h1 style={{ margin: 0 }}>MapYourTrip</h1>
-      </div>
+    <div className="stats-container">
+      <header className="stats-header">
+        <h1>MapYourTrip</h1>
+      </header>
 
-      {/* Navigation Bar */}
       <NavigationBar />
 
-      {/* Hauptbereich: Karte + Statistiken (restlicher Platz) */}
-      <div
-        style={{
-          flex: '1',
-          display: 'flex',
-          position: 'relative',
-        }}
-      >
-        {/* Linke Hälfte: Karte */}
-        <div
-          ref={mapRef}
-          style={{
-            width: '50%',
-            border: '1px solid black',
-          }}
-        />
-
-        {/* Rechte Hälfte: Statistiken */}
-        <div
-          style={{
-            width: '50%',
-            border: '1px solid black',
-            padding: '1rem',
-          }}
-        >
+      <div className="stats-main">
+        <div ref={mapRef} className="map-panel"></div>
+        <div className="stats-panel">
           <h2>Statistiken</h2>
-          {/* Hier könnten Diagramme, Kennzahlen etc. hin */}
+          {/* Fügen Sie hier Ihre Diagramme und Kennzahlen ein */}
         </div>
-
-        {/* Unten links: Wechsel der Karte */}
-        <button
-          style={{
-            position: 'absolute',
-            bottom: '10px',
-            left: '10px',
-          }}
-          onClick={handleChangeMap}
-        >
+        <button className="change-map-button" onClick={handleChangeMap}>
           Wechsel der Karte
         </button>
-
-        {/* Unten rechts: Export */}
-        <button
-          style={{
-            position: 'absolute',
-            bottom: '10px',
-            right: '10px',
-          }}
-          onClick={handleExport}
-        >
+        <button className="export-map-button" onClick={handleExport}>
           Export
         </button>
       </div>
