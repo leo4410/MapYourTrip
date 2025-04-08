@@ -43,23 +43,20 @@ npm run dev
 ```
 
 ## Backend installieren
-Öffne ein Terminal und wechsle in den *server* Ordner.
-1. Virtuelle Umgebung für Python mit allen Requirements in der `requirements.txt` Datei aufsetzen.
+Öffne die Anaconda Prompt und wechsle in den *server* Ordner.
+1. Conda Umgebung für Python mit allen Packages aus der `requirements.txt` Datei aufsetzen.
 
 ```shell
-# Requirements
 cd server
-# Füge conda-forge den als Channel in conda hinzu, da sonst nicht alle Pakete installiert werden können.
-conda config --add channels conda-forge
-# Erstelle ein neues Conda Environment und füge die Python Packges requirements.txt hinzu, requirements.txt befindet sich im Ordner server/app
-conda create --name gdiproject python=3.10.9 --file app/requirements.txt
+conda create -n mapyourtrip -c conda-forge python=3.13.0 --file requirements.txt --yes
+
 ```
 
-2. Backend ausführen, virtuelle Umgebung starten und server *uvicorn* starten. Öffne http://localhost:8000/docs im Browser und verifiziere, ob das Backend läuft.
-``` shell
+2. Backend ausführen in der Conda Umgebung starten. Öffne http://localhost:8000/ im Browser und verifiziere, ob das Backend läuft.
+```shell
 cd server
 # aktiviere die conda umgebung gdiproject
-conda activate gdiproject
+conda activate mapyourtrip
 # start server auf localhost aus dem Ordner "server"
 uvicorn app.main:app --reload
 # Öffne die angegebene URL im Browser und verifiziere, ob das Backend läuft.
