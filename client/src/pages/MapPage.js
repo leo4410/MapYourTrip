@@ -1,32 +1,32 @@
-import React, { useContext, useEffect, useRef, useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import NavigationBar from '../components/NavigationBar';
-import { Map, View, Overlay } from 'ol';
-import TileLayer from 'ol/layer/Tile';
-import OSM from 'ol/source/OSM';
-import XYZ from 'ol/source/XYZ';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
-import GeoJSON from 'ol/format/GeoJSON';
-import { bbox as bboxStrategy } from 'ol/loadingstrategy';
-import { fromLonLat } from 'ol/proj';
-import { transformExtent } from 'ol/proj';
-import Style from 'ol/style/Style';
-import Fill from 'ol/style/Fill';
-import Stroke from 'ol/style/Stroke';
-import CircleStyle from 'ol/style/Circle';
-import proj4 from 'proj4';
-import { register } from 'ol/proj/proj4';
-import 'ol/ol.css';
-import './MapPage.css';
-import { SymbolSettingsContext } from '../SymbolSettingsContext';
-import StadiaMaps from 'ol/source/StadiaMaps.js';
-import { getZoomState, setZoomState } from '../ZoomState.js';
+import React, { useContext, useEffect, useRef, useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import NavigationBar from "../components/NavigationBar";
+import { Map, View, Overlay } from "ol";
+import TileLayer from "ol/layer/Tile";
+import OSM from "ol/source/OSM";
+import XYZ from "ol/source/XYZ";
+import VectorLayer from "ol/layer/Vector";
+import VectorSource from "ol/source/Vector";
+import GeoJSON from "ol/format/GeoJSON";
+import { bbox as bboxStrategy } from "ol/loadingstrategy";
+import { fromLonLat } from "ol/proj";
+import { transformExtent } from "ol/proj";
+import Style from "ol/style/Style";
+import Fill from "ol/style/Fill";
+import Stroke from "ol/style/Stroke";
+import CircleStyle from "ol/style/Circle";
+import proj4 from "proj4";
+import { register } from "ol/proj/proj4";
+import "ol/ol.css";
+import "./MapPage.css";
+import { SymbolSettingsContext } from "../SymbolSettingsContext";
+import StadiaMaps from "ol/source/StadiaMaps.js";
+import { getZoomState, setZoomState } from "../ZoomState.js";
 
 // Register EPSG:2056
 proj4.defs(
-  'EPSG:2056',
-  '+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +units=m +no_defs'
+  "EPSG:2056",
+  "+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +units=m +no_defs"
 );
 register(proj4);
 
@@ -49,47 +49,52 @@ function MapPage() {
   const [modalPointColor, setModalPointColor] = useState(pointColor);
 
   // UI toggles.
-  const [selectedTransport, setSelectedTransport] = useState('');
-  const [popupMode, setPopupMode] = useState('');
+  const [selectedTransport, setSelectedTransport] = useState(""); // selectedTransport = Variable mit Wert für API
+  const [popupMode, setPopupMode] = useState("");
   const [selectedPoint, setSelectedPoint] = useState(null);
   const [showBackgroundOptions, setShowBackgroundOptions] = useState(false);
-  const [showSymbolizationOptions, setShowSymbolizationOptions] = useState(false);
+  const [showSymbolizationOptions, setShowSymbolizationOptions] =
+    useState(false);
   const [showExportPanel, setShowExportPanel] = useState(false);
-  const [exportFormat, setExportFormat] = useState('A4Hoch');
+  const [exportFormat, setExportFormat] = useState("A4Hoch");
   const [exportOverlayDims, setExportOverlayDims] = useState(null);
 
   // Define background options with preview images.
   const backgroundOptions = useMemo(
     () => [
       {
-        name: 'OSM',
-        source: new OSM({ crossOrigin: 'anonymous' }),
-        previewUrl: 'https://a.tile.openstreetmap.org/10/511/340.png',
+        name: "OSM",
+        source: new OSM({ crossOrigin: "anonymous" }),
+        previewUrl: "https://a.tile.openstreetmap.org/10/511/340.png",
       },
       {
-        name: 'Luftbild',
+        name: "Luftbild",
         source: new XYZ({
-          url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+          url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
         }),
-        previewUrl: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/10/511/340',
+        previewUrl:
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/10/511/340",
       },
       {
-        name: 'Wasserfarbe',
-        source: new StadiaMaps({ layer: 'stamen_watercolor' }),
-        previewUrl: 'https://stamen-tiles.a.ssl.fastly.net/watercolor/10/541/349.jpg',
+        name: "Wasserfarbe",
+        source: new StadiaMaps({ layer: "stamen_watercolor" }),
+        previewUrl:
+          "https://stamen-tiles.a.ssl.fastly.net/watercolor/10/541/349.jpg",
       },
       {
-        name: 'Terrain',
-        source: new StadiaMaps({ layer: 'stamen_terrain' }),
-        previewUrl: 'https://stamen-tiles.a.ssl.fastly.net/terrain/10/541/349.jpg',
+        name: "Terrain",
+        source: new StadiaMaps({ layer: "stamen_terrain" }),
+        previewUrl:
+          "https://stamen-tiles.a.ssl.fastly.net/terrain/10/541/349.jpg",
       },
       {
-        name: 'CartoDB Positron',
+        name: "CartoDB Positron",
         source: new XYZ({
-          url: 'https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
-          crossOrigin: 'anonymous',
+          url: "https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
+          crossOrigin: "anonymous",
         }),
-        previewUrl: 'https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/10/511/340.png',
+        previewUrl:
+          "https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/10/511/340.png",
       },
     ],
     []
@@ -98,7 +103,7 @@ function MapPage() {
   // Helper: Compute export overlay dimensions (using 96 DPI).
   const computeTargetDimensions = () => {
     let widthPixels, heightPixels;
-    if (exportFormat === 'A4Hoch') {
+    if (exportFormat === "A4Hoch") {
       widthPixels = Math.round((210 / 25.4) * 96);
       heightPixels = Math.round((297 / 25.4) * 96);
     } else {
@@ -122,7 +127,10 @@ function MapPage() {
       (containerHeight * 0.9) / heightPixels,
       1
     );
-    setExportOverlayDims({ width: widthPixels * scaleFactor, height: heightPixels * scaleFactor });
+    setExportOverlayDims({
+      width: widthPixels * scaleFactor,
+      height: heightPixels * scaleFactor,
+    });
   }, [showExportPanel, exportFormat]);
 
   // Initialize the map only once on mount.
@@ -134,17 +142,21 @@ function MapPage() {
 
     const locationSource = new VectorSource({
       format: new GeoJSON({
-        dataProjection: 'EPSG:4326',
-        featureProjection: 'EPSG:3857',
+        dataProjection: "EPSG:4326",
+        featureProjection: "EPSG:3857",
       }),
       url: (extent) => {
-        const epsg4326Extent = transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
+        const epsg4326Extent = transformExtent(
+          extent,
+          "EPSG:3857",
+          "EPSG:4326"
+        );
         return (
-          'http://localhost:8080/geoserver/wfs?' +
-          'service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:location&' +
-          'outputFormat=application/json&srsname=EPSG:4326&bbox=' +
-          epsg4326Extent.join(',') +
-          ',EPSG:4326'
+          "http://localhost:8080/geoserver/wfs?" +
+          "service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:location&" +
+          "outputFormat=application/json&srsname=EPSG:4326&bbox=" +
+          epsg4326Extent.join(",") +
+          ",EPSG:4326"
         );
       },
       strategy: bboxStrategy,
@@ -163,17 +175,21 @@ function MapPage() {
 
     const segmentSource = new VectorSource({
       format: new GeoJSON({
-        dataProjection: 'EPSG:4326',
-        featureProjection: 'EPSG:3857',
+        dataProjection: "EPSG:4326",
+        featureProjection: "EPSG:3857",
       }),
       url: (extent) => {
-        const epsg4326Extent = transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
+        const epsg4326Extent = transformExtent(
+          extent,
+          "EPSG:3857",
+          "EPSG:4326"
+        );
         return (
-          'http://localhost:8080/geoserver/wfs?' +
-          'service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:segment&' +
-          'outputFormat=application/json&srsname=EPSG:4326&bbox=' +
-          epsg4326Extent.join(',') +
-          ',EPSG:4326'
+          "http://localhost:8080/geoserver/wfs?" +
+          "service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:segment&" +
+          "outputFormat=application/json&srsname=EPSG:4326&bbox=" +
+          epsg4326Extent.join(",") +
+          ",EPSG:4326"
         );
       },
       strategy: bboxStrategy,
@@ -194,7 +210,7 @@ function MapPage() {
       element: popupRef.current,
       autoPan: true,
       autoPanAnimation: { duration: 250 },
-      positioning: 'bottom-center',
+      positioning: "bottom-center",
       offset: [0, -10],
     });
 
@@ -221,7 +237,7 @@ function MapPage() {
 
     // If no saved state exists, auto-fit the location features (duration 0 to prevent animation).
     if (!saved) {
-      locationSource.once('addfeature', () => {
+      locationSource.once("addfeature", () => {
         const extent = locationSource.getExtent();
         if (extent && !isNaN(extent[0])) {
           map.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 0 });
@@ -230,23 +246,23 @@ function MapPage() {
     }
 
     // Save view state on moveend.
-    map.getView().on('moveend', () => {
+    map.getView().on("moveend", () => {
       const center = map.getView().getCenter();
       const zoom = map.getView().getZoom();
       setZoomState(center, zoom);
     });
 
     // Prevent auto-fit on change if a view is saved by using duration: 0.
-    locationSource.on('change', () => {
-      if (!getZoomState() && locationSource.getState() === 'ready') {
+    locationSource.on("change", () => {
+      if (!getZoomState() && locationSource.getState() === "ready") {
         const extent = locationSource.getExtent();
         if (extent && !isNaN(extent[0])) {
           map.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 0 });
         }
       }
     });
-    segmentSource.on('change', () => {
-      if (!getZoomState() && segmentSource.getState() === 'ready') {
+    segmentSource.on("change", () => {
+      if (!getZoomState() && segmentSource.getState() === "ready") {
         const extent = segmentSource.getExtent();
         if (extent && !isNaN(extent[0])) {
           map.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 0 });
@@ -255,36 +271,38 @@ function MapPage() {
     });
 
     // Setup click handler for popups.
-    map.on('click', (evt) => {
+    map.on("click", (evt) => {
       popup.setPosition(undefined);
       const hitTolerancePoint = 20;
       const hitToleranceLine = 10;
       const pointFeature = map.forEachFeatureAtPixel(
         evt.pixel,
-        (feature, layer) => (layer === locationLayerRef.current ? feature : null),
+        (feature, layer) =>
+          layer === locationLayerRef.current ? feature : null,
         { hitTolerance: hitTolerancePoint }
       );
       if (pointFeature) {
-        popupRef.current.classList.add('active');
-        popupRef.current.style.display = 'block';
+        popupRef.current.classList.add("active");
+        popupRef.current.style.display = "block";
         popup.setPosition(evt.coordinate);
-        setPopupMode('pointSelection');
+        setPopupMode("pointSelection");
         setSelectedPoint(pointFeature);
-        setSelectedTransport('');
+        setSelectedTransport("");
         return;
       }
       const lineFeature = map.forEachFeatureAtPixel(
         evt.pixel,
-        (feature, layer) => (layer === segmentLayerRef.current ? feature : null),
+        (feature, layer) =>
+          layer === segmentLayerRef.current ? feature : null,
         { hitTolerance: hitToleranceLine }
       );
       if (lineFeature) {
-        popupRef.current.classList.add('active');
-        popupRef.current.style.display = 'block';
+        popupRef.current.classList.add("active");
+        popupRef.current.style.display = "block";
         popup.setPosition(evt.coordinate);
-        setPopupMode('actionSelection');
+        setPopupMode("actionSelection");
         setSelectedPoint(null);
-        setSelectedTransport('');
+        setSelectedTransport("");
       }
     });
 
@@ -318,6 +336,40 @@ function MapPage() {
   }, [lineThickness, lineColor, pointSize, pointColor]);
 
   // UI Handlers.
+
+  // Handle FE-> BE FastApi
+  // OpenRouteService
+  const handleOptimizeRoute = async () => {
+    if (!selectedTransport) return;
+
+    const orsProfile = transportMap[selectedTransport];
+    const lineSegment = lineMap[selectedLineSegment];
+    const start = "8.681495,49.41461"; // Einbindung LineSegment(startPunkt) // TODO
+    const end = "8.687872,49.420318"; // Einbindung LineSegment(endPunkt) // TODO
+
+    const response = await fetch(
+      `http://localhost:8000/v2/route/${orsProfile}?start=${start}&end=${end}`
+    );
+
+    const data = await response.json(); // Speichern in DB // TODO
+    console.log("Route:", data);
+  };
+
+  // OpenElevationService => POINTS 2D->3D
+  const handlePointElevation = async () => {
+    if (!selectedPoint) return;
+
+    const geometry = pointFeature[selectedPoint];
+
+    const response = await fetch(
+      `http://localhost:8000/v2/elevation/point/${geometry}`
+    );
+
+    const point3D = await response.json(); // Speichern in DB // TODO
+
+    console.log("Point 3D:", point3D);
+  };
+
   const toggleBackgroundOptions = () => {
     setShowBackgroundOptions((prev) => !prev);
   };
@@ -338,13 +390,13 @@ function MapPage() {
   };
 
   const handlePerformExport = () => {
-    mapInstance.current.once('rendercomplete', function () {
+    mapInstance.current.once("rendercomplete", function () {
       const size = mapInstance.current.getSize();
-      const mapCanvas = document.createElement('canvas');
+      const mapCanvas = document.createElement("canvas");
       mapCanvas.width = size[0];
       mapCanvas.height = size[1];
-      const mapContext = mapCanvas.getContext('2d');
-      mapRef.current.querySelectorAll('canvas').forEach((canvas) => {
+      const mapContext = mapCanvas.getContext("2d");
+      mapRef.current.querySelectorAll("canvas").forEach((canvas) => {
         if (canvas.width > 0) {
           const opacity = canvas.parentNode.style.opacity;
           mapContext.globalAlpha = opacity ? Number(opacity) : 1;
@@ -357,13 +409,23 @@ function MapPage() {
       const { width, height } = exportOverlayDims;
       const offsetX = (containerWidth - width) / 2;
       const offsetY = (containerHeight - height) / 2;
-      const croppedCanvas = document.createElement('canvas');
+      const croppedCanvas = document.createElement("canvas");
       croppedCanvas.width = width;
       croppedCanvas.height = height;
-      const croppedContext = croppedCanvas.getContext('2d');
-      croppedContext.drawImage(mapCanvas, offsetX, offsetY, width, height, 0, 0, width, height);
-      const dataURL = croppedCanvas.toDataURL('image/jpeg');
-      const link = document.createElement('a');
+      const croppedContext = croppedCanvas.getContext("2d");
+      croppedContext.drawImage(
+        mapCanvas,
+        offsetX,
+        offsetY,
+        width,
+        height,
+        0,
+        0,
+        width,
+        height
+      );
+      const dataURL = croppedCanvas.toDataURL("image/jpeg");
+      const link = document.createElement("a");
       link.href = dataURL;
       link.download = `map_export_${exportFormat}.jpg`;
       document.body.appendChild(link);
@@ -388,16 +450,27 @@ function MapPage() {
           />
         )}
         <div className="button-container">
-          <button className="map-change-button" onClick={toggleBackgroundOptions}>
+          <button
+            className="map-change-button"
+            onClick={toggleBackgroundOptions}
+          >
             Wechsel der Karte
           </button>
           {showBackgroundOptions && (
             <div className="background-options">
               <h3>Wählen Sie den Hintergrund</h3>
               {backgroundOptions.map((option) => (
-                <div key={option.name} className="bg-option" onClick={() => handleSelectBackground(option)}>
+                <div
+                  key={option.name}
+                  className="bg-option"
+                  onClick={() => handleSelectBackground(option)}
+                >
                   <div className="bg-title">{option.name}</div>
-                  <img src={option.previewUrl} alt={`${option.name} Preview`} className="bg-preview" />
+                  <img
+                    src={option.previewUrl}
+                    alt={`${option.name} Preview`}
+                    className="bg-preview"
+                  />
                 </div>
               ))}
             </div>
@@ -468,7 +541,10 @@ function MapPage() {
                 >
                   Speichern
                 </button>
-                <button className="sym-cancel-button" onClick={() => setShowSymbolizationOptions(false)}>
+                <button
+                  className="sym-cancel-button"
+                  onClick={() => setShowSymbolizationOptions(false)}
+                >
                   Abbrechen
                 </button>
               </div>
@@ -482,7 +558,11 @@ function MapPage() {
               <h3>Kartenexport</h3>
               <div className="export-form">
                 <label htmlFor="formatSelect">Format:</label>
-                <select id="formatSelect" value={exportFormat} onChange={handleExportFormatChange}>
+                <select
+                  id="formatSelect"
+                  value={exportFormat}
+                  onChange={handleExportFormatChange}
+                >
                   <option value="A4Hoch">A4 hoch</option>
                   <option value="A4Quer">A4 quer</option>
                 </select>
@@ -500,25 +580,25 @@ function MapPage() {
         </div>
       </div>
       <div ref={popupRef} className="map-popup">
-        {popupMode === 'actionSelection' && (
+        {popupMode === "actionSelection" && (
           <div className="popup-content">
             <div className="popup-title">Wählen Sie Aktion:</div>
             <div className="popup-buttons">
               <button
                 onClick={() => {
-                  alert('Neuen Punkt hinzufügen – Rückkehr zur Karte.');
-                  setPopupMode('');
+                  alert("Neuen Punkt hinzufügen – Rückkehr zur Karte.");
+                  setPopupMode("");
                 }}
               >
                 Neuen Punkt Hinzufügen
               </button>
-              <button onClick={() => setPopupMode('transportSelection')}>
+              <button onClick={() => setPopupMode("transportSelection")}>
                 Route Optimieren
               </button>
             </div>
           </div>
         )}
-        {popupMode === 'transportSelection' && (
+        {popupMode === "transportSelection" && (
           <div className="popup-content">
             <div className="popup-title">Transportmittel wählen:</div>
             <div className="popup-option">
@@ -527,8 +607,8 @@ function MapPage() {
                   type="radio"
                   name="transport"
                   value="auto"
-                  checked={selectedTransport === 'auto'}
-                  onChange={() => setSelectedTransport('auto')}
+                  checked={selectedTransport === "driving-car"}
+                  onChange={() => setSelectedTransport("driving-car")}
                 />
                 Auto
               </label>
@@ -538,11 +618,11 @@ function MapPage() {
                 <input
                   type="radio"
                   name="transport"
-                  value="zug"
-                  checked={selectedTransport === 'zug'}
-                  onChange={() => setSelectedTransport('zug')}
+                  value="cycling-mountain"
+                  checked={selectedTransport === "cycling-mountain"}
+                  onChange={() => setSelectedTransport("cycling-mountain")}
                 />
-                Zug
+                Mountainbike
               </label>
             </div>
             <div className="popup-option">
@@ -550,11 +630,35 @@ function MapPage() {
                 <input
                   type="radio"
                   name="transport"
-                  value="zuFuss"
-                  checked={selectedTransport === 'zuFuss'}
-                  onChange={() => setSelectedTransport('zuFuss')}
+                  value="cycling-road"
+                  checked={selectedTransport === "cycling-road"}
+                  onChange={() => setSelectedTransport("cycling-road")}
+                />
+                Rennvelo
+              </label>
+            </div>
+            <div className="popup-option">
+              <label>
+                <input
+                  type="radio"
+                  name="transport"
+                  value="foot-walking"
+                  checked={selectedTransport === "foot-walking"}
+                  onChange={() => setSelectedTransport("foot-walking")}
                 />
                 zu Fuss
+              </label>
+            </div>
+            <div className="popup-option">
+              <label>
+                <input
+                  type="radio"
+                  name="transport"
+                  value="foot-hiking"
+                  checked={selectedTransport === "foot-hiking"}
+                  onChange={() => setSelectedTransport("foot-hiking")}
+                />
+                Wandern
               </label>
             </div>
             <div className="popup-button-container">
@@ -562,7 +666,8 @@ function MapPage() {
                 className="popup-button"
                 onClick={() => {
                   alert(`Route wird optimiert für: ${selectedTransport}`);
-                  setPopupMode('');
+                  handleOptimizeRoute();
+                  setPopupMode("");
                 }}
               >
                 Optimiere Route
@@ -570,16 +675,18 @@ function MapPage() {
             </div>
           </div>
         )}
-        {popupMode === 'pointSelection' && (
+        {popupMode === "pointSelection" && (
           <div className="popup-content">
             <div className="popup-title">Punkt Optionen:</div>
             <div className="popup-buttons">
               <button
                 onClick={() => {
                   if (selectedPoint && locationLayerRef.current) {
-                    locationLayerRef.current.getSource().removeFeature(selectedPoint);
+                    locationLayerRef.current
+                      .getSource()
+                      .removeFeature(selectedPoint);
                   }
-                  setPopupMode('');
+                  setPopupMode("");
                 }}
               >
                 Punkt löschen
