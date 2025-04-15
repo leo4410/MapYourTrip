@@ -18,17 +18,17 @@ const NavigationBar = () => {
         <ul className="navbar-menu">
           <li>
             <button className={isActive('/')} onClick={() => navigate('/')}>
-              Home
+              Verwaltung
             </button>
           </li>
           <li>
             <button className={isActive('/map')} onClick={() => navigate('/map')}>
-              Journey
+              Kartenbereich
             </button>
           </li>
           <li>
             <button className={isActive('/stats')} onClick={() => navigate('/stats')}>
-              Calculate
+              Statistik
             </button>
           </li>
         </ul>
