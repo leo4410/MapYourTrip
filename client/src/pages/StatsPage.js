@@ -20,16 +20,39 @@ function StatsPage() {
   const segmentLayerRef = useRef(null);
   const { lineThickness, lineColor, pointSize, pointColor } = useContext(SymbolSettingsContext);
 
-  // States for the new segment selection and calculation functionality.
+  // States for statistics calculation, export image, etc.
   const [showStatsCalcPopup, setShowStatsCalcPopup] = useState(false);
   const [selecting, setSelecting] = useState(false);
   const [selectedSegments, setSelectedSegments] = useState([]);
+  const [statistics, setStatistics] = useState(null);
+  const [exportedImage, setExportedImage] = useState(null);
+
+  // New state for controlling the export overlay
+  const [showExportOverlay, setShowExportOverlay] = useState(false);
+  const [exportOverlayDims, setExportOverlayDims] = useState(null);
+
+  // Compute overlay dimensions when export overlay is active (for A4 Quer: 297x210mm at 96 DPI)
+  useEffect(() => {
+    if (!showExportOverlay || !mapRef.current) {
+      setExportOverlayDims(null);
+      return;
+    }
+    const container = mapRef.current.parentElement || mapRef.current;
+    const containerWidth = container.clientWidth;
+    const containerHeight = container.clientHeight;
+    const widthPixels = Math.round((297 / 25.4) * 96);
+    const heightPixels = Math.round((210 / 25.4) * 96);
+    const scaleFactor = Math.min(
+      (containerWidth * 0.9) / widthPixels,
+      (containerHeight * 0.9) / heightPixels,
+      1
+    );
+    setExportOverlayDims({ width: widthPixels * scaleFactor, height: heightPixels * scaleFactor });
+  }, [showExportOverlay]);
 
   useEffect(() => {
     // Base layer.
-    const baseLayer = new TileLayer({
-      source: new OSM(),
-    });
+    const baseLayer = new TileLayer({ source: new OSM() });
 
     // Create location layer.
     const locationSource = new VectorSource({
@@ -94,7 +117,7 @@ function StatsPage() {
     });
     mapInstance.current = map;
 
-    // Restore saved view state if available.
+    // Restore saved view state.
     const saved = getZoomState();
     if (saved) {
       map.getView().setCenter(saved.center);
@@ -129,10 +152,9 @@ function StatsPage() {
     return () => map.setTarget(null);
   }, [lineThickness, lineColor, pointSize, pointColor]);
 
-  // Attach map click event to handle segment selection when in "selecting" mode.
+  // Handle segment selection when in "selecting" mode.
   useEffect(() => {
     if (!mapInstance.current) return;
-
     function handleSegmentSelect(evt) {
       const feature = mapInstance.current.forEachFeatureAtPixel(
         evt.pixel,
@@ -142,7 +164,6 @@ function StatsPage() {
         }
       );
       if (feature && !selectedSegments.includes(feature)) {
-        // Give visual feedback by updating the style.
         feature.setStyle(
           new Style({
             stroke: new Stroke({
@@ -154,7 +175,6 @@ function StatsPage() {
         setSelectedSegments((prev) => [...prev, feature]);
       }
     }
-
     if (selecting) {
       mapInstance.current.on('click', handleSegmentSelect);
     }
@@ -165,57 +185,184 @@ function StatsPage() {
     };
   }, [selecting, lineThickness, selectedSegments]);
 
-  // Sum up lengths of all selected segments.
+  // Compute statistics for each selected line.
   function handleCalculate() {
     let totalLength = 0;
-    selectedSegments.forEach((feature) => {
+    const elements = selectedSegments.map((feature, index) => {
       const geom = feature.getGeometry();
       if (geom) {
-        totalLength += geom.getLength();
+        const coordinates = geom.getCoordinates();
+        const start = coordinates[0];
+        const end = coordinates[coordinates.length - 1];
+        const length = geom.getLength();
+        totalLength += length;
+        return {
+          index: index + 1,
+          length: length.toFixed(2),
+          start,
+          end,
+        };
       }
+      return null;
+    }).filter(Boolean);
+    setStatistics({ elements, totalLength: totalLength.toFixed(2) });
+  }
+
+  // Export map image as A4 Quer and save the image to state.
+  function handleExportImage() {
+    if (!mapInstance.current) return;
+    mapInstance.current.once('rendercomplete', function () {
+      const size = mapInstance.current.getSize();
+      const mapCanvas = document.createElement('canvas');
+      mapCanvas.width = size[0];
+      mapCanvas.height = size[1];
+      const mapContext = mapCanvas.getContext('2d');
+      mapRef.current.querySelectorAll('canvas').forEach((canvas) => {
+        if (canvas.width > 0) {
+          const opacity = canvas.parentNode.style.opacity;
+          mapContext.globalAlpha = opacity ? Number(opacity) : 1;
+          mapContext.drawImage(canvas, 0, 0);
+        }
+      });
+      const container = mapRef.current.parentElement || mapRef.current;
+      const containerWidth = container.clientWidth;
+      const containerHeight = container.clientHeight;
+      // For A4 Quer (landscape): 297mm x 210mm at 96 DPI.
+      const widthPixels = Math.round((297 / 25.4) * 96);
+      const heightPixels = Math.round((210 / 25.4) * 96);
+      const scaleFactor = Math.min(
+        (containerWidth * 0.9) / widthPixels,
+        (containerHeight * 0.9) / heightPixels,
+        1
+      );
+      const croppedWidth = widthPixels * scaleFactor;
+      const croppedHeight = heightPixels * scaleFactor;
+      const offsetX = (containerWidth - croppedWidth) / 2;
+      const offsetY = (containerHeight - croppedHeight) / 2;
+      const croppedCanvas = document.createElement('canvas');
+      croppedCanvas.width = croppedWidth;
+      croppedCanvas.height = croppedHeight;
+      const croppedContext = croppedCanvas.getContext('2d');
+      croppedContext.drawImage(
+        mapCanvas,
+        offsetX, offsetY, croppedWidth, croppedHeight,
+        0, 0, croppedWidth, croppedHeight
+      );
+      const dataURL = croppedCanvas.toDataURL('image/jpeg');
+      setExportedImage(dataURL);
+      // Hide the export overlay once image is captured.
+      setShowExportOverlay(false);
     });
-    alert(`Gesamtlänge: ${totalLength.toFixed(2)} Meter`);
+    mapInstance.current.renderSync();
   }
 
   return (
     <div className="stats-container">
       <NavigationBar />
       <div className="stats-main">
-        {/* Map panel where styling is handled in CSS */}
+        {/* Map panel with styling defined in CSS */}
         <div className="map-panel">
           <div ref={mapRef} className="map-view" />
-          
-          {/* Button container placed in the top-left corner of the map panel */}
+          {/* Render export overlay if active */}
+          {showExportOverlay && exportOverlayDims && (
+            <div
+              className="export-area-overlay"
+              style={{ width: exportOverlayDims.width, height: exportOverlayDims.height }}
+            ></div>
+          )}
+          {/* Button container on the map panel */}
           <div className="button-container">
-            <button className="map-change-button" onClick={() => setShowStatsCalcPopup(!showStatsCalcPopup)}>
+            <button
+              className="map-change-button"
+              onClick={() => setShowStatsCalcPopup(!showStatsCalcPopup)}
+            >
               Berechnung der Statistik:
             </button>
             {showStatsCalcPopup && (
               <div className="stats-popup">
                 <h3 className="stats-popup-title">Statistik Berechnung</h3>
                 <p className="stats-popup-text">
-                  Wählen Sie die Linien, deren Länge Sie berechnen möchten.
+                  Wählen Sie die Linien, deren Länge, Start- und Endpunkte Sie berechnen möchten.
                 </p>
                 <div className="stats-popup-buttons">
-                  <button className="map-change-button" onClick={() => setSelecting(!selecting)}>
+                  <button
+                    className="map-change-button"
+                    onClick={() => setSelecting(!selecting)}
+                  >
                     {selecting ? 'Linien auswählen (Aktiv)' : 'Linien auswählen'}
                   </button>
                   <button className="map-change-button" onClick={handleCalculate}>
                     Berechnung
                   </button>
-                  <button className="map-change-button" onClick={() => setShowStatsCalcPopup(false)}>
+                  <button
+                    className="map-change-button"
+                    onClick={() => setShowStatsCalcPopup(false)}
+                  >
                     Schließen
                   </button>
                 </div>
               </div>
             )}
+            {/* New Export Image button below Berechnung */}
+            <button
+              className="map-change-button"
+              onClick={() => setShowExportOverlay(true)}
+            >
+              Export Image (A4 Quer)
+            </button>
+            {showExportOverlay && (
+              <button
+                className="map-change-button"
+                onClick={handleExportImage}
+              >
+                Speichern
+              </button>
+            )}
           </div>
         </div>
 
-        {/* Stats panel for charts or additional statistics */}
+        {/* Statistics panel on the right */}
         <div className="stats-panel">
-          <h2>Statistiken</h2>
-          {/* Insert your charts or additional stats here */}
+          <h2 className='statistics-h2'>Statistiken</h2>
+          {/* If an exported image is available, show it at the top */}
+          {exportedImage && (
+            <div className="export-section">
+              <img
+                src={exportedImage}
+                alt="Exported Map"
+                className="exported-image"
+              />
+            </div>
+          )}
+          {statistics ? (
+            <div className="statistics-overview">
+              <table className="statistics-table">
+                <thead>
+                  <tr>
+                    <th>Line Element</th>
+                    <th>Length (m)</th>
+                    <th>Start Coordinates</th>
+                    <th>End Coordinates</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {statistics.elements.map((elem) => (
+                    <tr key={elem.index}>
+                      <td>{elem.index}</td>
+                      <td>{elem.length}</td>
+                      <td>[{elem.start.join(', ')}]</td>
+                      <td>[{elem.end.join(', ')}]</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="total-length">
+                Total Length: {Math.round(statistics.totalLength/1000)} km
+              </p>
+            </div>
+          ) : (
+            <p>No statistics calculated yet. Select lines and click "Berechnung".</p>
+          )}
         </div>
       </div>
     </div>

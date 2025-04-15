@@ -29,7 +29,7 @@
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   overflow: hidden;
-  position: relative; /* Needed for positioning the button container */
+  position: relative; /* For button container and export overlay positioning */
 }
 
 .stats-panel {
@@ -40,11 +40,8 @@
   padding: 1rem;
 }
 
-/* These button classes are taken from your MapPage.css for consistency */
-.change-map-button,
-.export-map-button {
-  position: absolute;
-  bottom: 10px;
+/* Button styling (consistent with MapPage) */
+.map-change-button {
   padding: 0.5rem 1rem;
   background: #4e4376;
   color: #ffffff;
@@ -52,29 +49,20 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s;
-  font-size: 25px;
+  font-size: 20px;
 }
 
-.change-map-button:hover,
-.export-map-button:hover {
-  background: #555;
+.map-change-button:hover {
+  background: #45a049;
 }
 
-.change-map-button {
-  left: 10px;
-}
-
-.export-map-button {
-  right: 10px;
-}
-
-/* Map view takes the full size of its container */
+/* Map view takes full size */
 .map-view {
   width: 100%;
   height: 100%;
 }
 
-/* Button container positioned in the map panel */
+/* Button container positioned in the top-left corner */
 .button-container {
   position: absolute;
   top: 10px;
@@ -85,7 +73,7 @@
   z-index: 1100;
 }
 
-/* Stats popup styling within the button container */
+/* Stats popup styling */
 .stats-popup {
   margin-top: 10px;
   background: #fff;
@@ -107,9 +95,70 @@
   color: black;
 }
 
-/* Container for stacking the popup buttons vertically */
+/* Container for stacking popup buttons vertically */
 .stats-popup-buttons {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+/* Export overlay styling (similar to MapPage) */
+.export-area-overlay {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px dashed orange;
+  background: rgba(255, 165, 0, 0.3);
+  pointer-events: none;
+  z-index: 1050;
+}
+
+/* Export section in the stats panel */
+.export-section {
+  margin-bottom: 20px;
+}
+
+.exported-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: auto;
+  border: 1px solid #ddd;
+}
+
+/* Statistics overview styling */
+.statistics-overview {
+  margin-top: 20px;
+}
+
+
+.statistics-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.statistics-table th,
+.statistics-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  color: black;
+}
+
+.statistics-table th {
+  background-color: #4e4376;
+  color: white;
+}
+
+.statistics-h2 {
+  color: black;
+}
+
+.total-length {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+  color: black;
 }

@@ -3,9 +3,9 @@ from psycopg2.extras import RealDictCursor
 
 def get_db_connection():
     return psycopg2.connect(
-        dbname="db_test",
+        dbname="MapYourTrip",
         user="postgres",
-        password="postgres",
+        password="Kramer",
         host="localhost",
         port="5432",
         cursor_factory=RealDictCursor
