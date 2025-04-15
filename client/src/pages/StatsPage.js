@@ -18,7 +18,6 @@ function StatsPage() {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const segmentLayerRef = useRef(null);
-
   const { lineThickness, lineColor, pointSize, pointColor } = useContext(SymbolSettingsContext);
 
   // States for the new segment selection and calculation functionality.
@@ -182,33 +181,22 @@ function StatsPage() {
     <div className="stats-container">
       <NavigationBar />
       <div className="stats-main">
-        {/* Map panel with relative positioning to place buttons on top */}
-        <div className="map-panel" style={{ position: 'relative' }}>
-          <div ref={mapRef} className="map-view" style={{ width: '100%', height: '100%' }} />
+        {/* Map panel where styling is handled in CSS */}
+        <div className="map-panel">
+          <div ref={mapRef} className="map-view" />
           
-          {/* Button container positioned in the top-left corner inside the map panel */}
+          {/* Button container placed in the top-left corner of the map panel */}
           <div className="button-container">
             <button className="map-change-button" onClick={() => setShowStatsCalcPopup(!showStatsCalcPopup)}>
               Berechnung der Statistik:
             </button>
-
             {showStatsCalcPopup && (
-              <div
-                style={{
-                  marginTop: '10px',
-                  background: '#fff',
-                  padding: '10px',
-                  borderRadius: '5px',
-                  boxShadow: '0 1px 4px rgba(0,0,0,0.3)',
-                  minWidth: '250px',
-                }}
-              >
-                <h3 style={{ fontSize: '20px', marginBottom: '10px' }}>Statistik Berechnung</h3>
-                <p style={{ fontSize: '16px', marginBottom: '10px' }}>
+              <div className="stats-popup">
+                <h3 className="stats-popup-title">Statistik Berechnung</h3>
+                <p className="stats-popup-text">
                   Wählen Sie die Linien, deren Länge Sie berechnen möchten.
                 </p>
-                {/* Container to stack buttons vertically */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div className="stats-popup-buttons">
                   <button className="map-change-button" onClick={() => setSelecting(!selecting)}>
                     {selecting ? 'Linien auswählen (Aktiv)' : 'Linien auswählen'}
                   </button>

@@ -1,68 +1,115 @@
 /* StatsPage.css */
 
 .stats-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-  }
-  
-  .stats-header {
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    padding: 0.75rem 1rem;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-    margin: 0;
-  }
-  
-  .stats-main {
-    flex: 1;
-    display: flex;
-    gap: 1rem;
-    padding: 1rem;
-    position: relative;
-  }
-  
-  .map-panel {
-    flex: 1;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
-  }
-  
-  .stats-panel {
-    flex: 1;
-    background: rgba(255, 255, 255, 0.954);
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-    padding: 1rem;
-  }
-  
-  .change-map-button,
-  .export-map-button {
-    position: absolute;
-    bottom: 10px;
-    padding: 0.5rem 1rem;
-    background: #4e4376;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-    font-size: 25px;
-  }
-  
-  .change-map-button:hover,
-  .export-map-button:hover {
-    background: #555;
-  }
-  
-  .change-map-button {
-    left: 10px;
-  }
-  
-  .export-map-button {
-    right: 10px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.stats-header {
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  margin: 0;
+}
+
+.stats-main {
+  flex: 1;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  position: relative;
+}
+
+.map-panel {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  position: relative; /* Needed for positioning the button container */
+}
+
+.stats-panel {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.954);
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  padding: 1rem;
+}
+
+/* These button classes are taken from your MapPage.css for consistency */
+.change-map-button,
+.export-map-button {
+  position: absolute;
+  bottom: 10px;
+  padding: 0.5rem 1rem;
+  background: #4e4376;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 25px;
+}
+
+.change-map-button:hover,
+.export-map-button:hover {
+  background: #555;
+}
+
+.change-map-button {
+  left: 10px;
+}
+
+.export-map-button {
+  right: 10px;
+}
+
+/* Map view takes the full size of its container */
+.map-view {
+  width: 100%;
+  height: 100%;
+}
+
+/* Button container positioned in the map panel */
+.button-container {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1100;
+}
+
+/* Stats popup styling within the button container */
+.stats-popup {
+  margin-top: 10px;
+  background: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  min-width: 250px;
+}
+
+.stats-popup-title {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.stats-popup-text {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: black;
+}
+
+/* Container for stacking the popup buttons vertically */
+.stats-popup-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
