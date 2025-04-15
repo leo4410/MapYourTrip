@@ -1,6 +1,6 @@
 /* HomePage.css */
 
-/* Header styling for the app title (if any separate header is used) */
+/* Header styling if needed */
 .home-header {
   background: rgba(0, 0, 0, 0.8);
   color: #fff;
@@ -19,49 +19,7 @@
   padding: 1rem;
 }
 
-/* New header row for the list title and upload button */
-.list-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  max-width: 800px; /* Matches journey list width */
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Page title styling */
-.page-title {
-  font-size: 30px;
-  margin: 0;
-}
-
-/* Upload button styling (inside the list header) */
-.upload-button {
-  background: #7664b6;
-  color: #fff;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s;
-  font-size: 25px;
-}
-
-.upload-button:hover {
-  background: #555;
-}
-
-/* Journey list container has a max-width to restrict overall width */
-.journey-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 auto;
-  max-width: 800px; /* Adjust as desired */
-  font-size: 25px;
-}
-
-/* Each journey item is limited in width and centered */
+/* Upload item styled the same as journey-item */
 .journey-item {
   display: flex;
   justify-content: space-between;
@@ -70,9 +28,10 @@
   margin-bottom: 1rem;
   padding: 0.5rem;
   border-radius: 4px;
-  max-width: 800px; /* Same as the container to align content */
+  max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  font-size: 25px;
 }
 
 /* Container for the action buttons */
@@ -90,11 +49,19 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s;
-  font-size: 25px;
 }
 
 .journey-item button:hover {
   background: #555;
+}
+
+/* Journey list container */
+.journey-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 800px;
+  font-size: 25px;
 }
 
 /* Popup overlay covering the viewport */

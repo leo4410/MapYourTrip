@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import NavigationBar from '../components/NavigationBar';
 import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
@@ -12,18 +12,27 @@ import { Style, Stroke, Circle as CircleStyle, Fill } from 'ol/style';
 import 'ol/ol.css';
 import './StatsPage.css';
 import { SymbolSettingsContext } from '../SymbolSettingsContext';
+import { getZoomState, setZoomState } from '../ZoomState.js';
 
 function StatsPage() {
   const mapRef = useRef(null);
+  const mapInstance = useRef(null);
+  const segmentLayerRef = useRef(null);
+
   const { lineThickness, lineColor, pointSize, pointColor } = useContext(SymbolSettingsContext);
 
+  // States for the new segment selection and calculation functionality.
+  const [showStatsCalcPopup, setShowStatsCalcPopup] = useState(false);
+  const [selecting, setSelecting] = useState(false);
+  const [selectedSegments, setSelectedSegments] = useState([]);
+
   useEffect(() => {
-    // Base layer using OSM.
+    // Base layer.
     const baseLayer = new TileLayer({
-      source: new OSM()
+      source: new OSM(),
     });
 
-    // Vector source for location features.
+    // Create location layer.
     const locationSource = new VectorSource({
       format: new GeoJSON(),
       url: (extent) => {
@@ -31,7 +40,9 @@ function StatsPage() {
         return (
           'http://localhost:8080/geoserver/wfs?' +
           'service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:location&' +
-          'outputFormat=application/json&srsname=EPSG:4326&bbox=' + epsg4326Extent.join(',') + ',EPSG:4326'
+          'outputFormat=application/json&srsname=EPSG:4326&bbox=' +
+          epsg4326Extent.join(',') +
+          ',EPSG:4326'
         );
       },
       strategy: bboxStrategy,
@@ -41,12 +52,12 @@ function StatsPage() {
       style: new Style({
         image: new CircleStyle({
           radius: Number(pointSize),
-          fill: new Fill({ color: pointColor })
-        })
-      })
+          fill: new Fill({ color: pointColor }),
+        }),
+      }),
     });
 
-    // Vector source for segment features.
+    // Create segment layer.
     const segmentSource = new VectorSource({
       format: new GeoJSON(),
       url: (extent) => {
@@ -54,7 +65,9 @@ function StatsPage() {
         return (
           'http://localhost:8080/geoserver/wfs?' +
           'service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:segment&' +
-          'outputFormat=application/json&srsname=EPSG:4326&bbox=' + epsg4326Extent.join(',') + ',EPSG:4326'
+          'outputFormat=application/json&srsname=EPSG:4326&bbox=' +
+          epsg4326Extent.join(',') +
+          ',EPSG:4326'
         );
       },
       strategy: bboxStrategy,
@@ -65,34 +78,51 @@ function StatsPage() {
         stroke: new Stroke({
           color: lineColor,
           width: Number(lineThickness),
-        })
-      })
+        }),
+      }),
     });
+    segmentLayerRef.current = segmentLayer;
 
-    // Initialize the map.
+    // Create the map with zoom controls removed.
     const map = new Map({
       target: mapRef.current,
       layers: [baseLayer, segmentLayer, locationLayer],
       view: new View({
         center: fromLonLat([8.2275, 46.8182]),
         zoom: 2,
-      })
+      }),
+      controls: [],
+    });
+    mapInstance.current = map;
+
+    // Restore saved view state if available.
+    const saved = getZoomState();
+    if (saved) {
+      map.getView().setCenter(saved.center);
+      map.getView().setZoom(saved.zoom);
+    }
+
+    // Save view state on moveend.
+    map.getView().on('moveend', () => {
+      const center = map.getView().getCenter();
+      const zoom = map.getView().getZoom();
+      setZoomState(center, zoom);
     });
 
-    // Optionally auto-fit once features load.
+    // Auto-fit view if no saved state exists.
     locationSource.on('change', () => {
-      if (locationSource.getState() === 'ready') {
+      if (!getZoomState() && locationSource.getState() === 'ready') {
         const extent = locationSource.getExtent();
         if (extent && !isNaN(extent[0])) {
-          map.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 1000 });
+          map.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 0 });
         }
       }
     });
     segmentSource.on('change', () => {
-      if (segmentSource.getState() === 'ready') {
+      if (!getZoomState() && segmentSource.getState() === 'ready') {
         const extent = segmentSource.getExtent();
         if (extent && !isNaN(extent[0])) {
-          map.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 1000 });
+          map.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 0 });
         }
       }
     });
@@ -100,29 +130,105 @@ function StatsPage() {
     return () => map.setTarget(null);
   }, [lineThickness, lineColor, pointSize, pointColor]);
 
-  const handleExport = () => {
-    alert('Export wird ausgeführt...');
-  };
+  // Attach map click event to handle segment selection when in "selecting" mode.
+  useEffect(() => {
+    if (!mapInstance.current) return;
 
-  const handleChangeMap = () => {
-    alert('Karten-Ansicht gewechselt!');
-  };
+    function handleSegmentSelect(evt) {
+      const feature = mapInstance.current.forEachFeatureAtPixel(
+        evt.pixel,
+        (feature, layer) => {
+          if (layer === segmentLayerRef.current) return feature;
+          return null;
+        }
+      );
+      if (feature && !selectedSegments.includes(feature)) {
+        // Give visual feedback by updating the style.
+        feature.setStyle(
+          new Style({
+            stroke: new Stroke({
+              color: 'red',
+              width: Number(lineThickness) + 2,
+            }),
+          })
+        );
+        setSelectedSegments((prev) => [...prev, feature]);
+      }
+    }
+
+    if (selecting) {
+      mapInstance.current.on('click', handleSegmentSelect);
+    }
+    return () => {
+      if (mapInstance.current) {
+        mapInstance.current.un('click', handleSegmentSelect);
+      }
+    };
+  }, [selecting, lineThickness, selectedSegments]);
+
+  // Sum up lengths of all selected segments.
+  function handleCalculate() {
+    let totalLength = 0;
+    selectedSegments.forEach((feature) => {
+      const geom = feature.getGeometry();
+      if (geom) {
+        totalLength += geom.getLength();
+      }
+    });
+    alert(`Gesamtlänge: ${totalLength.toFixed(2)} Meter`);
+  }
 
   return (
     <div className="stats-container">
       <NavigationBar />
       <div className="stats-main">
-        <div ref={mapRef} className="map-panel"></div>
+        {/* Map panel with relative positioning to place buttons on top */}
+        <div className="map-panel" style={{ position: 'relative' }}>
+          <div ref={mapRef} className="map-view" style={{ width: '100%', height: '100%' }} />
+          
+          {/* Button container positioned in the top-left corner inside the map panel */}
+          <div className="button-container">
+            <button className="map-change-button" onClick={() => setShowStatsCalcPopup(!showStatsCalcPopup)}>
+              Berechnung der Statistik:
+            </button>
+
+            {showStatsCalcPopup && (
+              <div
+                style={{
+                  marginTop: '10px',
+                  background: '#fff',
+                  padding: '10px',
+                  borderRadius: '5px',
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.3)',
+                  minWidth: '250px',
+                }}
+              >
+                <h3 style={{ fontSize: '20px', marginBottom: '10px' }}>Statistik Berechnung</h3>
+                <p style={{ fontSize: '16px', marginBottom: '10px' }}>
+                  Wählen Sie die Linien, deren Länge Sie berechnen möchten.
+                </p>
+                {/* Container to stack buttons vertically */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <button className="map-change-button" onClick={() => setSelecting(!selecting)}>
+                    {selecting ? 'Linien auswählen (Aktiv)' : 'Linien auswählen'}
+                  </button>
+                  <button className="map-change-button" onClick={handleCalculate}>
+                    Berechnung
+                  </button>
+                  <button className="map-change-button" onClick={() => setShowStatsCalcPopup(false)}>
+                    Schließen
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Stats panel for charts or additional statistics */}
         <div className="stats-panel">
           <h2>Statistiken</h2>
-          {/* Insert your charts and metrics here */}
+          {/* Insert your charts or additional stats here */}
         </div>
-        <button className="change-map-button" onClick={handleChangeMap}>
-          Wechsel der Karte
-        </button>
-        <button className="export-map-button" onClick={handleExport}>
-          Export
-        </button>
       </div>
     </div>
   );
