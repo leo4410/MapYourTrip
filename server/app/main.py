@@ -7,7 +7,7 @@ import pandas as pd
 import shutil
 import uuid
 import zipfile
-from crud import insert_waypoint
+from crud import insert_waypoint, insert_location
 
 app = FastAPI()
 
@@ -36,16 +36,26 @@ async def upload_zip(file: UploadFile = File(...)):
         with open(f"{extract_dir}/trip/marokko_14732894/trip.json", "r", encoding="utf-8") as f:
             daten = json.load(f)
             steps = daten["all_steps"]
-
-        
+                    
         # normalize json to extraxt nested fields
-        df = pd.json_normalize(steps, sep='_')  
+        df1 = pd.json_normalize(steps, sep='_')  
 
         # select relevant columns
-        auswahl = df[["id", "display_name", "description", "weather_condition", "weather_temperature", "uuid", "location_lon", "location_lat"]]
+        auswahl = df1[["id", "display_name", "description", "weather_condition", "weather_temperature", "uuid", "location_lon", "location_lat"]]
                 
         for index, row in auswahl.iterrows():
             insert_waypoint(row, logger)
+            
+        # open trip and extract data (need to us for loop later)
+        with open(f"{extract_dir}/trip/marokko_14732894/locations.json", "r", encoding="utf-8") as f:
+            daten = json.load(f)
+            locations = daten["locations"]
+            
+        # normalize json to extraxt nested fields
+        df2 = pd.json_normalize(locations)  
+        
+        for index, row in df2.iterrows():
+            insert_location(row, logger)
         
         # delete created directory
         shutil.rmtree(extract_dir)

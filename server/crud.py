@@ -19,3 +19,24 @@ def insert_waypoint(row, logger):
         logger.error(f"Fehler beim Einfügen des Waypoint: {e}")
         logger.error(f"Fehler bei Zeile: {row}")  
         raise e  
+    
+def insert_location(row, logger):
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute(
+            """
+            INSERT INTO location("location_geom") 
+            VALUES(ST_SetSRID(ST_MakePoint(%s, %s), %s));
+            """,
+            (float(row["lon"]), float(row["lat"]), 4326)
+        )
+        conn.commit()
+        cur.close()
+        conn.close()
+        logger.info(f"Add location {row["lat"]}/{row["lon"]} to database")
+    except Exception as e:
+        logger.error(f"Fehler beim Einfügen der Location: {e}")
+        logger.error(f"Fehler bei Zeile: {row}")  
+        raise e  
+    
