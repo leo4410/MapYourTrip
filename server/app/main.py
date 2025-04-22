@@ -10,6 +10,7 @@ import shutil
 import uuid
 import zipfile
 from crud import insert_waypoints, insert_locations, insert_segments
+from location_functions import get_location
 
 app = FastAPI()
 
@@ -64,6 +65,12 @@ async def get_elevation_point(
 
     return response.json()
 
+@app.get("/location/{location_id}")
+async def get_location_api(location_id):
+    location = get_location(location_id)
+    if location is None:
+        raise HTTPException(status_code=404, detail="Location not found")
+    return location
 
 @app.post("/upload-zip/")
 async def upload_zip(file: UploadFile = File(...)):
