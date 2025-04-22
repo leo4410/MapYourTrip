@@ -11,7 +11,7 @@ import uuid
 import zipfile
 from crud import insert_waypoints, insert_locations, insert_segments
 from functions.location_functions import get_location
-from functions.segment_functions import get_segment
+from functions.segment_functions import get_segment, insert_segment
 
 app = FastAPI()
 
@@ -42,8 +42,15 @@ async def get_route(profile: str, start: str, end: str):
 
     if response.status_code != 200:
         raise HTTPException(status_code=response.status_code, detail=response.text)
+    
+    # extract points on route
+    route_points = response.json()["features"][0]["geometry"]["coordinates"]
+    
+    # insert to line over the passed points into db
+    inserted_segment_id = insert_segment(start, end, route_points)
+    logger.info(f"Insert segment with {inserted_segment_id}")
 
-    return response.json()
+    return inserted_segment_id
 
 # OpenElevationService
 @app.get("v2/elevation/point/")
