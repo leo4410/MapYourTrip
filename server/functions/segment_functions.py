@@ -25,7 +25,7 @@ def get_segment(id):
         raise exception
 
 
-def insert_segment(start_location, end_location, points):
+def insert_segment(start_location, end_location, points, epsg):
     try:
         # query for database insert with one argument (required for execute_values)
         insert_query = """
@@ -35,7 +35,7 @@ def insert_segment(start_location, end_location, points):
         """
         
         # sql string with points to insert 
-        points_sql = ','.join(f'ST_MakePoint({p[0]}, {p[1]})' for p in points)
+        points_sql = ','.join(f'ST_SetSRID(ST_MakePoint({p[0]}, {p[1]}), {int(epsg)})' for p in points)
         
         # set up db connection
         conn = get_db_connection()

@@ -33,8 +33,8 @@ async def get_route(profile: str, start: str, end: str):
     url = f"{ORS_BASE_URL}/v2/directions/{profile}"
     params = {
         "api_key": api_key,
-        "start": str(start_loc["lat"]) + "," + str(start_loc["lon"]),
-        "end": str(end_loc["lat"]) + "," + str(end_loc["lon"])
+        "start": str(start_loc["lon"]) + "," + str(start_loc["lat"]),
+        "end": str(end_loc["lon"]) + "," + str(end_loc["lat"])
     }
     
     async with httpx.AsyncClient() as client:
@@ -47,7 +47,7 @@ async def get_route(profile: str, start: str, end: str):
     route_points = response.json()["features"][0]["geometry"]["coordinates"]
     
     # insert to line over the passed points into db
-    inserted_segment_id = insert_segment(start, end, route_points)
+    inserted_segment_id = insert_segment(start, end, route_points, 4326)
     logger.info(f"Insert segment with {inserted_segment_id}")
 
     return inserted_segment_id
@@ -133,7 +133,7 @@ async def upload_zip(file: UploadFile = File(...)):
         df2["system"] = 4326
         
         location_list_raw = df2.values.tolist()
-        location_list = [(float(lon), float(lat), int(system)) for lat, lon, system in location_list_raw]
+        location_list = [(float(lon), float(lat), int(system)) for lon, lat, system in location_list_raw]
 
         # insert locations and store the ids
         inserted_location_ids = insert_locations(location_list, logger)
