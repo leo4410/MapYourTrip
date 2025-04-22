@@ -22,22 +22,21 @@ logger = logging.getLogger(__name__)
 ORS_BASE_URL = "https://api.openrouteservice.org"
 api_key_default = "5b3ce3597851110001cf62480bd839bf8084480dac4bf416bd48a88a"  # Optional, wenn du api_key nicht immer mitgeben willst
 
-@app.get("/v2/route/")
-async def get_route(
-    profile: str,
-    start: str,
-    end: str,
-    api_key: str = api_key_default  # falls kein api_key mitgegeben wird
-):
-    print(f"Transportprofil: {profile}")
-
+@app.get("/route")
+async def get_route(profile: str, start: str, end: str):
+    api_key: str = api_key_default  
+    
+    # load start and end location from database
+    start_loc = get_location(start)
+    end_loc=get_location(end)
+    
     url = f"{ORS_BASE_URL}/v2/directions/{profile}"
     params = {
         "api_key": api_key,
-        "start": start,
-        "end": end
+        "start": str(start_loc["lat"]) + "," + str(start_loc["lon"]),
+        "end": str(end_loc["lat"]) + "," + str(end_loc["lon"])
     }
-
+    
     async with httpx.AsyncClient() as client:
         response = await client.get(url, params=params)
 
