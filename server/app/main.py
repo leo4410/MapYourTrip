@@ -2,12 +2,13 @@ from fastapi import FastAPI, File, UploadFile
 from io import BytesIO
 import json
 import logging
+import numpy as np
 import os
 import pandas as pd
 import shutil
 import uuid
 import zipfile
-from crud import insert_waypoints, insert_locations
+from crud import insert_waypoints, insert_locations, insert_segments
 
 app = FastAPI()
 
@@ -55,15 +56,27 @@ async def upload_zip(file: UploadFile = File(...)):
             locations = daten["locations"]
             
         # normalize json to extraxt nested fields
-        df2 = pd.json_normalize(locations)  
+        df2_from_json = pd.json_normalize(locations)  
+        df2_from_json_sorted = df2_from_json.sort_values(by="time", ascending=True)
             
-        df2 = df2[["lon", "lat"]]
+        df2 = df2_from_json_sorted[["lon", "lat"]]
         df2["system"] = 4326
         
         location_list_raw = df2.values.tolist()
         location_list = [(float(lon), float(lat), int(system)) for lat, lon, system in location_list_raw]
+
+        # insert locations and store the ids
+        inserted_location_ids = insert_locations(location_list, logger)
+        inserted_locations_ids_array = np.array(inserted_location_ids)
+
+        # create segment list and populate with values
+        segments_list = []
+        for i in range(inserted_locations_ids_array.size):
+            if i < inserted_locations_ids_array.size-1:
+                segments_list.append((1, int(inserted_locations_ids_array[i]), int(inserted_locations_ids_array[i+1]), int(inserted_locations_ids_array[i]), int(inserted_locations_ids_array[i+1])))
         
-        insert_locations(location_list, logger)
+        # insert segments and store the ids
+        inserted_segment_ids = insert_segments(segments_list, logger)
         
         # delete created directory
         shutil.rmtree(extract_dir)
@@ -72,5 +85,7 @@ async def upload_zip(file: UploadFile = File(...)):
         return {"message": f"ZIP-Datei erfolgreich entpackt nach {extract_dir}"}
 
     except Exception as e:
+        # delete created directory
+        shutil.rmtree(extract_dir)
         # bad message
         return {"error": str(e)}

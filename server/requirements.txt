@@ -2,3 +2,4 @@ fastapi
 ipykernel
 pandas
 psycopg2
+numpy
