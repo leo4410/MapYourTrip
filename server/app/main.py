@@ -1,3 +1,4 @@
+import httpx
 from fastapi import FastAPI, File, UploadFile
 from io import BytesIO
 import json
@@ -13,8 +14,56 @@ from crud import insert_waypoints, insert_locations, insert_segments
 app = FastAPI()
 
 # add logger
-logging.basicConfig(level=logging.INFO)  
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+ORS_BASE_URL = "https://api.openrouteservice.org"
+api_key_default = "5b3ce3597851110001cf62480bd839bf8084480dac4bf416bd48a88a"  # Optional, wenn du api_key nicht immer mitgeben willst
+
+@app.get("/v2/route/")
+async def get_route(
+    profile: str,
+    start: str,
+    end: str,
+    api_key: str = api_key_default  # falls kein api_key mitgegeben wird
+):
+    print(f"Transportprofil: {profile}")
+
+    url = f"{ORS_BASE_URL}/v2/directions/{profile}"
+    params = {
+        "api_key": api_key,
+        "start": start,
+        "end": end
+    }
+
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url, params=params)
+
+    if response.status_code != 200:
+        raise HTTPException(status_code=response.status_code, detail=response.text)
+
+    return response.json()
+
+# OpenElevationService
+@app.get("v2/elevation/point/")
+async def get_elevation_point(
+    geometry: str, # geometry=13.349762,38.11295
+    api_key: str = api_key_default
+):
+    url = f"{ORS_BASE_URL}/elevation/point"
+    params = {
+        "api_key": api_key,
+        "geometry": geometry
+    }
+
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url, params=params)
+
+    if response.status_code != 200:
+        raise HTTPException(status_code=response.status_code, detail=response.text)
+
+    return response.json()
+
 
 @app.post("/upload-zip/")
 async def upload_zip(file: UploadFile = File(...)):
