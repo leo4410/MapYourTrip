@@ -10,7 +10,8 @@ import shutil
 import uuid
 import zipfile
 from crud import insert_waypoints, insert_locations, insert_segments
-from location_functions import get_location
+from functions.location_functions import get_location
+from functions.segment_functions import get_segment
 
 app = FastAPI()
 
@@ -71,6 +72,13 @@ async def get_location_api(location_id):
     if location is None:
         raise HTTPException(status_code=404, detail="Location not found")
     return location
+
+@app.get("/segment/{segment_id}")
+async def get_segment_api(segment_id):
+    segment = get_segment(segment_id)
+    if segment is None:
+        raise HTTPException(status_code=404, detail="Segment not found")
+    return segment
 
 @app.post("/upload-zip/")
 async def upload_zip(file: UploadFile = File(...)):

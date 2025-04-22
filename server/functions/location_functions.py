@@ -11,7 +11,7 @@ def get_location(id):
 
         # get object from database
         cur.execute(query, (id,))
-        location = cur.fetchone()
+        location =  dict(cur.fetchone())
         
         # close db connection
         conn.commit()
