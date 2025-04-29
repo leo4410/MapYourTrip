@@ -9,7 +9,7 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import GeoJSON from "ol/format/GeoJSON";
 import { bbox as bboxStrategy } from "ol/loadingstrategy";
-import { fromLonLat } from "ol/proj";
+import { fromLonLat, transform } from "ol/proj";
 import { transformExtent } from "ol/proj";
 import Style from "ol/style/Style";
 import Fill from "ol/style/Fill";
@@ -50,6 +50,7 @@ function MapPage() {
 
   // UI toggles.
   const [selectedTransport, setSelectedTransport] = useState(""); // selectedTransport = Variable mit Wert für API
+  const [selectedSegment, setSelectedSegment] = useState(null);
   const [popupMode, setPopupMode] = useState("");
   const [selectedPoint, setSelectedPoint] = useState(null);
   const [showBackgroundOptions, setShowBackgroundOptions] = useState(false);
@@ -58,6 +59,8 @@ function MapPage() {
   const [showExportPanel, setShowExportPanel] = useState(false);
   const [exportFormat, setExportFormat] = useState("A4Hoch");
   const [exportOverlayDims, setExportOverlayDims] = useState(null);
+  const [showRouteInfo, setShowRouteInfo] = useState(false);
+
 
   // Define background options with preview images.
   const backgroundOptions = useMemo(
@@ -303,6 +306,7 @@ function MapPage() {
         setPopupMode("actionSelection");
         setSelectedPoint(null);
         setSelectedTransport("");
+        setSelectedSegment(lineFeature);
       }
     });
 
@@ -339,36 +343,36 @@ function MapPage() {
 
   // Handle FE-> BE FastApi
   // OpenRouteService
-  const handleOptimizeRoute = async () => {
-    if (!selectedTransport) return;
+  // const handleOptimizeRoute = async () => {
+  //   if (!selectedTransport) return;
 
-    const orsProfile = transportMap[selectedTransport];
-    const lineSegment = lineMap[selectedLineSegment];
-    const start = "8.681495,49.41461"; // Einbindung LineSegment(startPunkt) // TODO
-    const end = "8.687872,49.420318"; // Einbindung LineSegment(endPunkt) // TODO
+  //   //const orsProfile = transportMap[selectedTransport];
+  //   //const lineSegment = lineMap[selectedLineSegment];
+  //   const start = "8.681495,49.41461"; // Einbindung LineSegment(startPunkt) // TODO
+  //   const end = "8.687872,49.420318"; // Einbindung LineSegment(endPunkt) // TODO
 
-    const response = await fetch(
-      `http://localhost:8000/v2/route/${orsProfile}?start=${start}&end=${end}`
-    );
+  //   // const response = await fetch(
+  //   //   `http://localhost:8000/v2/route/${orsProfile}?start=${start}&end=${end}`
+  //   // );
 
-    const data = await response.json(); // Speichern in DB // TODO
-    console.log("Route:", data);
-  };
+  //   const data = await response.json(); // Speichern in DB // TODO
+  //   console.log("Route:", data);
+  // };
 
-  // OpenElevationService => POINTS 2D->3D
-  const handlePointElevation = async () => {
-    if (!selectedPoint) return;
+  // // OpenElevationService => POINTS 2D->3D
+  // const handlePointElevation = async () => {
+  //   if (!selectedPoint) return;
 
-    const geometry = pointFeature[selectedPoint];
+  //   const geometry = pointFeature[selectedPoint];
 
-    const response = await fetch(
-      `http://localhost:8000/v2/elevation/point/${geometry}`
-    );
+  //   const response = await fetch(
+  //     `http://localhost:8000/v2/elevation/point/${geometry}`
+  //   );
 
-    const point3D = await response.json(); // Speichern in DB // TODO
+  //   const point3D = await response.json(); // Speichern in DB // TODO
 
-    console.log("Point 3D:", point3D);
-  };
+  //   console.log("Point 3D:", point3D);
+  // };
 
   const toggleBackgroundOptions = () => {
     setShowBackgroundOptions((prev) => !prev);
@@ -550,6 +554,27 @@ function MapPage() {
               </div>
             </div>
           )}
+
+          <button
+            className="optimize-info-button"
+            onClick={() => setShowRouteInfo(prev => !prev)}
+          >
+            Optimierung der Route
+          </button>
+          {showRouteInfo && (
+            <div className="empty-window">
+              <h2>Route Optimieren</h2>
+              <>
+              <p>Wähle ein Linien­Segment aus.<br/>
+                Über «Route Optimieren» können Sie definieren,<br/>
+                mit welchem Verkehrsmittel Sie diese Strecke bewältigt haben.<br/>
+                Im Anschluss können Sie die Route auf den Straßenverlauf legen<br/>
+                und darstellen.
+              </p>
+            </>
+            </div>
+          )}
+
           <button className="map-export-button" onClick={toggleExportPanel}>
             Export der Karte
           </button>
@@ -665,8 +690,10 @@ function MapPage() {
               <button
                 className="popup-button"
                 onClick={() => {
-                  alert(`Route wird optimiert für: ${selectedTransport}`);
-                  handleOptimizeRoute();
+                  alert(
+                    `Route wird optimiert für: ${selectedTransport}\n` +
+                    `Segment ID: ${selectedSegment.getId()}`
+                  );
                   setPopupMode("");
                 }}
               >
