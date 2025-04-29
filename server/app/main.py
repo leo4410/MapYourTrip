@@ -10,6 +10,7 @@ import shutil
 import uuid
 import zipfile
 from crud import insert_waypoints, insert_locations, insert_segments
+from functions.trip_functions import insert_trip
 from functions.location_functions import get_location
 from functions.segment_functions import get_segment, insert_segment
 
@@ -103,50 +104,72 @@ async def upload_zip(file: UploadFile = File(...)):
             
         logger.info(f"Unpacked zip file.")    
         
-        # open trip and extract data (need to us for loop later)
-        with open(f"{extract_dir}/trip/marokko_14732894/trip.json", "r", encoding="utf-8") as f:
-            daten = json.load(f)
-            steps = daten["all_steps"]
-                    
-        # normalize json to extraxt nested fields
-        df1 = pd.json_normalize(steps, sep='_')  
+        for trip_directory in os.listdir(f"{extract_dir}/trip/"):
+            
+            # open trip and extract data (need to us for loop later)
+            with open(f"{extract_dir}/trip/{trip_directory}/trip.json", "r", encoding="utf-8") as f:
+                daten = json.load(f)  
+                # normalize json to extraxt nested steps
+                steps =  daten["all_steps"]            
 
-        # select relevant columns
-        df1 = df1[["display_name", "description", "weather_condition", "weather_temperature", "uuid", "location_lon", "location_lat"]]
-        df1["system"] = 4326
-        
-        waypoint_list_raw = df1.values.tolist()
-        waypoint_list = waypoint_list_raw
+            # extract data from current trip
+            trip_df_raw = pd.json_normalize(daten)
+            step_df_raw = pd.json_normalize(steps, sep='_')
+            
+            if not step_df_raw.empty:
                 
-        insert_waypoints(waypoint_list, logger)
-            
-        # open trip and extract data (need to us for loop later)
-        with open(f"{extract_dir}/trip/marokko_14732894/locations.json", "r", encoding="utf-8") as f:
-            daten = json.load(f)
-            locations = daten["locations"]
-            
-        # normalize json to extraxt nested fields
-        df2_from_json = pd.json_normalize(locations)  
-        df2_from_json_sorted = df2_from_json.sort_values(by="time", ascending=True)
-            
-        df2 = df2_from_json_sorted[["lon", "lat"]]
-        df2["system"] = 4326
-        
-        location_list_raw = df2.values.tolist()
-        location_list = [(float(lon), float(lat), int(system)) for lon, lat, system in location_list_raw]
+                logger.info(f"Start of trip: {trip_directory}")
+                
+                # select relevant columns from trip
+                trip_df = trip_df_raw[["uuid", "name"]].copy()
+                trip_df["fk_profile_id"] = 1
+                
+                trip_list = trip_df.to_numpy().tolist()[0]
+                
+                inserted_trip = insert_trip(trip_list, logger)
+                inserted_trip_id = inserted_trip["id"]
 
-        # insert locations and store the ids
-        inserted_location_ids = insert_locations(location_list, logger)
-        inserted_locations_ids_array = np.array(inserted_location_ids)
+                # select relevant columns from steps
+                step_df = step_df_raw[["display_name", "description", "weather_condition", "weather_temperature", "uuid", "location_lon", "location_lat"]].copy()
+                step_df["system"] = 4326
+                
+                # waypoint_list_raw = step_df.values.tolist()
+                # waypoint_list = waypoint_list_raw
+                        
+                # insert_waypoints(waypoint_list, logger)
+                    
+                # open trip and extract data (need to us for loop later)
+                with open(f"{extract_dir}/trip/{trip_directory}/locations.json", "r", encoding="utf-8") as f:
+                    daten = json.load(f)
+                    locations = daten["locations"]
+                    
+                # normalize json to extraxt nested fields
+                df2_from_json = pd.json_normalize(locations)  
+                df2_from_json_sorted = df2_from_json.sort_values(by="time", ascending=True)
+                    
+                df2 = df2_from_json_sorted[["lon", "lat"]]
+                df2["system"] = 4326
+                
+                location_list_raw = df2.values.tolist()
+                location_list = [(float(lon), float(lat), int(system)) for lon, lat, system in location_list_raw]
 
-        # create segment list and populate with values
-        segments_list = []
-        for i in range(inserted_locations_ids_array.size):
-            if i < inserted_locations_ids_array.size-1:
-                segments_list.append((1, int(inserted_locations_ids_array[i]), int(inserted_locations_ids_array[i+1]), int(inserted_locations_ids_array[i]), int(inserted_locations_ids_array[i+1])))
-        
-        # insert segments and store the ids
-        inserted_segment_ids = insert_segments(segments_list, logger)
+                # insert locations and store the ids
+                inserted_location_ids = insert_locations(location_list, logger)
+                inserted_locations_ids_array = np.array(inserted_location_ids)
+
+                # create segment list and populate with values
+                segments_list = []
+                for i in range(inserted_locations_ids_array.size):
+                    if i < inserted_locations_ids_array.size-1:
+                        segments_list.append((inserted_trip_id, int(inserted_locations_ids_array[i]), int(inserted_locations_ids_array[i+1]), int(inserted_locations_ids_array[i]), int(inserted_locations_ids_array[i+1])))
+                
+                # insert segments and store the ids
+                inserted_segment_ids = insert_segments(segments_list, logger)
+            
+                logger.info(f"End of trip: {trip_directory}")
+            
+            else:
+                logger.info(f"Skip of trip: {trip_directory}. No locations provided!")
         
         # delete created directory
         shutil.rmtree(extract_dir)
