@@ -1,20 +1,25 @@
 # Schnittstellen
+
 Einleitung zu den implementierten Schnittstellen und deren Funktionen
 
 **Schnittstelle Fast-API:**
+
 - Import der Userdaten
 - Abfragen der DB
 - weitere...
 
 **Schnittstelle Datenprozessing:**
+
 - Inputdaten Prozessieren
 
-**OpenRouteService:** 
-- *Openrouteservice’s directions:* Routen optimieren 
-- *Openelevationservice:* Punkte 2D abfragen und 3D bekommen
-- *Openpoiservice:* Abfragen zu POI's im Umkreis von einem Punkt
+**OpenRouteService:**
+
+- _Openrouteservice’s directions:_ Routen optimieren
+- _Openelevationservice:_ Punkte 2D abfragen und 3D bekommen
+- _Openpoiservice:_ Abfragen zu POI's im Umkreis von einem Punkt
 
 ## OpenRouteService
+
 {service}: /directions, /elevation, /pois
 
 {profile}: /Verkehrsmittel, /line or point, point
@@ -24,17 +29,18 @@ https://api.openrouteservice.org/v2/{service}/{profile}?api_key=your-api-key&sta
 ### 1. RouteService
 
 #### Aufbau vom Service
-baseurl =  https://api.openrouteservice.org/v2
 
-*GET-Abfrage:* {baseurl}/directions/driving-car?api_key = your-api-key& start = 8.681495,49.41461& end = 8.687872,49.420318
+baseurl = https://api.openrouteservice.org/v2
 
-*QueryParameters:* api_key, start, end 
+_GET-Abfrage:_ {baseurl}/directions/driving-car?api_key = your-api-key& start = 8.681495,49.41461& end = 8.687872,49.420318
 
-*PathParameter:* profile
+_QueryParameters:_ api_key, start, end
+
+_PathParameter:_ profile
 
 #### Codebeispiel Beispiel in JavaScrpit
 
-``` shell
+```shell
 
 var request = new XMLHttpRequest();
 
@@ -56,7 +62,7 @@ request.send();
 
 #### Codebeispiel Beispiel in Python
 
-``` shell
+```shell
 
 import requests
 
@@ -73,21 +79,23 @@ print(call.text)
 ### 2. EvationService
 
 #### Aufbau vom Service
-*GET-Abfrage:* 
 
-*QueryParameters:* 
+_GET-Abfrage:_
 
-*PathParameter:* 
+_QueryParameters:_
+
+_PathParameter:_
 
 #### Codebeispiel
 
 ### 3. PoiService
 
 #### Aufbau vom Service
-*GET-Abfrage:* 
 
-*QueryParameters:*
+_GET-Abfrage:_
 
-*PathParameter:* 
+_QueryParameters:_
+
+_PathParameter:_
 
 #### Codebeispiel
