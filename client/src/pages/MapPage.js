@@ -42,6 +42,8 @@ function MapPage() {
   const { lineThickness, lineColor, pointSize, pointColor, setSymbolSettings } =
     useContext(SymbolSettingsContext);
 
+  const [exportTitle, setExportTitle] = useState('');
+
   // Local modal state for symbolization.
   const [modalLineThickness, setModalLineThickness] = useState(lineThickness);
   const [modalLineColor, setModalLineColor] = useState(lineColor);
@@ -59,6 +61,7 @@ function MapPage() {
   const [showExportPanel, setShowExportPanel] = useState(false);
   const [exportFormat, setExportFormat] = useState("A4Hoch");
   const [exportOverlayDims, setExportOverlayDims] = useState(null);
+  const exportOverlayRef = useRef(null);
   const [showRouteInfo, setShowRouteInfo] = useState(false);
 
 
@@ -67,23 +70,28 @@ function MapPage() {
       return alert('Kein Segment ausgewählt!');
     }
   
-    const rawId   = selectedSegment.getId();
+    const rawId = selectedSegment.getId();
     const segmentId = rawId.includes('.') ? rawId.split('.').pop() : rawId;
-    const url = `http://localhost:8000/route`
-              + `?profile=${encodeURIComponent(selectedTransport)}`
-              + `&segment_id=${encodeURIComponent(segmentId)}`;
+    const url =
+      `http://localhost:8000/route` +
+      `?profile=${encodeURIComponent(selectedTransport)}` +
+      `&segment_id=${encodeURIComponent(segmentId)}`;
   
     try {
       const res = await fetch(url);
       if (!res.ok) {
         throw new Error(await res.text());
       }
-      await res.json();  // discard payload
+      await res.json(); // discard payload
   
-      // — New: trigger the segment WFS source to reload —
+      // ── Save the current center & zoom so the auto-fit handler skips ──
+      const view = mapInstance.current.getView();
+      setZoomState(view.getCenter(), view.getZoom());
+  
+      // ── Now refresh the segment layer without zooming out ──
       segmentLayerRef.current.getSource().refresh();
   
-      // (Optionally show a small toast here instead of alert)
+      // (Optionally show a toast here instead of an alert)
     } catch (err) {
       console.error('Fehler beim Optimieren:', err);
       alert(`Fehler beim Optimieren der Route:\n${err.message}`);
@@ -91,6 +99,7 @@ function MapPage() {
       setPopupMode('');
     }
   };
+  
   
   
 
@@ -447,51 +456,76 @@ function MapPage() {
   };
 
   const handlePerformExport = () => {
-    mapInstance.current.once("rendercomplete", function () {
-      const size = mapInstance.current.getSize();
-      const mapCanvas = document.createElement("canvas");
-      mapCanvas.width = size[0];
-      mapCanvas.height = size[1];
-      const mapContext = mapCanvas.getContext("2d");
-      mapRef.current.querySelectorAll("canvas").forEach((canvas) => {
-        if (canvas.width > 0) {
-          const opacity = canvas.parentNode.style.opacity;
-          mapContext.globalAlpha = opacity ? Number(opacity) : 1;
-          mapContext.drawImage(canvas, 0, 0);
+    mapInstance.current.once("rendercomplete", () => {
+      const dpr = window.devicePixelRatio || 1;
+      const [mapW, mapH] = mapInstance.current.getSize(); // CSS px
+  
+      // 1) Render full high-res map into canvas
+      const fullCanvas = document.createElement("canvas");
+      fullCanvas.width  = mapW * dpr;
+      fullCanvas.height = mapH * dpr;
+      const fullCtx = fullCanvas.getContext("2d");
+      fullCtx.scale(dpr, dpr);
+      mapRef.current.querySelectorAll("canvas").forEach(c => {
+        if (c.width > 0) {
+          fullCtx.globalAlpha = parseFloat(c.parentNode.style.opacity) || 1;
+          fullCtx.drawImage(c, 0, 0);
         }
       });
-      const container = mapRef.current.parentElement || mapRef.current;
-      const containerWidth = container.clientWidth;
-      const containerHeight = container.clientHeight;
-      const { width, height } = exportOverlayDims;
-      const offsetX = (containerWidth - width) / 2;
-      const offsetY = (containerHeight - height) / 2;
-      const croppedCanvas = document.createElement("canvas");
-      croppedCanvas.width = width;
-      croppedCanvas.height = height;
-      const croppedContext = croppedCanvas.getContext("2d");
-      croppedContext.drawImage(
-        mapCanvas,
-        offsetX,
-        offsetY,
-        width,
-        height,
-        0,
-        0,
-        width,
-        height
-      );
-      const dataURL = croppedCanvas.toDataURL("image/jpeg");
-      const link = document.createElement("a");
-      link.href = dataURL;
-      link.download = `map_export_${exportFormat}.jpg`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+  
+      // 2) Compute scaled crop size
+      const scaleDown = 0.75;
+      const cropW_CSS = exportOverlayDims.width  * scaleDown;
+      const cropH_CSS = exportOverlayDims.height * scaleDown;
+      const cropW = cropW_CSS * dpr;
+      const cropH = cropH_CSS * dpr;
+  
+      // 3) Center crop
+      let sx = ((mapW * dpr) - cropW) / 2;
+      let sy = ((mapH * dpr) - cropH) / 2;
+  
+      // 4) Apply h/v shifts
+      const hShiftFrac = 0.3;
+      const vShiftFrac = 0.2;
+      sx = Math.max(0, sx - cropW * hShiftFrac);
+      sy = Math.max(0, sy - cropH * vShiftFrac);
+  
+      // 5) Crop to new canvas
+      const cropCanvas = document.createElement("canvas");
+      cropCanvas.width  = cropW;
+      cropCanvas.height = cropH;
+      const cropCtx = cropCanvas.getContext("2d");
+      cropCtx.drawImage(fullCanvas, sx, sy, cropW, cropH, 0, 0, cropW, cropH);
+      
+      // draw the title top-left
+      if (exportTitle) {
+        const fontSize = 32 * dpr;
+        cropCtx.font = `${fontSize}px sans-serif`;
+        cropCtx.fillStyle = "black";
+        cropCtx.textAlign = "left";
+        cropCtx.textBaseline = "top";
+        const margin = 10 * dpr;
+        cropCtx.fillText(exportTitle, margin, margin);
+      }
+  
+      // 6b) Download as PNG
+      cropCanvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `map_export_${exportFormat}.png`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+      }, "image/png");
     });
+  
     mapInstance.current.renderSync();
   };
+  
 
+  
   return (
     <div className="map-container">
       <NavigationBar />
@@ -499,9 +533,10 @@ function MapPage() {
         <div ref={mapRef} className="map-view"></div>
         {showExportPanel && exportOverlayDims && (
           <div
+            ref={exportOverlayRef}
             className="export-area-overlay"
             style={{
-              width: exportOverlayDims.width,
+              width:  exportOverlayDims.width,
               height: exportOverlayDims.height,
             }}
           />
@@ -634,6 +669,18 @@ function MapPage() {
           {showExportPanel && (
             <div className="export-panel">
               <h3>Kartenexport</h3>
+
+                <div className="export-form">
+                <label htmlFor="titleInput">Titel:</label>
+                <input
+                  id="titleInput"
+                  type="text"
+                  value={exportTitle}
+                  onChange={e => setExportTitle(e.target.value)}
+                  placeholder="Geben Sie hier den Titel ein"
+                />
+              </div>
+
               <div className="export-form">
                 <label htmlFor="formatSelect">Format:</label>
                 <select
@@ -646,10 +693,10 @@ function MapPage() {
                 </select>
               </div>
               <p>
-                Der zu exportierende Bereich (basierend auf {exportFormat})
-                <br />
-                ist in der Karte hervorgehoben.
+                Der zu exportierende Bereich (basierend auf {exportFormat})<br/>
+                und ist in der Karte hervorgehoben.
               </p>
+
               <button className="export-button" onClick={handlePerformExport}>
                 Export erstellen
               </button>

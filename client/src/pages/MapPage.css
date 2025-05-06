@@ -13,10 +13,10 @@
   overflow: hidden;
 }
 
-.map-view {
+/* .map-view {
   width: 100%;
   height: 100%;
-}
+} */
 
 /* Popup overlay styling (for line-click actions) */
 .map-popup {
@@ -217,6 +217,7 @@
   border-radius: 5px;
   margin-top: 5px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  
 }
 
 .export-panel h3,
@@ -265,16 +266,18 @@
   height: 100%;
 }
 
+.map-view {
+  position: relative;    /* make this the positioning context */
+}
+
 /* Export area overlay styled as a fixed rectangle in the center of the map wrapper */
 .export-area-overlay {
   position: absolute;
-  left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
-  border: 2px dashed orange;
-  background: rgba(255, 165, 0, 0.3);
+  left: 50%;
+  transform: translate(-50%, -50%); /* center it */
+  border: 2px dashed hsl(28, 100%, 50%);           /* or whatever styling */
   pointer-events: none;
-  z-index: 1050; /* above map layers but below UI buttons */
 }
 
 /* Container for a background option preview */
@@ -318,3 +321,19 @@
 .empty-window p {
   color: #000;
 }
+
+
+/* Make the export title input bigger and more legible */
+.export-form input#titleInput {
+  width: 100%;              /* take full width of its container */
+  max-width: 400px;         /* optional: cap the width */
+  padding: 0.75rem 1rem;    /* more breathing room inside */
+  font-size: 1.125rem;      /* larger text */
+  line-height: 1.4;         /* better readability */
+  height: 2.5rem;           /* consistent height */
+  box-sizing: border-box;   /* include padding in width */
+  border: 1px solid #000000;   /* subtle border */
+  border-radius: 4px;       /* slight rounding */
+  transition: border-color 0.2s;
+}
+
