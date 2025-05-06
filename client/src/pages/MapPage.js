@@ -62,6 +62,38 @@ function MapPage() {
   const [showRouteInfo, setShowRouteInfo] = useState(false);
 
 
+  const optimizeRoute = async () => {
+    if (!selectedSegment) {
+      return alert('Kein Segment ausgewählt!');
+    }
+  
+    const rawId   = selectedSegment.getId();
+    const segmentId = rawId.includes('.') ? rawId.split('.').pop() : rawId;
+    const url = `http://localhost:8000/route`
+              + `?profile=${encodeURIComponent(selectedTransport)}`
+              + `&segment_id=${encodeURIComponent(segmentId)}`;
+  
+    try {
+      const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error(await res.text());
+      }
+      await res.json();  // discard payload
+  
+      // — New: trigger the segment WFS source to reload —
+      segmentLayerRef.current.getSource().refresh();
+  
+      // (Optionally show a small toast here instead of alert)
+    } catch (err) {
+      console.error('Fehler beim Optimieren:', err);
+      alert(`Fehler beim Optimieren der Route:\n${err.message}`);
+    } finally {
+      setPopupMode('');
+    }
+  };
+  
+  
+
   // Define background options with preview images.
   const backgroundOptions = useMemo(
     () => [
@@ -265,13 +297,34 @@ function MapPage() {
       }
     });
     segmentSource.on("change", () => {
-      if (!getZoomState() && segmentSource.getState() === "ready") {
-        const extent = segmentSource.getExtent();
-        if (extent && !isNaN(extent[0])) {
-          map.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 0 });
-        }
+      // only run once the source has finished loading
+      if (segmentSource.getState() !== "ready") return;
+    
+      // optional: if you're using saved zoom state, skip fit
+      if (getZoomState()) return;
+    
+      // 1) make sure there *are* features
+      const feats = segmentSource.getFeatures();
+      if (feats.length === 0) {
+        // nothing to fit
+        return;
       }
+    
+      // 2) get the extent
+      const extent = segmentSource.getExtent();
+      // 3) extra safety: check for infinite bounds
+      const [minX, , maxX] = extent;
+      if (!isFinite(minX) || !isFinite(maxX)) {
+        return;
+      }
+    
+      // 4) now safely fit the view
+      map.getView().fit(extent, {
+        padding: [50, 50, 50, 50],
+        duration: 0,
+      });
     });
+    
 
     // Setup click handler for popups.
     map.on("click", (evt) => {
@@ -623,85 +676,43 @@ function MapPage() {
             </div>
           </div>
         )}
+
         {popupMode === "transportSelection" && (
           <div className="popup-content">
             <div className="popup-title">Transportmittel wählen:</div>
-            <div className="popup-option">
-              <label>
-                <input
-                  type="radio"
-                  name="transport"
-                  value="auto"
-                  checked={selectedTransport === "driving-car"}
-                  onChange={() => setSelectedTransport("driving-car")}
-                />
-                Auto
-              </label>
-            </div>
-            <div className="popup-option">
-              <label>
-                <input
-                  type="radio"
-                  name="transport"
-                  value="cycling-mountain"
-                  checked={selectedTransport === "cycling-mountain"}
-                  onChange={() => setSelectedTransport("cycling-mountain")}
-                />
-                Mountainbike
-              </label>
-            </div>
-            <div className="popup-option">
-              <label>
-                <input
-                  type="radio"
-                  name="transport"
-                  value="cycling-road"
-                  checked={selectedTransport === "cycling-road"}
-                  onChange={() => setSelectedTransport("cycling-road")}
-                />
-                Rennvelo
-              </label>
-            </div>
-            <div className="popup-option">
-              <label>
-                <input
-                  type="radio"
-                  name="transport"
-                  value="foot-walking"
-                  checked={selectedTransport === "foot-walking"}
-                  onChange={() => setSelectedTransport("foot-walking")}
-                />
-                zu Fuss
-              </label>
-            </div>
-            <div className="popup-option">
-              <label>
-                <input
-                  type="radio"
-                  name="transport"
-                  value="foot-hiking"
-                  checked={selectedTransport === "foot-hiking"}
-                  onChange={() => setSelectedTransport("foot-hiking")}
-                />
-                Wandern
-              </label>
-            </div>
+
+            {[
+              { label: 'Auto', value: 'driving-car' },
+              { label: 'Mountainbike', value: 'cycling-mountain' },
+              { label: 'Rennvelo', value: 'cycling-road' },
+              { label: 'zu Fuss', value: 'foot-walking' },
+              { label: 'Wandern', value: 'foot-hiking' },
+            ].map(({ label, value }) => (
+              <div className="popup-option" key={value}>
+                <label>
+                  <input
+                    type="radio"
+                    name="transport"
+                    value={value}
+                    checked={selectedTransport === value}
+                    onChange={() => setSelectedTransport(value)}
+                  />
+                  {label}
+                </label>
+              </div>
+            ))}
+
             <div className="popup-button-container">
               <button
                 className="popup-button"
-                onClick={() => {
-                  alert(
-                    `Route wird optimiert für: ${selectedTransport}\n` +
-                    `Segment ID: ${selectedSegment.getId()}`
-                  );
-                  setPopupMode("");
-                }}
+                onClick={optimizeRoute}
               >
                 Optimiere Route
               </button>
             </div>
           </div>
         )}
+
         {popupMode === "pointSelection" && (
           <div className="popup-content">
             <div className="popup-title">Punkt Optionen:</div>
