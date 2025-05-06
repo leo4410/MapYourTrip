@@ -9,10 +9,9 @@ import pandas as pd
 import shutil
 import uuid
 import zipfile
-from crud import insert_waypoints, insert_locations, insert_segments
 from functions.trip_functions import insert_trip
-from functions.location_functions import get_location
-from functions.segment_functions import get_segment, insert_segment, update_segment
+from functions.location_functions import get_location, insert_locations
+from functions.segment_functions import get_segment, update_segment, insert_segments
 from controllers import trip_controllers
 from app.logger import logger
 from fastapi.middleware.cors import CORSMiddleware
@@ -179,9 +178,10 @@ async def upload_zip(file: UploadFile = File(...)):
                     
                 df2 = df2_from_json_sorted[["lon", "lat"]]
                 df2["system"] = 4326
+                df2["fk_trip_id"] = inserted_trip_id
                 
                 location_list_raw = df2.values.tolist()
-                location_list = [(float(lon), float(lat), int(system)) for lon, lat, system in location_list_raw]
+                location_list = [(float(lon), float(lat), int(system), int(fk_trip_id)) for lon, lat, system, fk_trip_id in location_list_raw]
 
                 # insert locations and store the ids
                 inserted_location_ids = insert_locations(location_list, logger)

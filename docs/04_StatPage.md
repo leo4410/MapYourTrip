@@ -1,14 +1,20 @@
 ## 4. Statistiken
+In der Statistik Seite kann eine Übersicht über die Reise erstellt werden. Dabei kann ein Bild eines Kartenausschnittes sowie die Koordinaten und Länge von ausgewählten Linien wiedergegeben werden.
 
-### Untertitel
 
-bla
+### Erstellen von Statistiken
 
-### Untertitel
+<video width="900"   controls>
+  <source src="videos\StatPage_Stats.mp4" type="video/mp4">
+  Dein Browser unterstützt das Video-Tag nicht.
+</video>
 
 ---
 
-[Nächste Seite ->](xx.md) ???
+[Zurück zum Start ->](index.md)  Zurück zum Start
+
+
 
 [<- Vorherige Seite](03_MapPage.md) 3. Kartenbereich mit verschiedenen Interaktionen
+
 [Home](index.md)
