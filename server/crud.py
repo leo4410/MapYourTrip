@@ -76,10 +76,10 @@ def insert_locations(location_list, logger):
         cur = conn.cursor()
 
         # insert multiple locations
-        execute_values(cur, insert_query, location_list, template=template)
-
+        location_ids_dict = execute_values(cur, insert_query, location_list, template=template, fetch=True)
+    
         # get inserted location ids in the correct order
-        location_ids = [row['id'] for row in cur.fetchall()]
+        location_ids = [row['id'] for row in location_ids_dict]
         
         # close db connection
         conn.commit()
