@@ -23,6 +23,8 @@ import { SymbolSettingsContext } from "../SymbolSettingsContext";
 import StadiaMaps from "ol/source/StadiaMaps.js";
 import { getZoomState, setZoomState } from "../ZoomState.js";
 
+import { useLocation } from "react-router-dom";
+
 // Register EPSG:2056
 proj4.defs(
   "EPSG:2056",
@@ -31,6 +33,13 @@ proj4.defs(
 register(proj4);
 
 function MapPage() {
+  // definition of constants
+  const WFS_URL = "http://localhost:8080/geoserver/wfs?";
+
+  // load location and passed states
+  const location = useLocation();
+  const selectedTrip = location.state?.trip;
+
   const mapRef = useRef(null);
   const popupRef = useRef(null);
   const mapInstance = useRef(null);
@@ -196,11 +205,9 @@ function MapPage() {
           "EPSG:4326"
         );
         return (
-          "http://localhost:8080/geoserver/wfs?" +
-          "service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:location&" +
-          "outputFormat=application/json&srsname=EPSG:4326&bbox=" +
-          epsg4326Extent.join(",") +
-          ",EPSG:4326"
+          WFS_URL +
+          "service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:location&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=" +
+          selectedTrip.id.toString()
         );
       },
       strategy: bboxStrategy,
@@ -229,11 +236,9 @@ function MapPage() {
           "EPSG:4326"
         );
         return (
-          "http://localhost:8080/geoserver/wfs?" +
-          "service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:segment&" +
-          "outputFormat=application/json&srsname=EPSG:4326&bbox=" +
-          epsg4326Extent.join(",") +
-          ",EPSG:4326"
+          WFS_URL +
+          "service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:segment&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=" +
+          selectedTrip.id.toString()
         );
       },
       strategy: bboxStrategy,
@@ -333,7 +338,6 @@ function MapPage() {
         duration: 0,
       });
     });
-    
 
     // Setup click handler for popups.
     map.on("click", (evt) => {

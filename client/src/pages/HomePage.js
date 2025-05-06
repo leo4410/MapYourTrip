@@ -4,9 +4,25 @@ import NavigationBar from "../components/NavigationBar";
 import "./HomePage.css"; // Import the page-specific styles
 
 function HomePage() {
+  const navigate = useNavigate();
+
+  // trip states
   const [trips, setTrips] = useState(null);
+  const [selectedTrip, setSelectedTrip] = useState(null);
   const [tripsLoading, setTripsLoading] = useState(true);
 
+  // upload modal states
+  const [uploadFile, setUploadFile] = useState(null);
+  const [dragActive, setDragActive] = useState(false);
+
+  // upload modal values
+  const [showUploadModal, setShowUploadModal] = useState(false);
+
+  // ---------------
+  // initial effects
+  // ---------------
+
+  // function loading all trips
   useEffect(() => {
     fetch("http://localhost:8000/trips")
       .then((response) => {
@@ -16,43 +32,69 @@ function HomePage() {
         return response.json();
       })
       .then((loaded_trips) => {
-        setTrips(loaded_trips); 
-        setTripsLoading(false); 
+        setTrips(loaded_trips);
+        setTripsLoading(false);
         console.log(loaded_trips);
       })
       .catch((loaded_error) => {
-        setTripsLoading(false); 
+        setTripsLoading(false);
       });
   }, []);
 
-  const navigate = useNavigate();
-  const [showEditPopup, setShowEditPopup] = useState(false);
-  const [currentTrip, setCurrentTrip] = useState("");
+  // ---------------
+  // button handlers
+  // ---------------
 
-  // New state for the upload modal popup
-  const [showUploadModal, setShowUploadModal] = useState(false);
-  const [uploadTripName, setUploadTripName] = useState("");
-  const [uploadFile, setUploadFile] = useState(null);
-  const [dragActive, setDragActive] = useState(false);
+  // handle edit trip
+  const handleEditTrip = (trip) => {
+    setSelectedTrip(trip);
+    navigate("/map", { state: { trip } });
+  };
 
-  // Instead of immediately navigating, open the upload modal
+  // handle delete trip
+  const handleDeleteTrip = (tripName) => {
+    if (
+      window.confirm(`Are you sure you want to delete the trip: ${tripName}?`)
+    ) {
+      // TODO: Implement deletion logic, update state or call backend.
+    }
+  };
+
+  // handle upload button
   const handleUpload = () => {
     setShowUploadModal(true);
   };
 
-  // Handle drag events for the dropzone
+  // handle upload button -> save
+  const handleSaveUpload = () => {
+    // Optionally, you can insert file upload logic here.
+    setShowUploadModal(false);
+  };
+
+  // handle upload button -> abort
+  const handleAbortUpload = () => {
+    setShowUploadModal(false);
+  };
+
+  // -------------------
+  // drag event handlers
+  // -------------------
+
+  // handle drag over
   const handleDragOver = (event) => {
     event.preventDefault();
     event.stopPropagation();
     setDragActive(true);
   };
 
+  // handle drag leave
   const handleDragLeave = (event) => {
     event.preventDefault();
     event.stopPropagation();
     setDragActive(false);
   };
 
+  // handle file drop
   const handleDrop = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -62,44 +104,11 @@ function HomePage() {
     }
   };
 
+  // handle file change in upload field
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       setUploadFile(event.target.files[0]);
     }
-  };
-
-  // When saving, close the modal and navigate to MapPage
-  const handleSaveUpload = () => {
-    // Optionally, you can insert file upload logic here.
-    setShowUploadModal(false);
-    navigate("/map");
-  };
-
-  // Existing functions for editing trips
-  const handleEditMap = (tripName) => {
-    setCurrentTrip(tripName);
-    setShowEditPopup(true);
-  };
-
-  const handleDeleteTrip = (tripName) => {
-    if (
-      window.confirm(`Are you sure you want to delete the trip: ${tripName}?`)
-    ) {
-      alert(`${tripName} deleted.`);
-      // TODO: Implement deletion logic, update state or call backend.
-    }
-  };
-
-  const handleErrorMessage = () => {
-    alert(
-      "Bitte versuchen sie es erneut. Bei erneuten Problemen löschen sie diese Reise und führen sie den Upload mit den Originaldaten von Polarsteps erneut durch."
-    );
-    setShowEditPopup(false);
-  };
-
-  const handleGoToMap = () => {
-    setShowEditPopup(false);
-    navigate("/map");
   };
 
   return (
@@ -122,10 +131,10 @@ function HomePage() {
               <li className="journey-item" key={trip.id}>
                 <span>{trip.name}</span>
                 <div className="action-buttons">
-                  <button onClick={() => handleEditMap(trip.name)}>
+                  <button onClick={() => handleEditTrip(trip)}>
                     Reise Bearbeiten
                   </button>
-                  <button onClick={() => handleDeleteTrip(trip.name)}>
+                  <button onClick={() => handleDeleteTrip(trip)}>
                     Reise Löschen
                   </button>
                 </div>
@@ -135,32 +144,13 @@ function HomePage() {
         )}
       </div>
 
-      {/* Existing edit popup for trip editing */}
-      {showEditPopup && (
-        <div className="popup-overlay">
-          <div className="edit-popup">
-            <h3>Edit {currentTrip}</h3>
-            <button onClick={handleErrorMessage}>Fehlermeldung</button>
-            <button onClick={handleGoToMap}>Go to Map</button>
-          </div>
-        </div>
-      )}
-
       {/* New upload modal popup */}
       {showUploadModal && (
         <div className="upload-overlay">
           <div className="upload-modal">
             <h3>Bitte laden sie eine Polarsteps Reise hoch</h3>
             <div className="upload-form">
-              <div className="form-group">
-                <label htmlFor="tripName">Reisename:</label>
-                <input
-                  type="text"
-                  id="tripName"
-                  value={uploadTripName}
-                  onChange={(e) => setUploadTripName(e.target.value)}
-                />
-              </div>
+              <div className="form-group"></div>
               <div
                 className={`upload-dropzone ${dragActive ? "active" : ""}`}
                 onDragOver={handleDragOver}
@@ -184,9 +174,7 @@ function HomePage() {
               />
               <div className="upload-buttons">
                 <button onClick={handleSaveUpload}>Speichern</button>
-                <button onClick={() => setShowUploadModal(false)}>
-                  Abbrechen
-                </button>
+                <button onClick={handleAbortUpload}>Abbrechen</button>
               </div>
             </div>
           </div>
