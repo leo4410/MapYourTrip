@@ -1,5 +1,6 @@
 from database import get_db_connection
 from psycopg2.extensions import AsIs
+from psycopg2.extras import execute_values
 
 def get_segment(id):
     try:

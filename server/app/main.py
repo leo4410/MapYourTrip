@@ -32,6 +32,7 @@ app.include_router(segment_controller.router)
 app.include_router(trip_controller.router)
 app.include_router(upload_controller.router)
 
+ORS_BASE_URL = "https://api.openrouteservice.org"
 api_key_default = "5b3ce3597851110001cf62480bd839bf8084480dac4bf416bd48a88a"  # Optional, wenn du api_key nicht immer mitgeben willst
 
 # define cors allowed origins
