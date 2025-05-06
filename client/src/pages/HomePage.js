@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavigationBar from "../components/NavigationBar";
-import "./HomePage.css"; // Import the page-specific styles
+import "./HomePage.css";
+import { uploadZip, loadTrips } from "../helpers/ApiRequestHelper";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ function HomePage() {
   const [tripsLoading, setTripsLoading] = useState(true);
 
   // upload modal states
+  const [uploadedFile, setUploadedFile] = useState(null);
   const [uploadFile, setUploadFile] = useState(null);
   const [dragActive, setDragActive] = useState(false);
 
@@ -24,26 +26,20 @@ function HomePage() {
 
   // function loading all trips
   useEffect(() => {
-    fetch("http://localhost:8000/trips")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP-Fehler! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((loaded_trips) => {
-        setTrips(loaded_trips);
-        setTripsLoading(false);
-        console.log(loaded_trips);
-      })
-      .catch((loaded_error) => {
-        setTripsLoading(false);
-      });
+    loadTrips().then((loaded_trips) => {
+      setTrips(loaded_trips);
+      setTripsLoading(false);
+    });
   }, []);
 
   // ---------------
   // button handlers
   // ---------------
+
+  // handle upload button
+  const handleUpload = () => {
+    setShowUploadModal(true);
+  };
 
   // handle edit trip
   const handleEditTrip = (trip) => {
@@ -60,16 +56,28 @@ function HomePage() {
     }
   };
 
-  // handle upload button
-  const handleUpload = () => {
-    setShowUploadModal(true);
-  };
-
   // handle upload button -> save
-  const handleSaveUpload = () => {
-    // Optionally, you can insert file upload logic here.
+  async function handleSaveUpload() {
+    // return error if no file was uploaded
+    if (!uploadedFile) {
+      alert("Bitte wählen Sie eine Datei aus.");
+      return;
+    }
+
+    // create formdata object with uploaded file
+    const formData = new FormData();
+    formData.append("file", uploadedFile);
+
+    // upload zip
+    const upload = await uploadZip(formData);
+
+    loadTrips().then((loaded_trips) => {
+      setTrips(loaded_trips);
+      setTripsLoading(false);
+    });
+
     setShowUploadModal(false);
-  };
+  }
 
   // handle upload button -> abort
   const handleAbortUpload = () => {
@@ -106,26 +114,28 @@ function HomePage() {
 
   // handle file change in upload field
   const handleFileChange = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      setUploadFile(event.target.files[0]);
-    }
+    setUploadedFile(event.target.files[0]);
   };
 
   return (
-    <div>
+    <>
       <NavigationBar />
 
+      {/* ------
+       trip list 
+      ------ */}
+
       <div className="container">
-        {/* Upload item styled as a journey-item */}
+        {/* upload field */}
         <div className="journey-item">
           <span>Reise hochladen</span>
           <div className="action-buttons">
             <button onClick={handleUpload}>Reise Hochladen</button>
           </div>
         </div>
-        {/* Journey List */}
 
-        {trips !== null && (
+        {/* journey list */}
+        {trips !== null && trips !== undefined && (
           <ul className="journey-list">
             {trips.map((trip) => (
               <li className="journey-item" key={trip.id}>
@@ -144,7 +154,10 @@ function HomePage() {
         )}
       </div>
 
-      {/* New upload modal popup */}
+      {/* -------------------
+       New upload modal popup 
+      ------------------- */}
+
       {showUploadModal && (
         <div className="upload-overlay">
           <div className="upload-modal">
@@ -180,7 +193,7 @@ function HomePage() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 
