@@ -15,6 +15,7 @@ from functions.location_functions import get_location
 from functions.segment_functions import get_segment, insert_segment, update_segment
 from controllers import trip_controllers
 from app.logger import logger
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 app.include_router(trip_controllers.router)
@@ -23,6 +24,16 @@ logger.info("Application started!")
 
 ORS_BASE_URL = "https://api.openrouteservice.org"
 api_key_default = "5b3ce3597851110001cf62480bd839bf8084480dac4bf416bd48a88a"  # Optional, wenn du api_key nicht immer mitgeben willst
+
+
+app.add_middleware(
+  CORSMiddleware,
+  allow_origins=["http://localhost:3000"],
+  allow_credentials=True,
+  allow_methods=["*"],
+  allow_headers=["*"],
+)
+
 
 @app.get("/route")
 async def get_route(profile: str, segment_id: str):
