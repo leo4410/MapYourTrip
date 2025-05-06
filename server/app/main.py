@@ -12,24 +12,31 @@ import zipfile
 from crud import insert_waypoints, insert_locations, insert_segments
 from functions.trip_functions import insert_trip
 from functions.location_functions import get_location
-from functions.segment_functions import get_segment, insert_segment
+from functions.segment_functions import get_segment, insert_segment, update_segment
+from controllers import trip_controllers
+from app.logger import logger
 
 app = FastAPI()
+app.include_router(trip_controllers.router)
 
-# add logger
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+logger.info("Application started!")
 
 ORS_BASE_URL = "https://api.openrouteservice.org"
 api_key_default = "5b3ce3597851110001cf62480bd839bf8084480dac4bf416bd48a88a"  # Optional, wenn du api_key nicht immer mitgeben willst
 
 @app.get("/route")
-async def get_route(profile: str, start: str, end: str):
+async def get_route(profile: str, segment_id: str):
+    
     api_key: str = api_key_default  
+    segment = get_segment(segment_id)
     
     # load start and end location from database
-    start_loc = get_location(start)
-    end_loc=get_location(end)
+    start_loc_id = segment["fk_location_id_a"]
+    end_loc_id=segment["fk_location_id_b"]
+    
+    start_loc=get_location(start_loc_id)
+    end_loc=get_location(end_loc_id)
+    print(start_loc)
     
     url = f"{ORS_BASE_URL}/v2/directions/{profile}"
     params = {
@@ -48,7 +55,7 @@ async def get_route(profile: str, start: str, end: str):
     route_points = response.json()["features"][0]["geometry"]["coordinates"]
     
     # insert to line over the passed points into db
-    inserted_segment_id = insert_segment(start, end, route_points, 4326)
+    inserted_segment_id = update_segment(segment_id, route_points, 4326)
     logger.info(f"Insert segment with {inserted_segment_id}")
 
     return inserted_segment_id
