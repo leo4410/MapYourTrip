@@ -13,12 +13,13 @@ from crud import insert_waypoints, insert_locations, insert_segments
 from functions.trip_functions import insert_trip
 from functions.location_functions import get_location
 from functions.segment_functions import get_segment, insert_segment
+from controllers import trip_controllers
+from app.logger import logger
 
 app = FastAPI()
+app.include_router(trip_controllers.router)
 
-# add logger
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+logger.info("Application started!")
 
 ORS_BASE_URL = "https://api.openrouteservice.org"
 api_key_default = "5b3ce3597851110001cf62480bd839bf8084480dac4bf416bd48a88a"  # Optional, wenn du api_key nicht immer mitgeben willst
