@@ -1,16 +1,37 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import NavigationBar from '../components/NavigationBar';
-import './HomePage.css'; // Import the page-specific styles
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import NavigationBar from "../components/NavigationBar";
+import "./HomePage.css"; // Import the page-specific styles
 
 function HomePage() {
+  const [trips, setTrips] = useState(null);
+  const [tripsLoading, setTripsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/trips")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((loaded_trips) => {
+        setTrips(loaded_trips); 
+        setTripsLoading(false); 
+        console.log(loaded_trips);
+      })
+      .catch((loaded_error) => {
+        setTripsLoading(false); 
+      });
+  }, []);
+
   const navigate = useNavigate();
   const [showEditPopup, setShowEditPopup] = useState(false);
-  const [currentTrip, setCurrentTrip] = useState('');
-  
+  const [currentTrip, setCurrentTrip] = useState("");
+
   // New state for the upload modal popup
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [uploadTripName, setUploadTripName] = useState('');
+  const [uploadTripName, setUploadTripName] = useState("");
   const [uploadFile, setUploadFile] = useState(null);
   const [dragActive, setDragActive] = useState(false);
 
@@ -51,7 +72,7 @@ function HomePage() {
   const handleSaveUpload = () => {
     // Optionally, you can insert file upload logic here.
     setShowUploadModal(false);
-    navigate('/map');
+    navigate("/map");
   };
 
   // Existing functions for editing trips
@@ -61,7 +82,9 @@ function HomePage() {
   };
 
   const handleDeleteTrip = (tripName) => {
-    if (window.confirm(`Are you sure you want to delete the trip: ${tripName}?`)) {
+    if (
+      window.confirm(`Are you sure you want to delete the trip: ${tripName}?`)
+    ) {
       alert(`${tripName} deleted.`);
       // TODO: Implement deletion logic, update state or call backend.
     }
@@ -76,7 +99,7 @@ function HomePage() {
 
   const handleGoToMap = () => {
     setShowEditPopup(false);
-    navigate('/map');
+    navigate("/map");
   };
 
   return (
@@ -92,43 +115,24 @@ function HomePage() {
           </div>
         </div>
         {/* Journey List */}
-        <ul className="journey-list">
-          <li className="journey-item">
-            <span>Madagaskar</span>
-            <div className="action-buttons">
-              <button onClick={() => handleEditMap('Madagaskar')}>Reise Bearbeiten</button>
-              <button onClick={() => handleDeleteTrip('Madagaskar')}>Reise Löschen</button>
-            </div>
-          </li>
-          <li className="journey-item">
-            <span>Simmental</span>
-            <div className="action-buttons">
-              <button onClick={() => handleEditMap('Simmental')}>Reise Bearbeiten</button>
-              <button onClick={() => handleDeleteTrip('Simmental')}>Reise Löschen</button>
-            </div>
-          </li>
-          <li className="journey-item">
-            <span>Sauerland</span>
-            <div className="action-buttons">
-              <button onClick={() => handleEditMap('Sauerland')}>Reise Bearbeiten</button>
-              <button onClick={() => handleDeleteTrip('Sauerland')}>Reise Löschen</button>
-            </div>
-          </li>
-          <li className="journey-item">
-            <span>Südtirol</span>
-            <div className="action-buttons">
-              <button onClick={() => handleEditMap('Südtirol')}>Reise Bearbeiten</button>
-              <button onClick={() => handleDeleteTrip('Südtirol')}>Reise Löschen</button>
-            </div>
-          </li>
-          <li className="journey-item">
-            <span>California</span>
-            <div className="action-buttons">
-              <button onClick={() => handleEditMap('California')}>Reise Bearbeiten</button>
-              <button onClick={() => handleDeleteTrip('California')}>Reise Löschen</button>
-            </div>
-          </li>
-        </ul>
+
+        {trips !== null && (
+          <ul className="journey-list">
+            {trips.map((trip) => (
+              <li className="journey-item" key={trip.id}>
+                <span>{trip.name}</span>
+                <div className="action-buttons">
+                  <button onClick={() => handleEditMap(trip.name)}>
+                    Reise Bearbeiten
+                  </button>
+                  <button onClick={() => handleDeleteTrip(trip.name)}>
+                    Reise Löschen
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* Existing edit popup for trip editing */}
@@ -158,16 +162,18 @@ function HomePage() {
                 />
               </div>
               <div
-                className={`upload-dropzone ${dragActive ? 'active' : ''}`}
+                className={`upload-dropzone ${dragActive ? "active" : ""}`}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
-                onClick={() => document.getElementById('fileInput').click()}
+                onClick={() => document.getElementById("fileInput").click()}
               >
                 {uploadFile ? (
                   <p>{uploadFile.name}</p>
                 ) : (
-                  <p>Datei hierher ziehen oder klicken, um eine Datei auszuwählen</p>
+                  <p>
+                    Datei hierher ziehen oder klicken, um eine Datei auszuwählen
+                  </p>
                 )}
               </div>
               <input
@@ -178,13 +184,14 @@ function HomePage() {
               />
               <div className="upload-buttons">
                 <button onClick={handleSaveUpload}>Speichern</button>
-                <button onClick={() => setShowUploadModal(false)}>Abbrechen</button>
+                <button onClick={() => setShowUploadModal(false)}>
+                  Abbrechen
+                </button>
               </div>
             </div>
           </div>
         </div>
       )}
-
     </div>
   );
 }
