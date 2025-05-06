@@ -30,6 +30,8 @@
   Dein Browser unterstützt das Video-Tag nicht.
 </video>
 
+---
+
 [Nächste Seite ->](04_StatPage.md) 4. Statistik
 
 [<- Vorherige Seite](02_HomePage.md) 2. Verwaltung
