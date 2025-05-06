@@ -9,10 +9,9 @@ import pandas as pd
 import shutil
 import uuid
 import zipfile
-from crud import insert_locations, insert_segments
 from functions.trip_functions import insert_trip
-from functions.location_functions import get_location
-from functions.segment_functions import get_segment, update_segment
+from functions.location_functions import get_location, insert_locations
+from functions.segment_functions import get_segment, update_segment, insert_segments
 from controllers import trip_controllers
 from app.logger import logger
 from fastapi.middleware.cors import CORSMiddleware
