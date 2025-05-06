@@ -39,7 +39,7 @@ cd client
 npm install
 # node Projekt ausführen
 # npm run dev ist in package.json definiert
-npm run dev
+npm run start
 ```
 
 ## Backend installieren
@@ -52,7 +52,7 @@ conda create -n mapyourtrip -c conda-forge python=3.13.0 --file requirements.txt
 
 ```
 
-2. Backend ausführen in der Conda Umgebung starten. Öffne http://localhost:8000/ im Browser und verifiziere, ob das Backend läuft.
+2. Backend ausführen in der Conda Umgebung starten. Öffne http://localhost:8000/docs im Browser und verifiziere, ob das Backend läuft.
 ```shell
 cd server
 # aktiviere die conda umgebung gdiproject
