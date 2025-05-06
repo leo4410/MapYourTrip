@@ -15,9 +15,22 @@ from functions.location_functions import get_location
 from functions.segment_functions import get_segment, insert_segment, update_segment
 from controllers import trip_controllers
 from app.logger import logger
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 app.include_router(trip_controllers.router)
+
+origins = [
+    "http://localhost:3000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 logger.info("Application started!")
 
