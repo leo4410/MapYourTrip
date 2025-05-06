@@ -43,7 +43,7 @@ cd client
 npm install
 # node Projekt ausführen
 
-# npm run start ist in package.json definiert und startet App
+# npm run start ist in package.json definiert und startet die App
 npm run start
 ```
 
