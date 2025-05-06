@@ -28,7 +28,6 @@ async def get_route(profile: str, segment_id: str):
     
     start_loc=get_location(start_loc_id)
     end_loc=get_location(end_loc_id)
-    print(start_loc)
     
     url = f"{ORS_BASE_URL}/v2/directions/{profile}"
     params = {
