@@ -5,7 +5,7 @@ Server Client Projekt für eine Geodateninfrastruktur Webportal im Rahmen des Mo
 - **Frontend:** React.js, OpenLayers und MUI
 - **Backend:** FastAPI, GeoServer
 
-GitHub Pages: [https://314a.github.io/GDI_Project/](https://leo4410.github.io/MapYourTrip/)
+GitHub Pages: [https://leo4410.github.io/MapYourTrip/](https://leo4410.github.io/MapYourTrip/)
 
 Getestet mit Node version 22.14.0, openlayers 9.1.0, mapliber 5.1.0, react 18.3.1
 
