@@ -3,7 +3,7 @@ from database import get_db_connection
 def get_location(id):
     try:
         # query for database select
-        query = "SELECT id, ST_Y(location_geom) AS lat, ST_X(location_geom) AS lon FROM location WHERE id = %s;"
+        query = "SELECT id, ST_Y(location_geom) AS lat, ST_X(location_geom) AS lon, fk_trip_id FROM location WHERE id = %s;"
         
         # set up db connection
         conn = get_db_connection()

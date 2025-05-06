@@ -58,18 +58,18 @@ def insert_location(row, logger):
         logger.error(f"Fehler beim Einfügen der Location: {e}")
         logger.error(f"Fehler bei Zeile: {row}")  
         raise e  
-
+    
 def insert_locations(location_list, logger):
     try:
         # query for database insert with one argument (required for execute_values)
         insert_query = """
-        INSERT INTO location("location_geom") 
+        INSERT INTO location("location_geom", "fk_trip_id") 
         VALUES %s
         RETURNING id;
         """
         
         # template with arguments to pass for database insert
-        template = "(ST_SetSRID(ST_MakePoint(%s, %s), %s))"
+        template = "((ST_SetSRID(ST_MakePoint(%s, %s), %s)), %s)"
 
         # set up db connection
         conn = get_db_connection()
@@ -77,7 +77,7 @@ def insert_locations(location_list, logger):
 
         # insert multiple locations
         location_ids_dict = execute_values(cur, insert_query, location_list, template=template, fetch=True)
-    
+        
         # get inserted location ids in the correct order
         location_ids = [row['id'] for row in location_ids_dict]
         
