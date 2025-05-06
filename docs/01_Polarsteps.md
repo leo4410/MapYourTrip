@@ -10,7 +10,7 @@
 
 **Beispiel-Video** zum Bezug von den Polarstepsdaten
 
-<video width="900" autoplay loop muted playsinline>
+<video width="600" autoplay loop muted playsinline>
   <source src="videos\MapYourTrip_Export_Data.mp4" type="video/mp4">
   Dein Browser unterstützt das Video-Tag nicht.
 </video>
@@ -19,7 +19,7 @@
 
 #### Nächster Schritt
 
-Lade nun deine Zip-Datei bei MapYourTrip unter **Verwaltung** -> **Reise hochladen** hoch, wie erfährst du auf der
+Lade nun deine Zip-Datei bei MapYourTrip unter **Verwaltung** -> **Reise hochladen** hoch, wie geau erfährst du auf der
 [nächsten Seite ->](02_HomePage.md) 2. Verwaltung
 
 [<- Home Github Pages](index.md)
