@@ -26,8 +26,6 @@ Einleitung zu den implementierten Schnittstellen und deren Funktionen
 
 https://api.openrouteservice.org/v2/{service}/{profile}?api_key=your-api-key&start=8.681495,49.41461&end=8.687872,49.420318
 
-### 1. RouteService
-
 #### Aufbau vom Service
 
 baseurl = https://api.openrouteservice.org/v2
@@ -76,26 +74,4 @@ print(call.text)
 
 ```
 
-### 2. EvationService
-
-#### Aufbau vom Service
-
-_GET-Abfrage:_
-
-_QueryParameters:_
-
-_PathParameter:_
-
-#### Codebeispiel
-
-### 3. PoiService
-
-#### Aufbau vom Service
-
-_GET-Abfrage:_
-
-_QueryParameters:_
-
-_PathParameter:_
-
-#### Codebeispiel
+![Zugriffe auf ORS-Servics](bilder\ORS_API_Screenshot.png)
