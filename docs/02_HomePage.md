@@ -1,6 +1,10 @@
 ## 2. Verwaltung deiner Reisen
 
-TODO
+Hier auf dieser Seite kannst du deine Reisen verwalten und neue Reisen jeweils nach deinen Abendteurn hochladen. Einfach unter **Reise hochladen** deine Zip-Datei von Polarsteps auswählen und fertig. Du kannst auch eine bereits hochgeladene Datei auswählen und diese bearbeiten.
+
+---
+
+![Page Verwaltung](bilder\02_Homepage_Screenshot.png)
 
 ---
 

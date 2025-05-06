@@ -9,7 +9,7 @@ Das ist die Projekt Website des zur Entwicklung von MapYourTrip. Das Projekt ent
 
 # Interaktion mit der Applikation
 
-1. [Vorbereitung Polarsteps Daten ](01_Polarsteps.md): Wegleitung zum **Download deiner Polarstepsdaten** und **Upload auf MapYourTrip**
+1. [Vorbereitung Polarsteps Daten ](01_Polarsteps.md): Wegleitung zum Download deiner Polarstepsdaten und Upload auf MapYourTrip
 2. [Verwaltung ](02_HomePage.md): Homepage der Applikation
 3. [Kartenbereich ](03_MapPage.md): Kartenbereich mit verschiedenen Interaktionen
 4. [Statistik ](04_StatPage.md): Kartenbereich mit verschiedenen Statistiken
