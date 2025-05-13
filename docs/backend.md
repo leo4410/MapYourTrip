@@ -8,6 +8,16 @@ title: MapYourTrip
 
 ## PostGIS Database
 
+Die PostgreSQL Datenbank mit der PostGIS Erweiterung speichert die Daten in verschiedenen Tabellen. Für das Projekt sind die nachfolgenden Tabellen von zentralen Bedeutung. 
+
+- ```location``` speichert Punktdaten, die aus Polarsteps exportiert wurden
+- ```segment``` speichert Liniendaten, welche die Punkte aus Polarsteps miteinander verbindet
+- ```trip``` ordnet Punkt- und Linien einer Reise aus Polarsteps zu
+
+Die weiteren Tabellen haben momentan keinen Einfluss auf das Projekt und können bei einer allfälligen Erweiterung der Applikation zur Speicherung der entsprechenden Daten genutzt werden. Im nachfolgenden Datenabnkschema sind alle Beziehungen abgebildet.
+
+<img src="bilder/db_schema.png" alt="Datenbankschema" height="600">
+
 ## FastAPI Backend
 
 Das Backend stellt die folgenden API Endpunkte zur Verfügung.
