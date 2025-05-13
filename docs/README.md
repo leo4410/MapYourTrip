@@ -64,7 +64,7 @@ Damit das FastAPI Backend ordnungsgemäss betrieben werden kann, muss im Verzeic
 }
 ```
 
-1. Conda Umgebung für das Projekt mit allen notwendigen Packages aus der [requirements.txt](server/requirements.txt) Datei aufsetzen
+1. Conda Umgebung für das Projekt mit allen notwendigen Packages aus der [requirements.txt](server/requirements.txt) Datei aufsetzen. Dafür muss eine Anaconda Prompt im geklonten Verzeichnis geöffnet werden
 
 ```shell
 cd server
@@ -107,3 +107,5 @@ cd ../client
 npm install
 npm run start
 ```
+
+Vor dem Start müssen in der Datei ```src/App.js``` gegebenenfalls die Backend URIs angepasst werden. 
