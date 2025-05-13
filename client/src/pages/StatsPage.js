@@ -18,9 +18,7 @@ function StatsPage({ WFS_URL }) {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const segmentLayerRef = useRef(null);
-  const { lineThickness, lineColor, pointSize, pointColor } = useContext(
-    SymbolSettingsContext
-  );
+  const { lineThickness, lineColor, pointSize, pointColor } = useContext(SymbolSettingsContext);
 
   // States for statistics calculation, export image, etc.
   const [showStatsCalcPopup, setShowStatsCalcPopup] = useState(false);
