@@ -16,10 +16,6 @@ In der Statistik Seite kann eine Übersicht über die Reise erstellt werden. Dab
 
 ---
 
-[Zurück zum Start ->](index.md)  Zurück zum Start
-
-
 
 [<- Vorherige Seite](03_MapPage.md) 3. Kartenbereich mit verschiedenen Interaktionen
 
-[Home](index.md)

@@ -37,8 +37,8 @@ title: MapYourTrip
 
 ---
 
-[Nächste Seite ->](04_StatPage.md) 4. Statistik
 
-[<- Vorherige Seite](02_HomePage.md) 2. Verwaltung
+
+[<- Vorherige Seite](02_HomePage.md) 2. Verwaltung und Upload der Reisen | 4. Statistiken der Reisen [Nächste Seite ->](04_StatPage.md)
 
 [Home](index.md)

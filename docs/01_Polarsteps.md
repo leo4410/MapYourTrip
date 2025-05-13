@@ -26,5 +26,3 @@ title: MapYourTrip
 
 Lade nun deine Zip-Datei bei MapYourTrip unter **Verwaltung** -> **Reise hochladen** hoch, wie geau erfährst du auf der
 [nächsten Seite ->](02_HomePage.md) 2. Verwaltung
-
-[<- Home Github Pages](index.md)
