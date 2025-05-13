@@ -3,7 +3,7 @@ layout: default
 title: MapYourTrip
 ---
 
-# MapYourTrip
+# MapYourTrip (JK)
 Das ist die Projekt Website des zur Entwicklung von MapYourTrip. Das Projekt enthält eine Server und eine Client Umgebung.
 
 - [README](README.md): Installation MapYourTrip, starten des Frontend und Backend
