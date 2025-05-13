@@ -3,14 +3,26 @@ layout: default
 title: MapYourTrip
 ---
 
+# Reiseverwaltung
 
-## 2. Verwaltung deiner Reisen
+Auf dieser Seite kannst du deine Reisen verwalten und neue Reisen nach deinem Abenteur hochladen. 
 
-Hier auf dieser Seite kannst du deine Reisen verwalten und neue Reisen jeweils nach deinen Abendteurn hochladen. Einfach unter **Reise hochladen** deine Zip-Datei von Polarsteps auswählen und oder du kannst auch eine bereits hochgeladene Datei auswählen und diese mit **Reise bearbeiten** ändern.
+## Reise hochladen
 
----
+Unter Reise hochladen deine ZIP Datei von Polarsteps auswählen oder mit Drag and Drop ablegen.
 
-![Page Verwaltung](bilder\02_Homepage_Screenshot.png)
+<video width="900"   controls>
+  <source src="videos/HomePage_Upload.mp4" type="video/mp4">
+</video>
+
+Momentan können die Reisen über die Applikation weder gelöscht noch bearbeitet werden. 
+
+## Reise aktivieren
+ Um eine Reise später im Kartenbereich anpassen zu können, kannst du diese mit einem einfachen Klick auf aktivieren auswählen. Du wirst danach direkt in den Kartenbereich geleitet und kannst in der Applikation beliebig navigieren. Die gewählte Reise kann jederzeit geändert werden.
+
+<video width="900"   controls>
+  <source src="videos/HomePage_Aktivieren.mp4" type="video/mp4">
+</video>
 
 ---
 

@@ -1,10 +1,14 @@
 import httpx
+from pydantic import BaseModel
 from app.logger import logger
 from fastapi import APIRouter, HTTPException
 from functions.location_functions import get_location
 from functions.segment_functions import get_segment, update_segment
 
 router = APIRouter()
+
+class RouteRequest(BaseModel):
+    profile: str
 
 @router.get("/segment/{segment_id}", tags=["segments"])
 async def get_one(segment_id):
@@ -16,8 +20,8 @@ async def get_one(segment_id):
 ORS_BASE_URL = "https://api.openrouteservice.org"
 ORS_API_KEY = "5b3ce3597851110001cf62480bd839bf8084480dac4bf416bd48a88a"  
 
-@router.get("/route", tags=["segments"])
-async def get_route(profile: str, segment_id: str):
+@router.post("/segment/{segment_id}/route", tags=["segments"])
+async def get_route(segment_id: str, request: RouteRequest):
     
     api_key: str = ORS_API_KEY  
     segment = get_segment(segment_id)
@@ -29,7 +33,7 @@ async def get_route(profile: str, segment_id: str):
     start_loc=get_location(start_loc_id)
     end_loc=get_location(end_loc_id)
     
-    url = f"{ORS_BASE_URL}/v2/directions/{profile}"
+    url = f"{ORS_BASE_URL}/v2/directions/{request.profile}"
     params = {
         "api_key": api_key,
         "start": str(start_loc["lon"]) + "," + str(start_loc["lat"]),

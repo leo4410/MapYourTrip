@@ -1,6 +1,6 @@
 export async function uploadZip(formData) {
   try {
-    const response = await fetch("http://localhost:8000/upload-zip", {
+    const response = await fetch("http://localhost:8000/upload/zip", {
       method: "POST",
       body: formData,
     });

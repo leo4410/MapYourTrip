@@ -14,7 +14,7 @@ from app.logger import logger
 
 router = APIRouter()
 
-@router.post("/upload-zip/", tags=["upload"])
+@router.post("/upload/zip", tags=["upload"])
 async def upload_zip(file: UploadFile = File(...)):
     try: 
         # read uploaded file

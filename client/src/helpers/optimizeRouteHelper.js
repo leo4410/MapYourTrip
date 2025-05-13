@@ -11,14 +11,19 @@ export const optimizeRoute = async (
 
   const rawId = selectedSegment.getId();
   const segmentId = rawId.includes(".") ? rawId.split(".").pop() : rawId;
-  const url =
-    BE_URL +
-    "/route" +
-    `?profile=${encodeURIComponent(selectedTransport)}` +
-    `&segment_id=${encodeURIComponent(segmentId)}`;
+  const url = `${BE_URL}/segment/${segmentId}/route`;
 
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        profile: selectedTransport,
+      }),
+    });
+
     if (!res.ok) {
       throw new Error(await res.text());
     }
