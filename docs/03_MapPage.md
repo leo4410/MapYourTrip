@@ -14,7 +14,7 @@ Bei den Hintergrundkarten kann man zwischen OpenStreetMap, einem Lufbild, Wasser
   <source src="videos/MapPage_Wechsel_Karte.mp4" type="video/mp4">
 </video>
 
-### Sympolisierung der Elemente (Punkt und Linien)
+### Symbolisierung der Punkt- und Linienelemente
 Die Linien sowie Punktelemente können in ihrer Grösse sowie Farbe angepast werden. Die Informationen werden nur lokal gespeichert und bei einem Neustart oder Neuladen der Webseite werden die Einstellugen auf den Standart zurückgesetzt.
 
 <video width="900"   controls>
