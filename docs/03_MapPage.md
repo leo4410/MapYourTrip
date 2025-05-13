@@ -2,7 +2,7 @@
 
 Über die verschiedenen Register auf der linken Seite können die verschiedenen Elemente wie _Hintergrund-Karte_, _Punkt- und Linienobjekte_ der Route geändert, sowie die _Route optimiert_ werden. Im letzten Schritt können die Karten als PNG-Bildatei heruntergeladen werden.
 
-### Wechsel der Karte
+### Wechsel der Hintergrundkarte
 
 <video width="900"   controls>
   <source src="videos\MapPage_Wechsel_Karte.mp4" type="video/mp4">
