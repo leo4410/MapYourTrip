@@ -5,7 +5,7 @@
     </h1>
     <nav class="site-nav">
       {% for item in site.navbar %}
-        {% if item.title == "Applikationen" %}
+        {% if item.title == "Funktionalitäten" %}
           <div class="dropdown">
             <a href="{{ item.url | relative_url }}" class="site-nav-link">{{ item.title }}</a>
             <div class="dropdown-content">
