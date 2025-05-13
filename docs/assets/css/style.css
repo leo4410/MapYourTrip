@@ -2,13 +2,14 @@
   padding: 1em 0;
   padding-left: 1em;
   padding-right: 1em;
+  align-items: center;
   border-bottom: 1px solid #ddd;
 }
 .wrapper {
   max-width: 800px;
   margin: 0 auto;
   display: flex;
-  align-items: left;
+  align-items: center;
   justify-content: space-between;
 }
 .site-title {
@@ -31,6 +32,6 @@
 
 
 .content.wrapper {
-  padding-left: 1em;
-  padding-right: 1em;
+  padding-left: 10em;
+  padding-right: 10em;
 }
