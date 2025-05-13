@@ -20,7 +20,7 @@ In dem Reiter Client ist das Frontend Dokumentiert
 ## Schnittstellen
 Unter Schnittstellen werden die Schnittstellen Fast_API sowie OpenRouteService Dokumentiert
 
-# Github / README
+## Github / README
 
 GitHub Repository: [https://github.com/leo4410/MapYourTrip](https://github.com/leo4410/MapYourTrip).
 Das GitHub Repository dient dem bezug des original Codes.
