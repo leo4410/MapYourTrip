@@ -3,13 +3,13 @@ layout: default
 title: MapYourTrip
 ---
 
-# Polarsteps 
+## Polarsteps 
 
 Hier findest du eine schrittweise Wegleitung zum Download deiner Polarstepsdaten für den Upload auf MapYourTrip.
 
-1. Öffne [Polarsteps](https://www.polarsteps.com/) oder direkt unter der URL https://www.polarsteps.com/your_username
+1. Öffne [Polarsteps](https://www.polarsteps.com/) oder direkt unter der URL ```https://www.polarsteps.com/your_username```
 2. Logge dich mit deinem Account ein
-3. In der Navigationsleiste den **Username** auswählen
+3. In der Navigationsleiste den Username auswählen
 4. Profileinstellungen -> Account-> Download my data
 5. Du bekommst nun ein Download-Link an deine Email gesendet. Dieser Vorgang kann etwas dauern. Schaue auch gegebenenfalls im Junk E-Mail Ordner nach
 
@@ -17,4 +17,4 @@ Hier findest du eine schrittweise Wegleitung zum Download deiner Polarstepsdaten
   <source src="videos/MapYourTrip_Export_Data.mp4" type="video/mp4">
 </video>
 
- | Reiseverwaltung [nächsten Seite ->](02_HomePage.md)
+ | Reiseverwaltung [Nächste Seite ->](02_HomePage.md)
