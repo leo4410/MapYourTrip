@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import NavigationBar from "../components/NavigationBar";
+import { useNavigate } from "react-router-dom";
 import { Map, View } from "ol";
 import TileLayer from "ol/layer/Tile";
 import OSM from "ol/source/OSM";
@@ -14,11 +15,14 @@ import "./StatsPage.css";
 import { SymbolSettingsContext } from "../SymbolSettingsContext";
 import { getZoomState, setZoomState } from "../ZoomState.js";
 
-function StatsPage({ WFS_URL, WFS_TYPE }) {
+function StatsPage({ WFS_URL, WFS_TYPE, selectedTrip }) {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const segmentLayerRef = useRef(null);
-  const { lineThickness, lineColor, pointSize, pointColor } = useContext(SymbolSettingsContext);
+  const { lineThickness, lineColor, pointSize, pointColor } = useContext(
+    SymbolSettingsContext
+  );
+  const navigate = useNavigate();
 
   // States for statistics calculation, export image, etc.
   const [showStatsCalcPopup, setShowStatsCalcPopup] = useState(false);
@@ -33,6 +37,10 @@ function StatsPage({ WFS_URL, WFS_TYPE }) {
 
   // Compute overlay dimensions when export overlay is active (for A4 Quer: 297x210mm at 96 DPI)
   useEffect(() => {
+    if (selectedTrip == null) {
+      navigate("/");
+    }
+
     if (!showExportOverlay || !mapRef.current) {
       setExportOverlayDims(null);
       return;
@@ -70,10 +78,8 @@ function StatsPage({ WFS_URL, WFS_TYPE }) {
           WFS_URL +
           "?service=WFS&version=1.1.0&request=GetFeature&typename=" +
           WFS_TYPE +
-          ":location&" +
-          "outputFormat=application/json&srsname=EPSG:4326&bbox=" +
-          epsg4326Extent.join(",") +
-          ",EPSG:4326"
+          ":location&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=" +
+          selectedTrip?.id.toString()
         );
       },
       strategy: bboxStrategy,
@@ -101,10 +107,8 @@ function StatsPage({ WFS_URL, WFS_TYPE }) {
           WFS_URL +
           "?service=WFS&version=1.1.0&request=GetFeature&typename=" +
           WFS_TYPE +
-          ":segment&" +
-          "outputFormat=application/json&srsname=EPSG:4326&bbox=" +
-          epsg4326Extent.join(",") +
-          ",EPSG:4326"
+          ":segment&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=" +
+          selectedTrip?.id.toString()
         );
       },
       strategy: bboxStrategy,
@@ -302,14 +306,14 @@ function StatsPage({ WFS_URL, WFS_TYPE }) {
               className="map-change-button"
               onClick={() => setShowStatsCalcPopup(!showStatsCalcPopup)}
             >
-              Berechnung der Statistik:
+              Berechnung
             </button>
             {showStatsCalcPopup && (
               <div className="stats-popup">
-                <h3 className="stats-popup-title">Statistik Berechnung</h3>
+                <h3 className="stats-popup-title">Linienlänge</h3>
                 <p className="stats-popup-text">
-                  Wählen Sie die Linien, deren Länge, Start- und Endpunkte Sie
-                  berechnen möchten.
+                  Klicke auf Linien auswählen und Wähle die Linien aus, deren Länge, Start- und Endpunkt du
+                  berechnen möchtest. Klicke im Anschluss auf Berechnung.
                 </p>
                 <div className="stats-popup-buttons">
                   <button
@@ -330,7 +334,7 @@ function StatsPage({ WFS_URL, WFS_TYPE }) {
                     className="map-change-button"
                     onClick={() => setShowStatsCalcPopup(false)}
                   >
-                    Schließen
+                    Schliessen
                   </button>
                 </div>
               </div>
@@ -340,7 +344,7 @@ function StatsPage({ WFS_URL, WFS_TYPE }) {
               className="map-change-button"
               onClick={() => setShowExportOverlay(true)}
             >
-              Export Image (A4 Quer)
+              Export (A4 Quer)
             </button>
             {showExportOverlay && (
               <button className="map-change-button" onClick={handleExportImage}>
@@ -390,8 +394,8 @@ function StatsPage({ WFS_URL, WFS_TYPE }) {
               </p>
             </div>
           ) : (
-            <p>
-              No statistics calculated yet. Select lines and click "Berechnung".
+            <p style={{color:"black"}}>
+              Keine Statistiken berechnet. Wähle eine Linie und klicke auf Berechnung.
             </p>
           )}
         </div>
