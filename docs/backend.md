@@ -4,11 +4,11 @@ title: MapYourTrip
 ---
 
 
-# MapYourTrip Server
+## MapYourTrip Server
 
 Der Server besteht aus einer PostgreSQL Datenbank, einem FastAPI Backend und einem Geoserver.
 
-## PostGIS Database
+### PostGIS Database
 
 Die PostgreSQL Datenbank mit der PostGIS Erweiterung speichert die Daten in verschiedenen Tabellen. Für das Projekt sind die nachfolgenden Tabellen von zentralen Bedeutung. 
 
@@ -20,7 +20,7 @@ Die weiteren Tabellen haben momentan keinen Einfluss auf das Projekt und können
 
 <img src="bilder/db_schema.png" alt="Datenbankschema" height="600">
 
-## FastAPI Backend
+### FastAPI Backend
 
 Das Backend stellt die folgenden API Endpunkte zur Verfügung.
 
@@ -33,7 +33,7 @@ Das Backend stellt die folgenden API Endpunkte zur Verfügung.
 
 Eine detaillierte API Dokumentation ist nach dem Starten des Backends gemäss Installationsanleitung unter [http://localhost:8000/docs](http://localhost:8000/docs) einsehbar.
 
-## Geoserver
+### Geoserver
 
 Der Geoserver wird genutzt, um die Punkt- und Liniendaten der Segmente bereitzustellen. Eine beispielhafte Abfrage von Segmenten des Trips mit der Id 3 sieht so aus. 
 ```http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:segment&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=2```

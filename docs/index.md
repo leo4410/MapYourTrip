@@ -20,12 +20,12 @@ Im Reiter Client ist das Frontend dokumentiert.
 ### Schnittstellen
 Unter Schnittstellen ist die externe Schnittstelle zum OpenRouteService dokumentiert.
 
-### Github / README
+### Github Repository und README
 
 Das GitHub Repository dient dem Bezug des original Programmcodes. In der zugehörigen README Datei ist eine Installationsanleitung für das Backend und für das Frontend abgelegt.
 
-- GitHub Repository: [https://github.com/leo4410/MapYourTrip](https://github.com/leo4410/MapYourTrip).
-- README: [https://github.com/leo4410/MapYourTrip/blob/main/README.md](https://github.com/leo4410/MapYourTrip/blob/main/README.md).
+- GitHub Repository: [https://github.com/leo4410/MapYourTrip](https://github.com/leo4410/MapYourTrip)
+- README: [https://github.com/leo4410/MapYourTrip/blob/main/README.md](https://github.com/leo4410/MapYourTrip/blob/main/README.md)
 
 ### Quellen der Hintergrundkarten
 
