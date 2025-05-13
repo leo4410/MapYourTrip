@@ -17,6 +17,8 @@ Getestet mit Node version 22.14.0, openlayers 9.1.0, mapliber 5.1.0, react 18.3.
 - [Git Version Control](https://git-scm.com/)
 - [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
 - [Node.js und npm](<https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)>)
+- [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
+- [Node.js und npm](<https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)>)
 - [Visual Studio Code](https://code.visualstudio.com/) oder ähnlich
 
 ## Repository lokal klonen
@@ -35,8 +37,10 @@ Für dieses Projekt wird ein funktionsfähiger PostgreSQL Server vorausgesetzt. 
 <img src="/docs/bilder/setup/db_1.png" alt="alt text" height="200"> 
 <img src="/docs/bilder/setup/db_2.png" alt="alt text" height="200"> 
 <img src="/docs/bilder/setup/db_3.png" alt="alt text" height="200">
+<img src="/docs/bilder/setup/db_1.png" alt="alt text" height="200"> <img src="/docs/bilder/setup/db_2.png" alt="alt text" height="200"> <img src="/docs/bilder/setup/db_3.png" alt="alt text" height="200">
 
 Sobald eine Verbindung zu einem Datenabankserver besteht, kann die Projektdatenbank aufgesetzt werden.
+Sobald eine Verbindung zu einem Datenabnkserver besteht, kann die Projektdatenbank aufgesetzt werden.
 
 1. Erstellen einer Datenabank für das Projekt
 
@@ -123,7 +127,7 @@ postgres
 postgres
 ```
 
-4. Hinzufügen der Layer Location und Segment zum Geoserver. Beim Publizieren sind die folgenden Parameter anzupassen und das begrenzte Rechteck ist aus den Daten zu berechnen
+1. Hinzufügen der Layer Location und Segment zum Geoserver. Beim Publizieren sind die folgenden Parameter anzupassen und das begrenzte Rechteck ist aus den Daten zu berechnen
 
 <img src="docs/bilder/setup/gs_7.png" alt="alt text" height="200"> <img src="docs/bilder/setup/gs_8.png" alt="alt text" height="200"> <img src="docs/bilder/setup/gs_9.png" alt="alt text" height="200">
 
