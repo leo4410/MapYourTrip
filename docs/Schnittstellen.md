@@ -12,7 +12,7 @@ Die Webseite MapYourTrip verwendet eine Fast-API, den Geoserver sowie die OpenRo
 
 Über Fast-API wird vom Frontend mit der Datenbank komuniziert. Dabei werden Userdaten in die Datenbank gespeichert sowie Abfragen an der Datenbank getätigt.
 
-## Geoserver
+**Geoserver**
 
 Der Geoserver stellt eine Verbindung von der Datenbank zu dem Frontend her. Es stellt die gespeicherten Elemente als WFS dem Frontend zur verfügung.
 
