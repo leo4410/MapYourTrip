@@ -14,7 +14,7 @@ import "./StatsPage.css";
 import { SymbolSettingsContext } from "../SymbolSettingsContext";
 import { getZoomState, setZoomState } from "../ZoomState.js";
 
-function StatsPage({ WFS_URL }) {
+function StatsPage({ WFS_URL, WFS_TYPE }) {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const segmentLayerRef = useRef(null);
@@ -68,7 +68,9 @@ function StatsPage({ WFS_URL }) {
         );
         return (
           WFS_URL +
-          "?service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:location&" +
+          "?service=WFS&version=1.1.0&request=GetFeature&typename=" +
+          WFS_TYPE +
+          ":location&" +
           "outputFormat=application/json&srsname=EPSG:4326&bbox=" +
           epsg4326Extent.join(",") +
           ",EPSG:4326"
@@ -97,7 +99,9 @@ function StatsPage({ WFS_URL }) {
         );
         return (
           WFS_URL +
-          "?service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:segment&" +
+          "?service=WFS&version=1.1.0&request=GetFeature&typename=" +
+          WFS_TYPE +
+          ":segment&" +
           "outputFormat=application/json&srsname=EPSG:4326&bbox=" +
           epsg4326Extent.join(",") +
           ",EPSG:4326"

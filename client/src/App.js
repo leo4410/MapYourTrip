@@ -9,15 +9,17 @@ import "./styles.css";
 
 function App() {
   const WFS_URL = "http://localhost:8080/geoserver/wfs";
+  const WFS_TYPE = "MapYourTrip"
   const BE_URL = "http://localhost:8000";
+
 
   return (
     <SymbolSettingsProvider>
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/map" element={<MapPage WFS_URL={WFS_URL} BE_URL={BE_URL} />} />
-          <Route path="/stats" element={<StatsPage WFS_URL={WFS_URL} />} />
+          <Route path="/map" element={<MapPage WFS_URL={WFS_URL} WFS_TYPE={WFS_TYPE} BE_URL={BE_URL} />} />
+          <Route path="/stats" element={<StatsPage WFS_URL={WFS_URL} WFS_TYPE={WFS_TYPE} />} />
         </Routes>
       </Router>
     </SymbolSettingsProvider>

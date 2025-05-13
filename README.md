@@ -108,4 +108,4 @@ npm install
 npm run start
 ```
 
-Vor dem Start müssen in der Datei ```src/App.js``` gegebenenfalls die Backend URIs angepasst werden. 
+Vor dem Start müssen in der Datei ```src/App.js``` gegebenenfalls die Backend URIs, als auch der WFS Type (Arbeitsbereich auf dem Geoserver) angepasst werden. 
