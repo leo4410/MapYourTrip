@@ -8,8 +8,8 @@ Das ist die Projektwebsite von MapYourTrip.
 Mit der Webseite MapYourTrip können Sie Reisedaten von Polarsteps individuel an Ihre wünsche anpassen und in einer eigenen Datenbank verwalten.
 Das Projekt enthält eine Server und eine Client Umgebung.
 
-## Applikationen
-In dem Reiter Applikationen werden die Funktionalitäten der Webseite erläutert. 
+## Funktionalitäten
+In dem Reiter Funktionalitäten werden die Funktionen der Webseite erläutert. 
 
 ## Server
 In dem Reiter Server ist das Backend Dokumentiert

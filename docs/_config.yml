@@ -5,10 +5,8 @@ title: MapYourTrip
 navbar:
   - title: "Home"
     url: "/"
-  - title: "Applikationen"
+  - title: "Funktionalitäten"
     url: "/01_Polarsteps.html"
-  - title: "Readme"
-    url: "/README.html"
   - title: "Server"
     url: "/backend.html"
   - title: "Client"
