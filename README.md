@@ -137,3 +137,13 @@ npm run start
 ```
 
 Vor dem Start müssen in der Datei `src/App.js` gegebenenfalls die Backend URIs angepasst werden.
+
+## API-Key Openrouteservice
+
+Über folgendende Homepage kann der API-Key bezogen werden: [OpenRouteService](https://openrouteservice.org/dev/#/api-docs)
+
+Im folgenden Video ist noch Visualisiert wie genau.
+
+<video width="600" autoplay loop muted playsinline>
+  <source src=".\docs\videos\ORS_API_key.mp4" type="video/mp4">
+</video>
