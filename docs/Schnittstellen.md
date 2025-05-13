@@ -6,13 +6,15 @@ title: MapYourTrip
 
 # Schnittstellen
 
-Einleitung zu den implementierten Schnittstellen und deren Funktionen
+Die Webseite MapYourTrip verwendet eine Fast-API, den Geoserver sowie die OpenRouteService Schnitstelle
 
 **Schnittstelle Fast-API:**
 
-- Import der Userdaten
-- Abfragen der DB
-- weitere...
+Über Fast-API wird vom Frontend mit der Datenbank komuniziert. Dabei werden Userdaten in die Datenbank gespeichert sowie Abfragen an der Datenbank getätigt.
+
+## Geoserver
+
+Der Geoserver stellt eine Verbindung von der Datenbank zu dem Frontend her. Es stellt die gespeicherten Elemente als WFS dem Frontend zur verfügung.
 
 **Schnittstelle Datenprozessing:**
 
@@ -20,11 +22,10 @@ Einleitung zu den implementierten Schnittstellen und deren Funktionen
 
 **OpenRouteService:**
 
-- _Openrouteservice’s directions:_ Routen optimieren
-- _Openelevationservice:_ Punkte 2D abfragen und 3D bekommen
-- _Openpoiservice:_ Abfragen zu POI's im Umkreis von einem Punkt
+Über den Service OpenRouteService wird die Routenoptimierung durchgeführt. Dabei werden Segmentinformationen (Start und Endpunkt) sowie das Verkehrsmitel dem Service geliefert und es wird eine dem Strassennetz angepaste Route wiedergegeben. Diese Route wird in die Datenbank gespeichert und ersetzt das alte Linienstück.
+In der aktuellen Version der Webaplikation ist der service direcctions implementiert. Bei einer Erweiterung kann man die Funktionalität der elevation sowie pois implementieren. Mittels dem Service elevation ist angedacht ein Höhenprofil zu erstellen. Mittels dem Service pois kann man Interessante Punkte in der Nähe der Route visualisieren.
 
-## OpenRouteService
+### OpenRouteService Aufbau
 
 {service}: /directions, /elevation, /pois
 
@@ -32,52 +33,7 @@ Einleitung zu den implementierten Schnittstellen und deren Funktionen
 
 https://api.openrouteservice.org/v2/{service}/{profile}?api_key=your-api-key&start=8.681495,49.41461&end=8.687872,49.420318
 
-#### Aufbau vom Service
-
 baseurl = https://api.openrouteservice.org/v2
 
 _GET-Abfrage:_ {baseurl}/directions/driving-car?api_key = your-api-key& start = 8.681495,49.41461& end = 8.687872,49.420318
 
-_QueryParameters:_ api_key, start, end
-
-_PathParameter:_ profile
-
-#### Codebeispiel Beispiel in JavaScrpit
-
-```shell
-
-var request = new XMLHttpRequest();
-
-request.open('GET', 'https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf62480bd839bf8084480dac4bf416bd48a88a&start=8.681495,49.41461&end=8.687872,49.420318');
-
-request.setRequestHeader('Accept', 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8');
-
-request.onreadystatechange = function () {
-  if (this.readyState === 4) {
-    console.log('Status:', this.status);
-    console.log('Headers:', this.getAllResponseHeaders());
-    console.log('Body:', this.responseText);
-  }
-};
-
-request.send();
-
-```
-
-#### Codebeispiel Beispiel in Python
-
-```shell
-
-import requests
-
-headers = {
-    'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
-}
-call = requests.get('https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf62480bd839bf8084480dac4bf416bd48a88a&start=8.681495,49.41461&end=8.687872,49.420318', headers=headers)
-
-print(call.status_code, call.reason)
-print(call.text)
-
-```
-
-![Zugriffe auf ORS-Servics](bilder\ORS_API_Screenshot.png)
