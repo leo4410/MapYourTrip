@@ -31,7 +31,7 @@ proj4.defs(
 );
 register(proj4);
 
-function MapPage({ WFS_URL, BE_URL }) {
+function MapPage({ WFS_URL, WFS_TYPE, BE_URL }) {
   // load location and passed states
   const location = useLocation();
   const selectedTrip = location.state?.trip;
@@ -122,7 +122,9 @@ function MapPage({ WFS_URL, BE_URL }) {
         );
         return (
           WFS_URL +
-          "?service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:location&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=" +
+          "?service=WFS&version=1.1.0&request=GetFeature&typename=" +
+          WFS_TYPE +
+          ":location&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=" +
           selectedTrip.id.toString()
         );
       },
@@ -153,7 +155,9 @@ function MapPage({ WFS_URL, BE_URL }) {
         );
         return (
           WFS_URL +
-          "?service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:segment&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=" +
+          "?service=WFS&version=1.1.0&request=GetFeature&typename=" +
+          WFS_TYPE +
+          ":segment&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=" +
           selectedTrip.id.toString()
         );
       },
