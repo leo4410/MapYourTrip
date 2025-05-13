@@ -1,2 +1,18 @@
-theme: jekyll-theme-minimal
+theme: minima
 title: MapYourTrip
+
+# your navbar links
+navbar:
+  - title: "Home"
+    url: "/"
+  - title: "Applikationen"
+    url: "/01_Polarsteps.html"
+  - title: "Readme"
+    url: "/README.html"
+  - title: "Server"
+    url: "/backend.html"
+  - title: "Client"
+    url: "/frontend.html"
+  - title: "Schnittstellen"
+    url: "/Schnittstellen.html"
+
