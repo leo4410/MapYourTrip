@@ -1,12 +1,14 @@
 .site-header {
   padding: 1em 0;
+  padding-left: 1em;
+  padding-right: 1em;
   border-bottom: 1px solid #ddd;
 }
 .wrapper {
   max-width: 800px;
   margin: 0 auto;
   display: flex;
-  align-items: center;
+  align-items: left;
   justify-content: space-between;
 }
 .site-title {
@@ -25,4 +27,10 @@
 }
 .site-nav-link:hover {
   text-decoration: underline;
+}
+
+
+.content.wrapper {
+  padding-left: 1em;
+  padding-right: 1em;
 }
