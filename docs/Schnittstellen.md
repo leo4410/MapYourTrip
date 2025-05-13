@@ -6,19 +6,19 @@ title: MapYourTrip
 
 # Schnittstellen
 
-Die Webseite MapYourTrip verwendet eine Fast-API, den Geoserver sowie die OpenRouteService Schnitstelle
+Die Webseite MapYourTrip verwendet eine Fast-API, den Geoserver, Datenprozessing sowie die OpenRouteService Schnitstelle
 
 **Schnittstelle Fast-API:**
 
 Über Fast-API wird vom Frontend mit der Datenbank komuniziert. Dabei werden Userdaten in die Datenbank gespeichert sowie Abfragen an der Datenbank getätigt.
 
+**Schnittstelle Datenprozessing:**
+
+Über das Datenprozessing werden die Daten von Polarsteps aufbereitet sodass eine Speicherung in der Datenbank ermöglicht wird.
+
 **Geoserver**
 
 Der Geoserver stellt eine Verbindung von der Datenbank zu dem Frontend her. Es stellt die gespeicherten Elemente als WFS dem Frontend zur verfügung.
-
-**Schnittstelle Datenprozessing:**
-
-- Inputdaten Prozessieren
 
 **OpenRouteService:**
 
