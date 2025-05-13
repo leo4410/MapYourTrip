@@ -12,13 +12,13 @@ Das Projekt enthält eine Server und eine Client Umgebung.
 In dem Reiter Funktionalitäten werden die Funktionen der Webseite erläutert. 
 
 ## Server
-In dem Reiter Server ist das Backend Dokumentiert
+In dem Reiter Server ist das Backend dokumentiert
 
 ## Client
-In dem Reiter Client ist das Frontend Dokumentiert
+In dem Reiter Client ist das Frontend dokumentiert
 
 ## Schnittstellen
-Unter Schnittstellen werden die Schnittstellen Fast_API sowie OpenRouteService Dokumentiert
+Unter Schnittstellen werden die Schnittstellen Fast_API sowie OpenRouteService dokumentiert
 
 ## Github / README
 
@@ -26,7 +26,7 @@ GitHub Repository: [https://github.com/leo4410/MapYourTrip](https://github.com/l
 Das GitHub Repository dient dem bezug des original Codes.
 
 README: [https://github.com/leo4410/MapYourTrip/blob/main/README.md](https://github.com/leo4410/MapYourTrip/blob/main/README.md).
-Das README ist eine Installations Anleitung für die Instalation des front sowie backend.
+Im README ist eine Installationsanleitung für das Backend und für das Frontend abgelegt.
 
 
 ## Quellen der Hintergrundkarten

@@ -4,7 +4,9 @@ title: MapYourTrip
 ---
 
 
-# MapYourTrip Backend
+# MapYourTrip Server
+
+Der Server besteht aus einer PostgreSQL Datenbank, einem FastAPI Backend und einem Geoserver.
 
 ## PostGIS Database
 
