@@ -9,7 +9,6 @@ export const optimizeRoute = async (
     return alert("Kein Segment ausgewählt!");
   }
 
-  console.log(selectedSegment);
   const rawId = selectedSegment.getId();
   const segmentId = rawId.includes(".") ? rawId.split(".").pop() : rawId;
   const url =
