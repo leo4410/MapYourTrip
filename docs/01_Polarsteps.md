@@ -1,3 +1,8 @@
+---
+layout: default
+title: MapYourTrip
+---
+
 ## 1. Wegleitung zum Download deiner Polarstepsdaten und Upload auf MapYourTrip
 
 1. Öffne [Polarsteps](https://www.polarsteps.com/) oder direkt unter der URL https://www.polarsteps.com/your_username

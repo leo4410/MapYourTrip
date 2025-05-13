@@ -1,3 +1,8 @@
+---
+layout: default
+title: MapYourTrip
+---
+
 # MapYourTrip Frontend
 
 - Das Frontend besteht aus den 3 Seiten:

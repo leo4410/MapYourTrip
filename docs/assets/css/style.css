@@ -1,0 +1,28 @@
+.site-header {
+  padding: 1em 0;
+  border-bottom: 1px solid #ddd;
+}
+.wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.site-title {
+  font-size: 1.5rem;
+  margin: 0;
+}
+.site-title a {
+  text-decoration: none;
+  color: inherit;
+}
+.site-nav-link {
+  margin-left: 1em;
+  text-decoration: none;
+  color: #0366d6;
+  font-weight: 500;
+}
+.site-nav-link:hover {
+  text-decoration: underline;
+}

@@ -1,3 +1,8 @@
+---
+layout: default
+title: MapYourTrip
+---
+
 # Map Your Trip
 
 Server Client Projekt für die Projektarbeit Map Your Trip im Modul 4230. Die zugehörige Dokumentation ist in den zugehörigen GitHub Pages unter [https://leo4410.github.io/MapYourTrip/](https://leo4410.github.io/MapYourTrip/) dokumentiert.

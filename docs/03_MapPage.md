@@ -1,3 +1,8 @@
+---
+layout: default
+title: MapYourTrip
+---
+
 ## 3. **Kartenbereich** mit verschiedenen Interaktionen
 
 Über die verschiedenen Register auf der linken Seite können die verschiedenen Elemente wie _Hintergrund-Karte_, _Punkt- und Linienobjekte_ der Route geändert, sowie die _Route optimiert_ werden. Im letzten Schritt können die Karten als PNG-Bildatei heruntergeladen werden.
