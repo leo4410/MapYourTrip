@@ -4,10 +4,12 @@ title: MapYourTrip
 ---
 
 # MapYourTrip
-Das ist die Projektwebsite von MapYourTrip. Das Projekt enthält eine Server und eine Client Umgebung.
+Das ist die Projektwebsite von MapYourTrip. 
+Mit der Webseite MapYourTrip können Sie Reisedaten von Polarsteps individuel an Ihre wünsche anpassen und in einer eigenen Datenbank verwalten.
+Das Projekt enthält eine Server und eine Client Umgebung.
 
 ## Applikationen
-In den Applikationen werden die Funktionalitäten der Webseite erläutert. 
+In dem Reiter Applikationen werden die Funktionalitäten der Webseite erläutert. 
 
 ## Server
 In dem Reiter Server ist das Backend Dokumentiert
@@ -20,29 +22,11 @@ Unter Schnittstellen werden die Schnittstellen Fast_API sowie OpenRouteService D
 
 # Github / README
 
-GitHub Repository: [https://github.com/leo4410/MapYourTrip](https://github.com/leo4410/MapYourTrip)
-Im GitHub Repository dient dem bezug des original Codes.
+GitHub Repository: [https://github.com/leo4410/MapYourTrip](https://github.com/leo4410/MapYourTrip).
+Das GitHub Repository dient dem bezug des original Codes.
 
-README: [https://github.com/leo4410/MapYourTrip/blob/main/README.md](https://github.com/leo4410/MapYourTrip/blob/main/README.md)
-Im README ist eine Installations Anleitung für die Instalation des front sowie backend.
-
-
-<!-- - [README](README.md): Installation MapYourTrip, starten des Frontend und Backend
-- [Server](backend.md): Backend mit FastAPI
-- [Client](frontend.md): Frondend mit React
-- [Externe Services](Schnittstellen.md): OpenRouteService
-
-# Interaktion mit der Applikation
-
-1. [Vorbereitung Polarsteps Daten ](01_Polarsteps.md): Wegleitung zum Download deiner Polarstepsdaten und Upload auf MapYourTrip
-2. [Verwaltung ](02_HomePage.md): Homepage der Applikation
-3. [Kartenbereich ](03_MapPage.md): Kartenbereich mit verschiedenen Interaktionen
-4. [Statistik ](04_StatPage.md): Kartenbereich mit verschiedenen Statistiken
-
-Dokumentatin und Bezug des Repo's -->
-
-<!-- GitHub Pages Home: [https://leo4410.github.io/MapYourTrip/](https://leo4410.github.io/MapYourTrip/) -->
-
+README: [https://github.com/leo4410/MapYourTrip/blob/main/README.md](https://github.com/leo4410/MapYourTrip/blob/main/README.md).
+Das README ist eine Installations Anleitung für die Instalation des front sowie backend.
 
 
 ## Quellen der Hintergrundkarten
