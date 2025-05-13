@@ -10,11 +10,9 @@ function HomePage() {
   // trip states
   const [trips, setTrips] = useState(null);
   const [selectedTrip, setSelectedTrip] = useState(null);
-  const [tripsLoading, setTripsLoading] = useState(true);
 
   // upload modal states
   const [uploadedFile, setUploadedFile] = useState(null);
-  const [uploadFile, setUploadFile] = useState(null);
   const [dragActive, setDragActive] = useState(false);
 
   // upload modal values
@@ -28,7 +26,6 @@ function HomePage() {
   useEffect(() => {
     loadTrips().then((loaded_trips) => {
       setTrips(loaded_trips);
-      setTripsLoading(false);
     });
   }, []);
 
@@ -49,10 +46,8 @@ function HomePage() {
 
   // handle delete trip
   const handleDeleteTrip = (tripName) => {
-    if (
-      window.confirm(`Are you sure you want to delete the trip: ${tripName}?`)
-    ) {
-      // TODO: Implement deletion logic, update state or call backend.
+    if (window.confirm(`Are you sure you want to delete the trip: ${tripName}?`)) {
+      // TODO: Implement deletion logic
     }
   };
 
@@ -73,7 +68,6 @@ function HomePage() {
 
     loadTrips().then((loaded_trips) => {
       setTrips(loaded_trips);
-      setTripsLoading(false);
     });
 
     setShowUploadModal(false);
@@ -102,19 +96,19 @@ function HomePage() {
     setDragActive(false);
   };
 
-  // handle file drop
-  const handleDrop = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setDragActive(false);
-    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
-      setUploadFile(event.dataTransfer.files[0]);
-    }
-  };
+  // --------------------------
+  // file upload event handlers
+  // --------------------------
 
   // handle file change in upload field
   const handleFileChange = (event) => {
     setUploadedFile(event.target.files[0]);
+  };
+
+  // handle file drop in upload field
+  const handleFileDrop = (event) => {
+    handleDragLeave();
+    setUploadedFile(event.dataTransfer.files[0]);
   };
 
   return (
@@ -155,7 +149,7 @@ function HomePage() {
       </div>
 
       {/* -------------------
-       New upload modal popup 
+       Upload modal popup 
       ------------------- */}
 
       {showUploadModal && (
@@ -168,11 +162,11 @@ function HomePage() {
                 className={`upload-dropzone ${dragActive ? "active" : ""}`}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
+                onDrop={handleFileDrop}
                 onClick={() => document.getElementById("fileInput").click()}
               >
-                {uploadFile ? (
-                  <p>{uploadFile.name}</p>
+                {uploadedFile ? (
+                  <p>{uploadedFile.name}</p>
                 ) : (
                   <p>
                     Datei hierher ziehen oder klicken, um eine Datei auszuwählen
