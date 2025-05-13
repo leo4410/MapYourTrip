@@ -32,7 +32,9 @@ cd MapYourTrip
 
 Für dieses Projekt wird ein funktionsfähiger PostgreSQL Server vorausgesetzt. Dieser kann gegebenenfalls gemäss [IGEO Installationsanleitung](documents/Installationsanleitung_PostgreSQL_PostGIS_PGAdmin_IGEO.pdf) aufgesetzt und lokal betrieben werden. Die Verbindnung zum Datenbankserver wird über pgAdmin hergestellt und ist nachfolgend beispielhaft beschrieben.
 
-<img src="/docs/bilder/setup/db_1.png" alt="alt text" height="200"> <img src="/docs/bilder/setup/db_2.png" alt="alt text" height="200"> <img src="/docs/bilder/setup/db_3.png" alt="alt text" height="200">
+<img src="/docs/bilder/setup/db_1.png" alt="alt text" height="200"> 
+<img src="/docs/bilder/setup/db_2.png" alt="alt text" height="200"> 
+<img src="/docs/bilder/setup/db_3.png" alt="alt text" height="200">
 
 Sobald eine Verbindung zu einem Datenabankserver besteht, kann die Projektdatenbank aufgesetzt werden.
 
