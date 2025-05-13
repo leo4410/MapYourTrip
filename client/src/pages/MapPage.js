@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useRef, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import NavigationBar from "../components/NavigationBar";
+import { optimizeRoute } from "../helpers/optimizeRouteHelper";
+import { backgroundMaps } from "../helpers/BackgroundOptionsHelper";
 import { Map, View, Overlay } from "ol";
 import TileLayer from "ol/layer/Tile";
-import OSM from "ol/source/OSM";
-import XYZ from "ol/source/XYZ";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import GeoJSON from "ol/format/GeoJSON";
@@ -20,7 +20,6 @@ import { register } from "ol/proj/proj4";
 import "ol/ol.css";
 import "./MapPage.css";
 import { SymbolSettingsContext } from "../SymbolSettingsContext";
-import StadiaMaps from "ol/source/StadiaMaps.js";
 import { getZoomState, setZoomState } from "../ZoomState.js";
 
 import { useLocation } from "react-router-dom";
@@ -32,10 +31,7 @@ proj4.defs(
 );
 register(proj4);
 
-function MapPage() {
-  // definition of constants
-  const WFS_URL = "http://localhost:8080/geoserver/wfs?";
-
+function MapPage({ WFS_URL, BE_URL }) {
   // load location and passed states
   const location = useLocation();
   const selectedTrip = location.state?.trip;
@@ -51,7 +47,7 @@ function MapPage() {
   const { lineThickness, lineColor, pointSize, pointColor, setSymbolSettings } =
     useContext(SymbolSettingsContext);
 
-  const [exportTitle, setExportTitle] = useState('');
+  const [exportTitle, setExportTitle] = useState("");
 
   // Local modal state for symbolization.
   const [modalLineThickness, setModalLineThickness] = useState(lineThickness);
@@ -72,86 +68,6 @@ function MapPage() {
   const [exportOverlayDims, setExportOverlayDims] = useState(null);
   const exportOverlayRef = useRef(null);
   const [showRouteInfo, setShowRouteInfo] = useState(false);
-
-
-  const optimizeRoute = async () => {
-    if (!selectedSegment) {
-      return alert('Kein Segment ausgewählt!');
-    }
-  
-    const rawId = selectedSegment.getId();
-    const segmentId = rawId.includes('.') ? rawId.split('.').pop() : rawId;
-    const url =
-      `http://localhost:8000/route` +
-      `?profile=${encodeURIComponent(selectedTransport)}` +
-      `&segment_id=${encodeURIComponent(segmentId)}`;
-  
-    try {
-      const res = await fetch(url);
-      if (!res.ok) {
-        throw new Error(await res.text());
-      }
-      await res.json(); // discard payload
-  
-      // ── Save the current center & zoom so the auto-fit handler skips ──
-      const view = mapInstance.current.getView();
-      setZoomState(view.getCenter(), view.getZoom());
-  
-      // ── Now refresh the segment layer without zooming out ──
-      segmentLayerRef.current.getSource().refresh();
-  
-      // (Optionally show a toast here instead of an alert)
-    } catch (err) {
-      console.error('Fehler beim Optimieren:', err);
-      alert(`Fehler beim Optimieren der Route:\n${err.message}`);
-    } finally {
-      setPopupMode('');
-    }
-  };
-  
-  
-  
-
-  // Define background options with preview images.
-  const backgroundOptions = useMemo(
-    () => [
-      {
-        name: "OSM",
-        source: new OSM({ crossOrigin: "anonymous" }),
-        previewUrl: "https://a.tile.openstreetmap.org/10/511/340.png",
-      },
-      {
-        name: "Luftbild",
-        source: new XYZ({
-          url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        }),
-        previewUrl:
-          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/10/511/340",
-      },
-      {
-        name: "Wasserfarbe",
-        source: new StadiaMaps({ layer: "stamen_watercolor" }),
-        previewUrl:
-          "https://stamen-tiles.a.ssl.fastly.net/watercolor/10/541/349.jpg",
-      },
-      {
-        name: "Terrain",
-        source: new StadiaMaps({ layer: "stamen_terrain" }),
-        previewUrl:
-          "https://stamen-tiles.a.ssl.fastly.net/terrain/10/541/349.jpg",
-      },
-      {
-        name: "CartoDB Positron",
-        source: new XYZ({
-          url: "https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
-          crossOrigin: "anonymous",
-        }),
-        previewUrl:
-          "https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/10/511/340.png",
-      },
-    ],
-    []
-  );
 
   // Helper: Compute export overlay dimensions (using 96 DPI).
   const computeTargetDimensions = () => {
@@ -206,7 +122,7 @@ function MapPage() {
         );
         return (
           WFS_URL +
-          "service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:location&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=" +
+          "?service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:location&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=" +
           selectedTrip.id.toString()
         );
       },
@@ -237,7 +153,7 @@ function MapPage() {
         );
         return (
           WFS_URL +
-          "service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:segment&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=" +
+          "?service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:segment&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=" +
           selectedTrip.id.toString()
         );
       },
@@ -313,17 +229,17 @@ function MapPage() {
     segmentSource.on("change", () => {
       // only run once the source has finished loading
       if (segmentSource.getState() !== "ready") return;
-    
+
       // optional: if you're using saved zoom state, skip fit
       if (getZoomState()) return;
-    
+
       // 1) make sure there *are* features
       const feats = segmentSource.getFeatures();
       if (feats.length === 0) {
         // nothing to fit
         return;
       }
-    
+
       // 2) get the extent
       const extent = segmentSource.getExtent();
       // 3) extra safety: check for infinite bounds
@@ -331,7 +247,7 @@ function MapPage() {
       if (!isFinite(minX) || !isFinite(maxX)) {
         return;
       }
-    
+
       // 4) now safely fit the view
       map.getView().fit(extent, {
         padding: [50, 50, 50, 50],
@@ -405,41 +321,6 @@ function MapPage() {
     }
   }, [lineThickness, lineColor, pointSize, pointColor]);
 
-  // UI Handlers.
-
-  // Handle FE-> BE FastApi
-  // OpenRouteService
-  // const handleOptimizeRoute = async () => {
-  //   if (!selectedTransport) return;
-
-  //   //const orsProfile = transportMap[selectedTransport];
-  //   //const lineSegment = lineMap[selectedLineSegment];
-  //   const start = "8.681495,49.41461"; // Einbindung LineSegment(startPunkt) // TODO
-  //   const end = "8.687872,49.420318"; // Einbindung LineSegment(endPunkt) // TODO
-
-  //   // const response = await fetch(
-  //   //   `http://localhost:8000/v2/route/${orsProfile}?start=${start}&end=${end}`
-  //   // );
-
-  //   const data = await response.json(); // Speichern in DB // TODO
-  //   console.log("Route:", data);
-  // };
-
-  // // OpenElevationService => POINTS 2D->3D
-  // const handlePointElevation = async () => {
-  //   if (!selectedPoint) return;
-
-  //   const geometry = pointFeature[selectedPoint];
-
-  //   const response = await fetch(
-  //     `http://localhost:8000/v2/elevation/point/${geometry}`
-  //   );
-
-  //   const point3D = await response.json(); // Speichern in DB // TODO
-
-  //   console.log("Point 3D:", point3D);
-  // };
-
   const toggleBackgroundOptions = () => {
     setShowBackgroundOptions((prev) => !prev);
   };
@@ -463,44 +344,44 @@ function MapPage() {
     mapInstance.current.once("rendercomplete", () => {
       const dpr = window.devicePixelRatio || 1;
       const [mapW, mapH] = mapInstance.current.getSize(); // CSS px
-  
+
       // 1) Render full high-res map into canvas
       const fullCanvas = document.createElement("canvas");
-      fullCanvas.width  = mapW * dpr;
+      fullCanvas.width = mapW * dpr;
       fullCanvas.height = mapH * dpr;
       const fullCtx = fullCanvas.getContext("2d");
       fullCtx.scale(dpr, dpr);
-      mapRef.current.querySelectorAll("canvas").forEach(c => {
+      mapRef.current.querySelectorAll("canvas").forEach((c) => {
         if (c.width > 0) {
           fullCtx.globalAlpha = parseFloat(c.parentNode.style.opacity) || 1;
           fullCtx.drawImage(c, 0, 0);
         }
       });
-  
+
       // 2) Compute scaled crop size
       const scaleDown = 0.75;
-      const cropW_CSS = exportOverlayDims.width  * scaleDown;
+      const cropW_CSS = exportOverlayDims.width * scaleDown;
       const cropH_CSS = exportOverlayDims.height * scaleDown;
       const cropW = cropW_CSS * dpr;
       const cropH = cropH_CSS * dpr;
-  
+
       // 3) Center crop
-      let sx = ((mapW * dpr) - cropW) / 2;
-      let sy = ((mapH * dpr) - cropH) / 2;
-  
+      let sx = (mapW * dpr - cropW) / 2;
+      let sy = (mapH * dpr - cropH) / 2;
+
       // 4) Apply h/v shifts
       const hShiftFrac = 0.3;
       const vShiftFrac = 0.2;
       sx = Math.max(0, sx - cropW * hShiftFrac);
       sy = Math.max(0, sy - cropH * vShiftFrac);
-  
+
       // 5) Crop to new canvas
       const cropCanvas = document.createElement("canvas");
-      cropCanvas.width  = cropW;
+      cropCanvas.width = cropW;
       cropCanvas.height = cropH;
       const cropCtx = cropCanvas.getContext("2d");
       cropCtx.drawImage(fullCanvas, sx, sy, cropW, cropH, 0, 0, cropW, cropH);
-      
+
       // draw the title top-left
       if (exportTitle) {
         const fontSize = 32 * dpr;
@@ -511,9 +392,9 @@ function MapPage() {
         const margin = 10 * dpr;
         cropCtx.fillText(exportTitle, margin, margin);
       }
-  
+
       // 6b) Download as PNG
-      cropCanvas.toBlob(blob => {
+      cropCanvas.toBlob((blob) => {
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
@@ -524,12 +405,29 @@ function MapPage() {
         URL.revokeObjectURL(url);
       }, "image/png");
     });
-  
+
     mapInstance.current.renderSync();
   };
-  
 
-  
+  /**
+   * Get Background Maps
+   */
+  // Define background options with preview images.
+  const backgroundOptions = useMemo(() => backgroundMaps, []);
+
+  /**
+   * Call Optimize Route Helper
+   */
+  const handleOptimizeRoute = () => {
+    optimizeRoute(
+      BE_URL,
+      selectedSegment,
+      selectedTransport,
+      segmentLayerRef,
+      setPopupMode
+    );
+  };
+
   return (
     <div className="map-container">
       <NavigationBar />
@@ -537,10 +435,9 @@ function MapPage() {
         <div ref={mapRef} className="map-view"></div>
         {showExportPanel && exportOverlayDims && (
           <div
-            ref={exportOverlayRef}
             className="export-area-overlay"
             style={{
-              width:  exportOverlayDims.width,
+              width: exportOverlayDims.width,
               height: exportOverlayDims.height,
             }}
           />
@@ -649,7 +546,7 @@ function MapPage() {
 
           <button
             className="optimize-info-button"
-            onClick={() => setShowRouteInfo(prev => !prev)}
+            onClick={() => setShowRouteInfo((prev) => !prev)}
           >
             Optimierung der Route
           </button>
@@ -657,13 +554,18 @@ function MapPage() {
             <div className="empty-window">
               <h2>Route Optimieren</h2>
               <>
-              <p>Wähle ein Linien­Segment aus.<br/>
-                Über «Route Optimieren» können Sie definieren,<br/>
-                mit welchem Verkehrsmittel Sie diese Strecke bewältigt haben.<br/>
-                Im Anschluss können Sie die Route auf den Straßenverlauf legen<br/>
-                und darstellen.
-              </p>
-            </>
+                <p>
+                  Wähle ein Linien­Segment aus.
+                  <br />
+                  Über «Route Optimieren» können Sie definieren,
+                  <br />
+                  mit welchem Verkehrsmittel Sie diese Strecke bewältigt haben.
+                  <br />
+                  Im Anschluss können Sie die Route auf den Straßenverlauf legen
+                  <br />
+                  und darstellen.
+                </p>
+              </>
             </div>
           )}
 
@@ -673,18 +575,16 @@ function MapPage() {
           {showExportPanel && (
             <div className="export-panel">
               <h3>Kartenexport</h3>
-
-                <div className="export-form">
+              <div className="export-form">
                 <label htmlFor="titleInput">Titel:</label>
                 <input
                   id="titleInput"
                   type="text"
                   value={exportTitle}
-                  onChange={e => setExportTitle(e.target.value)}
+                  onChange={(e) => setExportTitle(e.target.value)}
                   placeholder="Geben Sie hier den Titel ein"
                 />
               </div>
-
               <div className="export-form">
                 <label htmlFor="formatSelect">Format:</label>
                 <select
@@ -697,10 +597,10 @@ function MapPage() {
                 </select>
               </div>
               <p>
-                Der zu exportierende Bereich (basierend auf {exportFormat})<br/>
-                und ist in der Karte hervorgehoben.
+                Der zu exportierende Bereich (basierend auf {exportFormat})
+                <br />
+                ist in der Karte hervorgehoben.
               </p>
-
               <button className="export-button" onClick={handlePerformExport}>
                 Export erstellen
               </button>
@@ -733,11 +633,11 @@ function MapPage() {
             <div className="popup-title">Transportmittel wählen:</div>
 
             {[
-              { label: 'Auto', value: 'driving-car' },
-              { label: 'Mountainbike', value: 'cycling-mountain' },
-              { label: 'Rennvelo', value: 'cycling-road' },
-              { label: 'zu Fuss', value: 'foot-walking' },
-              { label: 'Wandern', value: 'foot-hiking' },
+              { label: "Auto", value: "driving-car" },
+              { label: "Mountainbike", value: "cycling-mountain" },
+              { label: "Rennvelo", value: "cycling-road" },
+              { label: "zu Fuss", value: "foot-walking" },
+              { label: "Wandern", value: "foot-hiking" },
             ].map(({ label, value }) => (
               <div className="popup-option" key={value}>
                 <label>
@@ -754,10 +654,7 @@ function MapPage() {
             ))}
 
             <div className="popup-button-container">
-              <button
-                className="popup-button"
-                onClick={optimizeRoute}
-              >
+              <button className="popup-button" onClick={handleOptimizeRoute}>
                 Optimiere Route
               </button>
             </div>
