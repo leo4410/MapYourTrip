@@ -1,4 +1,3 @@
-import httpx
 from app.logger import logger
 from controllers import location_controller, segment_controller, trip_controller,  upload_controller
 from fastapi import FastAPI, HTTPException
@@ -48,23 +47,3 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# OpenElevationService
-@app.get("v2/elevation/point/")
-async def get_elevation_point(
-    geometry: str, # geometry=13.349762,38.11295
-    api_key: str = api_key_default
-):
-    url = f"{ORS_BASE_URL}/elevation/point"
-    params = {
-        "api_key": api_key,
-        "geometry": geometry
-    }
-
-    async with httpx.AsyncClient() as client:
-        response = await client.get(url, params=params)
-
-    if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail=response.text)
-
-    return response.json()
