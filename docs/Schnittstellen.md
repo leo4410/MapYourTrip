@@ -25,7 +25,7 @@ Der Geoserver stellt eine Verbindung von der Datenbank zu dem Frontend her. Es s
 Über den Service OpenRouteService wird die Routenoptimierung durchgeführt. Dabei werden Segmentinformationen (Start und Endpunkt) sowie das Verkehrsmitel dem Service geliefert und es wird eine dem Strassennetz angepaste Route wiedergegeben. Diese Route wird in die Datenbank gespeichert und ersetzt das alte Linienstück.
 In der aktuellen Version der Webaplikation ist der service direcctions implementiert. Bei einer Erweiterung kann man die Funktionalität der elevation sowie pois implementieren. Mittels dem Service elevation ist angedacht ein Höhenprofil zu erstellen. Mittels dem Service pois kann man Interessante Punkte in der Nähe der Route visualisieren.
 
-### OpenRouteService Aufbau
+#### OpenRouteService Aufbau:
 
 {service}: /directions, /elevation, /pois
 
