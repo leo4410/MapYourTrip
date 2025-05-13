@@ -36,4 +36,4 @@ Eine detaillierte API Dokumentation ist nach dem Starten des Backends gemäss In
 ## Geoserver
 
 Der Geoserver wird genutzt, um die Punkt- und Liniendaten der Segmente bereitzustellen. Eine beispielhafte Abfrage von Segmenten des Trips mit der Id 3 sieht so aus. 
-http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:segment&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=2
+```http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:segment&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=2```
