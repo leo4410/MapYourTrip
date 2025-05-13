@@ -4,12 +4,11 @@ import NavigationBar from "../components/NavigationBar";
 import "./HomePage.css";
 import { uploadZip, loadTrips } from "../helpers/ApiRequestHelper";
 
-function HomePage() {
+function HomePage({selectedTrip, setSelectedTrip}) {
   const navigate = useNavigate();
 
   // trip states
   const [trips, setTrips] = useState(null);
-  const [selectedTrip, setSelectedTrip] = useState(null);
 
   // upload modal states
   const [uploadedFile, setUploadedFile] = useState(null);
@@ -17,6 +16,7 @@ function HomePage() {
 
   // upload modal values
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [showLoadingMessage, setShowLoadingMessage] = useState(false);
 
   // ---------------
   // initial effects
@@ -41,7 +41,7 @@ function HomePage() {
   // handle edit trip
   const handleEditTrip = (trip) => {
     setSelectedTrip(trip);
-    navigate("/map", { state: { trip } });
+    navigate("/map");
   };
 
   // handle delete trip
@@ -59,6 +59,8 @@ function HomePage() {
       return;
     }
 
+    setShowLoadingMessage(true);
+
     // create formdata object with uploaded file
     const formData = new FormData();
     formData.append("file", uploadedFile);
@@ -70,6 +72,7 @@ function HomePage() {
       setTrips(loaded_trips);
     });
 
+    setShowLoadingMessage(false);
     setShowUploadModal(false);
   }
 
@@ -107,7 +110,7 @@ function HomePage() {
 
   // handle file drop in upload field
   const handleFileDrop = (event) => {
-    handleDragLeave();
+    handleDragLeave(event);
     setUploadedFile(event.dataTransfer.files[0]);
   };
 
@@ -124,7 +127,7 @@ function HomePage() {
         <div className="journey-item">
           <span>Reise hochladen</span>
           <div className="action-buttons">
-            <button onClick={handleUpload}>Reise Hochladen</button>
+            <button onClick={handleUpload}>Reise hochladen</button>
           </div>
         </div>
 
@@ -135,11 +138,14 @@ function HomePage() {
               <li className="journey-item" key={trip.id}>
                 <span>{trip.name}</span>
                 <div className="action-buttons">
-                  <button onClick={() => handleEditTrip(trip)}>
-                    Reise Bearbeiten
-                  </button>
+                  {trip.id !== selectedTrip?.id && <button onClick={() => handleEditTrip(trip)}>
+                    Reise aktivieren
+                  </button>}
+                  {trip.id === selectedTrip?.id && <button onClick={() => handleEditTrip(trip)}>
+                    Reise aktiv
+                  </button>}
                   <button onClick={() => handleDeleteTrip(trip)}>
-                    Reise Löschen
+                    Reise löschen
                   </button>
                 </div>
               </li>
@@ -180,8 +186,9 @@ function HomePage() {
                 onChange={handleFileChange}
               />
               <div className="upload-buttons">
-                <button onClick={handleSaveUpload}>Speichern</button>
-                <button onClick={handleAbortUpload}>Abbrechen</button>
+                {showLoadingMessage && <p>Datei wird hochgeladen...</p>}
+                {!showLoadingMessage &&<button onClick={handleSaveUpload}>Speichern</button>}
+                {!showLoadingMessage && <button onClick={handleAbortUpload}>Abbrechen</button>}
               </div>
             </div>
           </div>

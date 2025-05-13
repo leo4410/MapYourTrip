@@ -22,8 +22,6 @@ import "./MapPage.css";
 import { SymbolSettingsContext } from "../SymbolSettingsContext";
 import { getZoomState, setZoomState } from "../ZoomState.js";
 
-import { useLocation } from "react-router-dom";
-
 // Register EPSG:2056
 proj4.defs(
   "EPSG:2056",
@@ -31,11 +29,7 @@ proj4.defs(
 );
 register(proj4);
 
-function MapPage({ WFS_URL, WFS_TYPE, BE_URL }) {
-  // load location and passed states
-  const location = useLocation();
-  const selectedTrip = location.state?.trip;
-
+function MapPage({ WFS_URL, WFS_TYPE, BE_URL, selectedTrip }) {
   const mapRef = useRef(null);
   const popupRef = useRef(null);
   const mapInstance = useRef(null);
@@ -83,6 +77,10 @@ function MapPage({ WFS_URL, WFS_TYPE, BE_URL }) {
   };
 
   useEffect(() => {
+    if (selectedTrip == null) {
+      navigate("/");
+    }
+
     if (!showExportPanel || !mapRef.current) {
       setExportOverlayDims(null);
       return;
@@ -125,7 +123,7 @@ function MapPage({ WFS_URL, WFS_TYPE, BE_URL }) {
           "?service=WFS&version=1.1.0&request=GetFeature&typename=" +
           WFS_TYPE +
           ":location&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=" +
-          selectedTrip.id.toString()
+          selectedTrip?.id.toString()
         );
       },
       strategy: bboxStrategy,
@@ -158,7 +156,7 @@ function MapPage({ WFS_URL, WFS_TYPE, BE_URL }) {
           "?service=WFS&version=1.1.0&request=GetFeature&typename=" +
           WFS_TYPE +
           ":segment&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=" +
-          selectedTrip.id.toString()
+          selectedTrip?.id.toString()
         );
       },
       strategy: bboxStrategy,
