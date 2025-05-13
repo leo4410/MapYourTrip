@@ -14,5 +14,3 @@ Hier auf dieser Seite kannst du deine Reisen verwalten und neue Reisen jeweils n
 ---
 
 [<- Vorherige Seite](01_Polarsteps.md) 1. Wegleitung zum Download deiner Polarstepsdaten | 3. Kartenbereich mit verschiedenen Interaktionen [Nächste Seite ->](03_MapPage.md)
-
-[Home](index.md)
