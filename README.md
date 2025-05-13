@@ -34,13 +34,13 @@ cd MapYourTrip
 
 Für dieses Projekt wird ein funktionsfähiger PostgreSQL Server vorausgesetzt. Dieser kann gegebenenfalls gemäss [IGEO Installationsanleitung](documents/Installationsanleitung_PostgreSQL_PostGIS_PGAdmin_IGEO.pdf) aufgesetzt und lokal betrieben werden. Die Verbindnung zum Datenbankserver wird über pgAdmin hergestellt und ist nachfolgend beispielhaft beschrieben.
 
-<img src="bilder/setup/db_1.png" alt="alt text" height="200"> <img src="bilder/setup/db_2.png" alt="alt text" height="200"> <img src="bilder/setup/db_3.png" alt="alt text" height="200">
+<img src="docs/docs/bilder/setup/db_1.png" alt="alt text" height="200"> <img src="docs/docs/bilder/setup/db_2.png" alt="alt text" height="200"> <img src="docs/docs/bilder/setup/db_3.png" alt="alt text" height="200">
 
 Sobald eine Verbindung zu einem Datenabnkserver besteht, kann die Projektdatenbank aufgesetzt werden. 
 
 1. Erstellen einer Datenabank für das Projekt
 
-<img src="bilder/setup/db_4.png" alt="alt text" height="300"> <img src="bilder/setup/db_5.png" alt="alt text" height="300">
+<img src="docs/docs/bilder/setup/db_4.png" alt="alt text" height="300"> <img src="docs/bilder/setup/db_5.png" alt="alt text" height="300">
 
 2. Erstellen des Datenbank Schemas durch das Ausführen von [db_schema.sql](database/db_schema.sql)
 3. Generieren der notwendigen Testdaten durch das Ausführen von [db_insert.sql](database/db_insert.sql)
@@ -64,7 +64,7 @@ Damit das FastAPI Backend ordnungsgemäss betrieben werden kann, muss im Verzeic
 }
 ```
 
-1. Conda Umgebung für das Projekt mit allen notwendigen Packages aus der [requirements.txt](server/requirements.txt) Datei aufsetzen
+1. Conda Umgebung für das Projekt mit allen notwendigen Packages aus der [requirements.txt](server/requirements.txt) Datei aufsetzen. Dafür muss eine Anaconda Prompt im geklonten Verzeichnis geöffnet werden
 
 ```shell
 cd server
@@ -84,19 +84,19 @@ Bevor der Geoserver für das Projekt konfiguriert werden kann, muss eine laufend
 
 1. Aufrufen von [http://localhost:8080/geoserver/web/?2](http://localhost:8080/geoserver/web/?2) und anmelden auf dem Geoserver
 
-<img src="bilder/setup/gs_1.png" alt="alt text" height="200"> 
+<img src="docs/bilder/setup/gs_1.png" alt="alt text" height="200"> 
 
 2. Erstellen eines Arbeitsbereiches für das Projekt mit Angabe der folgenden Parameter 
 
-<img src="bilder/setup/gs_2.png" alt="alt text" height="200"> <img src="bilder/setup/gs_3.png" alt="alt text" height="200">
+<img src="docs/bilder/setup/gs_2.png" alt="alt text" height="200"> <img src="docs/bilder/setup/gs_3.png" alt="alt text" height="200">
 
 3. Hinzufügen eines PostGIS Datenspeichers mit Angabe der folgenden Parameter
 
-<img src="bilder/setup/gs_4.png" alt="alt text" height="200"> <img src="bilder/setup/gs_5.png" alt="alt text" height="200"> <img src="bilder/setup/gs_6.png" alt="alt text" height="200">
+<img src="docs/bilder/setup/gs_4.png" alt="alt text" height="200"> <img src="docs/bilder/setup/gs_5.png" alt="alt text" height="200"> <img src="docs/bilder/setup/gs_6.png" alt="alt text" height="200">
 
 4. Hinzufügen der Layer Location und Segment zum Geoserver. Beim Publizieren sind die folgenden Parameter anzupassen und das begrenzte Rechteck ist aus den Daten zu berechnen
 
-<img src="bilder/setup/gs_7.png" alt="alt text" height="200"> <img src="bilder/setup/gs_8.png" alt="alt text" height="200"> <img src="bilder/setup/gs_9.png" alt="alt text" height="200">
+<img src="docs/bilder/setup/gs_7.png" alt="alt text" height="200"> <img src="docs/bilder/setup/gs_8.png" alt="alt text" height="200"> <img src="docs/bilder/setup/gs_9.png" alt="alt text" height="200">
 
 ## Frontend installieren
 
@@ -107,3 +107,5 @@ cd ../client
 npm install
 npm run start
 ```
+
+Vor dem Start müssen in der Datei ```src/App.js``` gegebenenfalls die Backend URIs angepasst werden. 
