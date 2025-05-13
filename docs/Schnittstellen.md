@@ -3,6 +3,7 @@ layout: default
 title: MapYourTrip
 ---
 
+
 # Schnittstellen
 
 Einleitung zu den implementierten Schnittstellen und deren Funktionen
