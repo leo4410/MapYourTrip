@@ -3,10 +3,9 @@ layout: default
 title: MapYourTrip
 ---
 
+## Statistik
 
-## 4. Statistiken
-In der Statistik Seite kann eine Übersicht über die Reise erstellt werden. Dabei kann ein Bild eines Kartenausschnittes sowie die Koordinaten und Länge von ausgewählten Linien wiedergegeben werden.
-
+Auf der Statistik Seite kann eine Übersicht über die Reise erstellt werden. Dabei kann ein Bild eines Kartenausschnittes sowie die Koordinaten und Länge von ausgewählten Linien wiedergegeben werden.
 
 ### Erstellen von Statistiken
 
@@ -15,8 +14,5 @@ In der Statistik Seite kann eine Übersicht über die Reise erstellt werden. Dab
   Dein Browser unterstützt das Video-Tag nicht.
 </video>
 
----
-
-
-[<- Vorherige Seite](03_MapPage.md) 3. Kartenbereich mit verschiedenen Interaktionen
+[<- Vorherige Seite](03_MapPage.md) Kartenbereich | 
 
