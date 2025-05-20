@@ -19,10 +19,6 @@ Mit der Web­applikation können Sie Ihre exportierten Reise-Logs ganz nach Ihre
     </video>
 </div>
 
-### Architektur der Webapplikation
-<div align="center">
-  <img src="bilder/Architekturdiagramm.png" height="400" alt="MapYourTrip Logo">
-</div>
 
 
     
