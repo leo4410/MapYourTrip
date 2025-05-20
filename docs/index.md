@@ -9,7 +9,7 @@ title: MapYourTrip
 </div>
 
 MapYourTrip ist Ihre individuelle Reiseverwaltung für Polarsteps-Daten.
-Mit der Web­applikation können Sie Ihre exportierten Reise-Logs ganz nach Ihren Wünschen filtern, in einer eigenen Datenbank ablegen und übersichtlich visualisieren. Nutzen Sie die interaktive Kartenansicht um die Karten nach Ihren wünschen zu visualisieren und für ein Fotoalbum zu exportieren.
+Mit der Web­applikation können Sie Ihre exportierten Reise-Logs ganz nach Ihren Wünschen filtern, in einer eigenen Datenbank ablegen und übersichtlich visualisieren. Nutzen Sie die interaktive Kartenansicht um die Karten nach Ihren wünschen zu visualisieren und für ein Fotoalbum oder Blogpage zu exportieren.
 
 <div align="center">
         <video width="900"   controls>
@@ -49,12 +49,15 @@ Im Reiter **Funktionalitäten** ist pro Arbeitsschritt / Funktionalität ein Kur
 
 
 **Server**
+
 Im Reiter [Server](backend.md) ist die Datebbankstrukctur in der Postgis Datenbank erläutert sowie das FastAPI Backend für die Datenbank abfragen und der Geoserver als Schnittstelle von dem Backend zu dem Frontend.  
 
 **Client**
+
 Im Reiter [Client](frontend.md) werden die Komponenten / Pages des Frontend dokumentiert sowie die verwendeten Bausteine für den Aufbau des Frontends (React, Node Package Manager und Opne Layers).
 
 **Schnittstellen**
+
 Unter [Schnittstellen](Schnittstellen.md) ist die externe Schnittstelle zum OpenRouteService dokumentiert.
 
 ### Github Repository und README
