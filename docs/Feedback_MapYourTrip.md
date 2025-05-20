@@ -22,17 +22,17 @@ GitHub Page scheint noch nicht fertig zu sein, Fleisch am Knochen mit Erläuteru
 
 **Allgemein**: Beschreibung zum Projekt zu knapp und sehr nüchtern gehalten, wesentliche Elemente vorhanden, sind jedoch nicht weiterausgeführt und der User wird nicht geführt. Es fehlt eine Einführung auf der GitHub Page, die das Projekt in ein paar Sätzen beschreibt, sowie die Ziele und Motivation warum das Projekt nützlich ist und potentielle User motivieren soll.
 
-- [x] Kein Architekturdiagram
+- [] Kein Architekturdiagram
 - [x] Absichtlich keine Namen aufgeführt?
 - [x] Wieso taucht auf der GitHub Page das MapYourTrip Logo überhaupt nicht auf?
-- [x] Es fehlt eine Übersicht wie die Komponenten zusammenhängen
+- [] Es fehlt eine Übersicht wie die Komponenten zusammenhängen
 - [x] Kein Teaserbild, welches das Projekt mit einem Screenshot/Kurzvideo bewirbt
-- [x] Anstatt zu beschreiben wo welche Elemente zu finden sind, lieber erst aufführen was das Projekt umfasst vielleicht mit einer Featuretabelle oder die Architektur im wesentlichen beschreibt mit einem Link zu den Details
+- [] Anstatt zu beschreiben wo welche Elemente zu finden sind, lieber erst aufführen was das Projekt umfasst vielleicht mit einer Featuretabelle oder die Architektur im wesentlichen beschreibt mit einem Link zu den Details
 - [x] Überlegen ob und wie eine Bedienungsanleitung integriert werden kann.
-- [x] Bei den Funktionalitäten fehlt eine Einführung,
+- [] Bei den Funktionalitäten fehlt eine Einführung,
 - [] vielleicht einen Ausblick möglicher weiterer Features für die Betaversion aufführen.
-- [x] Aufführen von Use Cases oder Anwendungsfälle fehlen, es ist eher ein Raten als ein Erfahren was das Projekt ist
-- [x] Verknüpfen von User Stories und Anwendungsfälle helfen den Mehrwert der Anwendung zu verdeutlichen
+- [] Aufführen von Use Cases oder Anwendungsfälle fehlen, es ist eher ein Raten als ein Erfahren was das Projekt ist
+- [] Verknüpfen von User Stories und Anwendungsfälle helfen den Mehrwert der Anwendung zu verdeutlichen
 
 **Server:**
 
@@ -40,7 +40,7 @@ GitHub Page scheint noch nicht fertig zu sein, Fleisch am Knochen mit Erläuteru
 - [] Kurze Einführung zur Wahl und Begründung der genutzten Technologien fehlt
 - [] User werden im Text nicht geführt
 - [x] Datenmodell zu klein nicht möglich den Text zu lesen und keine Möglichkeit über eine URL darauf zuzugreifen
-- [] GeoServer und OGC Standard Nutzung nicht aufgeführt
+- [x] GeoServer und OGC Standard Nutzung nicht aufgeführt
 
 **Code**
 
