@@ -107,16 +107,16 @@ MapYourTrip
 MapYourTrip
 # Server
 localhost
-# Port
-5433 
-# Datenabnkname
+# Port pgAdmin
+<port> # usually 5433, 5432, 1234 depends on Postgres version
+# Datenbankname
 mapyourtrip
 # Datenbankschema
-public
+public # or other
 # Benutzer pgAdmin
-postgres
+<username> # postgres
 # Passwort pgAdmin
-postgres
+<password> # postgres
 ```
 
 1. Hinzufügen der Layer Location und Segment zum Geoserver. Beim Publizieren sind die folgenden Parameter anzupassen und das begrenzte Rechteck ist aus den Daten zu berechnen
@@ -139,6 +139,6 @@ Vor dem Start müssen in der Datei `src/App.js` gegebenenfalls die Backend URIs 
 
 Über folgendende Homepage kann der API-Key bezogen werden: [OpenRouteService](https://openrouteservice.org/dev/#/api-docs)
 
-Im folgenden Video ist noch Visualisiert wie genau.
+Im folgenden Bild ist das Video noch verlinkt:
 
-<video src="https://github.com/leo4410/MapYourTrip/blob/main/docs/videos/ORS_API_key.mp4" width="600" controls></video>
+[![Demo-Video](.\docs\bilder\ORS_API_KEY_VideoFrame.png)](./docs/videos/ORS_API_key.mp4)
