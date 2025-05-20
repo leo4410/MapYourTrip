@@ -27,7 +27,20 @@ cd MapYourTrip
 
 ## Datenbank installieren
 
-Für dieses Projekt wird ein funktionsfähiger PostgreSQL Server vorausgesetzt. Dieser kann gegebenenfalls gemäss [IGEO Installationsanleitung](docs/documents/Installationsanleitung_PostgreSQL_PostGIS_PGAdmin_IGEO.pdf) aufgesetzt und lokal betrieben werden. Die Verbindnung zum Datenbankserver wird über pgAdmin hergestellt und ist nachfolgend beispielhaft beschrieben.
+Für dieses Projekt wird ein funktionsfähiger PostgreSQL Server vorausgesetzt. Dieser kann installiert und aufgesetzt und lokal betrieben werden. Unter folgenden link [Postgres](https://www.postgresql.org/download/) downloaden. Wenn noch nicht vorhanden folgende Schritte beachten:
+
+Im Installationsprozess diese Komponenten installieren lassen:
+
+- PostgreSQL Server
+- pgAdmin 4
+- Stack Builder
+- Command Line Tool
+
+Definition von `Password` und `Port` im Postgres-Installation notieren.
+
+Instalieren von `PostGIS` in Stackbilder.
+
+Die Verbindnung zum Datenbankserver wird über pgAdmin hergestellt und ist nachfolgend beispielhaft beschrieben.
 
 <img src="/docs/bilder/setup/db_1.png" height="200"> 
 <img src="/docs/bilder/setup/db_2.png" height="200"> 
