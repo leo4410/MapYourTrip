@@ -36,7 +36,7 @@ api_key_default = "5b3ce3597851110001cf62480bd839bf8084480dac4bf416bd48a88a"  # 
 
 # define cors allowed origins
 origins = [
-    "http://localhost:3000"
+    "http://localhost:5173"
 ]
 
 # set further cors settings and allow defined origins
