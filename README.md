@@ -125,6 +125,7 @@ http://localhost:8080/MapYourTrip
 <img src="docs/bilder/setup/gs_4_5_6.png" height="500">
 
 ```shell
+# Zusammenfassung der Parameter
 # Name Arbeitsbereich
 MapYourTrip
 # Name Datenquelle
