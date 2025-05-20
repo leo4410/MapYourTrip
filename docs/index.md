@@ -27,7 +27,7 @@ Mit der Web­applikation können Sie Ihre exportierten Reise-Logs ganz nach Ihre
 
 Die Webaplikation bestehet aus einer Frontendkomponente, Backendkomponente inklusive Datenbank sowie einigen Schnittstellen.
 
-#### Funktionalitäten
+**Funktionalitäten**
 
 Im Reiter **Funktionalitäten** ist pro Arbeitsschritt / Funktionalität ein Kurzvideo ersichtlich. Diese dienen als Kurzanleitung und Übersicht der Möglichkeiten der Webapplikation.
 
@@ -48,13 +48,13 @@ Im Reiter **Funktionalitäten** ist pro Arbeitsschritt / Funktionalität ein Kur
   Wegleitung für das erstellen von Statistiken über die Reise. Auslessen von Höheninformationen, Längen und Koordinaten.
 
 
-#### Server
+**Server**
 Im Reiter [Server](backend.md) ist die Datebbankstrukctur in der Postgis Datenbank erläutert sowie das FastAPI Backend für die Datenbank abfragen und der Geoserver als Schnittstelle von dem Backend zu dem Frontend.  
 
-#### Client
+**Client**
 Im Reiter [Client](frontend.md) werden die Komponenten / Pages des Frontend dokumentiert sowie die verwendeten Bausteine für den Aufbau des Frontends (React, Node Package Manager und Opne Layers).
 
-#### Schnittstellen
+**Schnittstellen**
 Unter [Schnittstellen](Schnittstellen.md) ist die externe Schnittstelle zum OpenRouteService dokumentiert.
 
 ### Github Repository und README
