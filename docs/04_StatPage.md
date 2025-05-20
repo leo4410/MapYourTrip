@@ -5,11 +5,11 @@ title: MapYourTrip
 
 ## Statistik
 
-Auf der Statistik Seite kann eine Übersicht über die Reise erstellt werden. Dabei kann ein Bild eines Kartenausschnittes sowie die Koordinaten und Länge von ausgewählten Linien wiedergegeben werden.
+Auf der Statistik Seite kann eine Übersicht über die Reise erstellt werden. Auf der Linken seite sind die Interaktiven Elemente verbaut und auf der Rechten Seite eine Voransicht der Statistiken.
 
-### Erstellen von Statistiken
+- **01 –Erstellen von Statistiken**
 
-Das folgende Video zeigt, wie Statistiken berechnet- und ein Kartenausschnitt exportiert werden kann.
+  Man hat die Option ein Bild, Koordinatenwerte sowie Distanzen in die Statistik zu laden. 
 
 <video width="900"   controls>
   <source src="videos\StatPage_Stats.mp4" type="video/mp4">
