@@ -28,8 +28,8 @@ GitHub Page scheint noch nicht fertig zu sein, Fleisch am Knochen mit Erläuteru
 - [x] Wieso taucht auf der GitHub Page das MapYourTrip Logo überhaupt nicht auf?
 - Es fehlt eine Übersicht wie die Komponenten zusammenhängen
 - [x] Kein Teaserbild, welches das Projekt mit einem Screenshot/Kurzvideo bewirbt
-- Anstatt zu beschreiben wo welche Elemente zu finden sind, lieber erst aufführen was das Projekt umfasst vielleicht mit einer Featuretabelle oder die Architektur im wesentlichen beschreibt mit einem Link zu den Details
-- Überlegen ob und wie eine Bedienungsanleitung integriert werden kann.
+- [x] Anstatt zu beschreiben wo welche Elemente zu finden sind, lieber erst aufführen was das Projekt umfasst vielleicht mit einer Featuretabelle oder die Architektur im wesentlichen beschreibt mit einem Link zu den Details
+- [x] Überlegen ob und wie eine Bedienungsanleitung integriert werden kann.
 - Bei den Funktionalitäten fehlt eine Einführung, 
 - vielleicht einen Ausblick möglicher weiterer Features für die Betaversion aufführen.
 - [x] Aufführen von Use Cases oder Anwendungsfälle fehlen, es ist eher ein Raten als ein Erfahren was das Projekt ist
@@ -51,7 +51,8 @@ GitHub Page scheint noch nicht fertig zu sein, Fleisch am Knochen mit Erläuteru
 - Code faktisch keine Kommentare oder sonstige Erläuterungen..
 
 
-**Video**: Teaser Video fehlt
+**Video**: 
+- [x] Teaser Video fehlt
 
 **Reflexion**:
 Ergänzt Eure Reflexion mit den folgenden Punkten:

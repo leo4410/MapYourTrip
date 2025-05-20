@@ -28,16 +28,34 @@ Mit der Web­applikation können Sie Ihre exportierten Reise-Logs ganz nach Ihre
 Die Webaplikation bestehet aus einer Frontendkomponente, Backendkomponente inklusive Datenbank sowie einigen Schnittstellen.
 
 #### Funktionalitäten
-Im Reiter Funktionalitäten ist pro Arbeitsschritt / Funktionalität ein Kurzvideo ersichtlich. Diese dienen als Kurzanleitung und übersicht der möglichkeiten der Webappliaktion.
+
+Im Reiter **Funktionalitäten** ist pro Arbeitsschritt / Funktionalität ein Kurzvideo ersichtlich. Diese dienen als Kurzanleitung und Übersicht der Möglichkeiten der Webapplikation.
+
+- **01 – Vorbereitung Polarsteps-Daten:**  
+  [Zur Anleitung »01_Polarsteps«](01_Polarsteps.md)  
+  Wegleitung zum Download deiner Polarsteps-Daten
+
+- **02 – Upload der Reisedaten auf MapYourTrip:**  
+  [Zur Anleitung »02_Reiseverwaltung«](02_HomePage.md)  
+  Reiseverwaltung und Hochladen von neuen Reisen
+
+- **03 – Visualisierung des Karteninhaltes und Export einer Karte:**  
+  [Zur Anleitung »03_Kartenbereich«](03_MapPage.md)  
+  Wegleitung für die veränderung der hintergrundkarte, Anpassung der Visualisierung der Routenelementen, Optimierung der Route an das Verkehrsnetz und Export eines Bildes der Karte
+
+- **04 – Erstellen von Statistiken über die Reise:**  
+  [Zur Anleitung »04_Statisitk«](04_StatPage.md)  
+  Wegleitung für das erstellen von Statistiken über die Reise. Auslessen von Höheninformationen, Längen und Koordinaten.
+
 
 #### Server
-Im Reiter Server ist die Datebbankstrukctur in der Postgis Datenbank erläutert sowie das FastAPI Backend für die Datenbank abfragen und der Geoserver als Schnittstelle von dem Backend zu dem Frontend.  
+Im Reiter [Server](backend.md) ist die Datebbankstrukctur in der Postgis Datenbank erläutert sowie das FastAPI Backend für die Datenbank abfragen und der Geoserver als Schnittstelle von dem Backend zu dem Frontend.  
 
 #### Client
-Im Reiter Client werden die Komponenten / Pages des Frontend dokumentiert sowie die verwendeten Bausteine für den Aufbau des Frontends (React, Node Package Manager und Opne Layers).
+Im Reiter [Client](frontend.md) werden die Komponenten / Pages des Frontend dokumentiert sowie die verwendeten Bausteine für den Aufbau des Frontends (React, Node Package Manager und Opne Layers).
 
 #### Schnittstellen
-Unter Schnittstellen ist die externe Schnittstelle zum OpenRouteService dokumentiert.
+Unter [Schnittstellen](Schnittstellen.md) ist die externe Schnittstelle zum OpenRouteService dokumentiert.
 
 ### Github Repository und README
 
