@@ -1,5 +1,9 @@
 # Map Your Trip
 
+Einleitung zum Projekt
+
+---
+
 Server Client Projekt für die Projektarbeit Map Your Trip im Modul 4230. Die zugehörige Dokumentation ist in den zugehörigen GitHub Pages unter [https://leo4410.github.io/MapYourTrip/](https://leo4410.github.io/MapYourTrip/) dokumentiert.
 
 - **Backend:** FastAPI, GeoServer
@@ -38,21 +42,21 @@ Im Installationsprozess diese Komponenten installieren lassen:
 
 Definition von `Password` und `Port` im Postgres-Installation notieren.
 
-Instalieren von `PostGIS` in Stackbilder.
+Installieren von `PostGIS` in Stackbilder.
+
+## Datenbank erstellen
 
 Die Verbindnung zum Datenbankserver wird über pgAdmin hergestellt und ist nachfolgend beispielhaft beschrieben.
 
-<img src="/docs/bilder/setup/db_1.png" height="200"> 
-<img src="/docs/bilder/setup/db_2.png" height="200"> 
-<img src="/docs/bilder/setup/db_3.png" height="200">
-<img src="/docs/bilder/setup/db_1.png" height="200"> <img src="/docs/bilder/setup/db_2.png" height="200"> <img src="/docs/bilder/setup/db_3.png" height="200">
+<img src="./docs/bilder/setup/db_1_2_3.png" height="500">
 
-Sobald eine Verbindung zu einem Datenabankserver besteht, kann die Projektdatenbank aufgesetzt werden.
-Sobald eine Verbindung zu einem Datenabnkserver besteht, kann die Projektdatenbank aufgesetzt werden.
+Sobald eine Verbindung zum Datenabankserver besteht, kann die Projektdatenbank aufgesetzt werden.
 
-1. Erstellen einer Datenabank für das Projekt
+1. Erstellen einer Datenabank für das Projekt mit pgAdmin
 
- <img src="docs/bilder/setup/db_5.png" height="300">
+<img src="docs/bilder/setup/db_5.png" height="400">
+
+Aufbau der Struktur der Datenbank
 
 1. Erstellen des Datenbank Schemas durch das Ausführen von [db_schema.sql](database/db_schema.sql)
 2. Generieren der notwendigen Testdaten durch das Ausführen von [db_insert.sql](database/db_insert.sql)
@@ -62,6 +66,8 @@ Sobald eine Verbindung zu einem Datenabnkserver besteht, kann die Projektdatenba
 Das Backend des Projekts besteht aus einem FastAPI Backend, als auch einem Geoserver zur Bereitstellung eines WFS.
 
 ### FastAPI Backend
+
+---
 
 Damit das FastAPI Backend ordnungsgemäss betrieben werden kann, muss im Verzeichnis `server` eine Datei mit dem Titel `config.json` erstellt werden. Die Datei enthält die Konfigurationsparameter für die Datenbankverbindung.
 
@@ -75,14 +81,14 @@ Damit das FastAPI Backend ordnungsgemäss betrieben werden kann, muss im Verzeic
 }
 ```
 
-1. Conda Umgebung für das Projekt mit allen notwendigen Packages aus der [requirements.txt](server/requirements.txt) Datei aufsetzen. Dafür muss eine Anaconda Prompt im geklonten Verzeichnis geöffnet werden
+**1. Conda Umgebung** für das Projekt mit allen notwendigen Packages aus der [requirements.txt](server/requirements.txt) Datei aufsetzen. Dafür muss eine Anaconda Prompt im geklonten Verzeichnis geöffnet werden
 
 ```shell
 cd server
 conda create -n mapyourtrip_env -c conda-forge python=3.13.0 --file requirements.txt --yes
 ```
 
-2. Backend in der Conda Umgebung starten und im Browser unter [http://localhost:8000/](http://localhost:8000/) verifizieren
+**2. Backend** in der Conda Umgebung **starten** und im Browser unter [http://localhost:8000/](http://localhost:8000/) verifizieren
 
 ```shell
 conda activate mapyourtrip_env
@@ -91,15 +97,20 @@ uvicorn app.main:app --reload
 
 ### Geoserver
 
-Bevor der Geoserver für das Projekt konfiguriert werden kann, muss eine laufende Instanz verfügbar sein. Das Aufsetzen eines Geoservers ist in der [Installationsanleitung von Pia Bereuter](docs/documents/4230_E03_Geoserver.pdf) beschrieben. In dieser Anleitung wird der Geoserver lokal betrieben.
+---
+
+Der Geoverver kann unter [Geoserver.com](https://geoserver.org/download/) heruntergeladen werden und eine allgemeine Dokumentation ist hier verfügbar [Link Manual](https://docs.geoserver.org/stable/en/user/index.html).
+Bevor der Geoserver für das Projekt konfiguriert werden kann, muss eine laufende Instanz verfügbar sein. Das Aufsetzen eines Geoservers ist in der [Installationsseite](https://docs.geoserver.org/latest/en/user/) beschrieben. In dieser Anleitung wird der Geoserver lokal betrieben.
+
+Die Folgenden Schritte werden hier bei [Dokumentation von Geoserver.com](https://docs.geoserver.org/stable/en/user/data/webadmin/index.html) beschrieben und sind als zusätzliche Unterstützung gedacht zu den Screenshots.
 
 1. Aufrufen von [http://localhost:8080/geoserver/web/?2](http://localhost:8080/geoserver/web/?2) und anmelden auf dem Geoserver
 
-<img src="docs/bilder/setup/gs_1.png" height="200">
+<img src="docs/bilder/setup/gs_1.png" height="300">
 
 2. Erstellen eines Arbeitsbereiches für das Projekt mit Angabe der folgenden Parameter
 
-<img src="docs/bilder/setup/gs_2.png" height="200"> <img src="docs/bilder/setup/gs_3.png" height="200">
+<img src="docs/bilder/setup/gs_2und3.png" height="300">
 
 ```shell
 # Name Arbeitsbereich
@@ -111,7 +122,7 @@ http://localhost:8080/MapYourTrip
 
 3. Hinzufügen eines PostGIS Datenspeichers mit Angabe der folgenden Parameter
 
-<img src="docs/bilder/setup/gs_4.png" height="200"> <img src="docs/bilder/setup/gs_5.png" height="200"> <img src="docs/bilder/setup/gs_6.png" height="200">
+<img src="docs/bilder/setup/gs_4_5_6.png" height="500">
 
 ```shell
 # Name Arbeitsbereich
@@ -121,20 +132,20 @@ MapYourTrip
 # Server
 localhost
 # Port pgAdmin
-<port> # usually 5433, 5432, 1234 depends on Postgres version
+<port> # in Postgres definiert
 # Datenbankname
 mapyourtrip
 # Datenbankschema
 public # or other
 # Benutzer pgAdmin
-<username> # postgres
+<username> # bsp postgres
 # Passwort pgAdmin
-<password> # postgres
+<password> # bsp postgres
 ```
 
 1. Hinzufügen der Layer Location und Segment zum Geoserver. Beim Publizieren sind die folgenden Parameter anzupassen und das begrenzte Rechteck ist aus den Daten zu berechnen
 
-<img src="docs/bilder/setup/gs_7.png" height="200"> <img src="docs/bilder/setup/gs_8.png" height="200"> <img src="docs/bilder/setup/gs_9.png" height="200">
+<img src="docs/bilder/setup/gs_7_8_9.png" height="500">
 
 ## Frontend installieren
 
