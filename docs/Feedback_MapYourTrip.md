@@ -24,15 +24,15 @@ GitHub Page scheint noch nicht fertig zu sein, Fleisch am Knochen mit Erläuteru
 **Allgemein**: Beschreibung zum Projekt zu knapp und sehr nüchtern gehalten, wesentliche Elemente vorhanden, sind jedoch nicht weiterausgeführt und der User wird nicht geführt. Es fehlt eine Einführung auf der GitHub Page, die das Projekt in ein paar Sätzen beschreibt, sowie die Ziele und Motivation warum das Projekt nützlich ist und potentielle User motivieren soll. 
 
 - Kein Architekturdiagram
-- Absichtlich keine Namen aufgeführt?
-- Wieso taucht auf der GitHub Page das MapYourTrip Logo überhaupt nicht auf?
+- [x] Absichtlich keine Namen aufgeführt?
+- [x] Wieso taucht auf der GitHub Page das MapYourTrip Logo überhaupt nicht auf?
 - Es fehlt eine Übersicht wie die Komponenten zusammenhängen
-- Kein Teaserbild, welches das Projekt mit einem Screenshot/Kurzvideo bewirbt
+- [x] Kein Teaserbild, welches das Projekt mit einem Screenshot/Kurzvideo bewirbt
 - Anstatt zu beschreiben wo welche Elemente zu finden sind, lieber erst aufführen was das Projekt umfasst vielleicht mit einer Featuretabelle oder die Architektur im wesentlichen beschreibt mit einem Link zu den Details
 - Überlegen ob und wie eine Bedienungsanleitung integriert werden kann.
 - Bei den Funktionalitäten fehlt eine Einführung, 
 - vielleicht einen Ausblick möglicher weiterer Features für die Betaversion aufführen.
-- Aufführen von Use Cases oder Anwendungsfälle fehlen, es ist eher ein Raten als ein Erfahren was das Projekt ist
+- [x] Aufführen von Use Cases oder Anwendungsfälle fehlen, es ist eher ein Raten als ein Erfahren was das Projekt ist
 - Verknüpfen von User Stories und Anwendungsfälle helfen den Mehrwert der Anwendung zu verdeutlichen
 
 **Server:**
