@@ -39,7 +39,7 @@ GitHub Page scheint noch nicht fertig zu sein, Fleisch am Knochen mit Erläuteru
 - [] Server einführen und Ziel erläutern
 - [] Kurze Einführung zur Wahl und Begründung der genutzten Technologien fehlt
 - [] User werden im Text nicht geführt
-- [] Datenmodell zu klein nicht möglich den Text zu lesen und keine Möglichkeit über eine URL darauf zuzugreifen
+- [x] Datenmodell zu klein nicht möglich den Text zu lesen und keine Möglichkeit über eine URL darauf zuzugreifen
 - [] GeoServer und OGC Standard Nutzung nicht aufgeführt
 
 **Code**
