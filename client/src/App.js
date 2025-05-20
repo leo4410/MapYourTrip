@@ -18,7 +18,7 @@ function App() {
     <SymbolSettingsProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<HomePage selectedTrip={selectedTrip} setSelectedTrip={setSelectedTrip} />} />
+          <Route path="/" element={<HomePage BE_URL={BE_URL} selectedTrip={selectedTrip} setSelectedTrip={setSelectedTrip} />} />
           <Route path="/map" element={<MapPage WFS_URL={WFS_URL} WFS_TYPE={WFS_TYPE} BE_URL={BE_URL} selectedTrip={selectedTrip }/>} />
           <Route path="/stats" element={<StatsPage WFS_URL={WFS_URL} WFS_TYPE={WFS_TYPE} selectedTrip={selectedTrip} />} />
         </Routes>

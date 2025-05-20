@@ -1,6 +1,6 @@
-export async function uploadZip(formData) {
+export async function uploadZip(BE_URL, formData) {
   try {
-    const response = await fetch("http://localhost:8000/upload/zip", {
+    const response = await fetch(`${BE_URL}/upload/zip`, {
       method: "POST",
       body: formData,
     });
@@ -13,9 +13,9 @@ export async function uploadZip(formData) {
   }
 }
 
-export async function loadTrips() {
+export async function loadTrips(BE_URL) {
   try {
-    const response = await fetch("http://localhost:8000/trips", {
+    const response = await fetch(`${BE_URL}/trips`, {
       method: "GET",
     });
     if (!response.ok) {
