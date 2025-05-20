@@ -3,10 +3,12 @@ layout: default
 title: MapYourTrip
 ---
 
-## MapYourTrip
+## MapYourTrip 
 <div align="center">
   <img src="bilder/Logo.png" height="200" alt="MapYourTrip Logo">
 </div>
+
+Willkommen bei MapYourTrip
 
 MapYourTrip ist Ihre individuelle Reiseverwaltung für Polarsteps-Daten.
 Mit der Web­applikation können Sie Ihre exportierten Reise-Logs ganz nach Ihren Wünschen filtern, in einer eigenen Datenbank ablegen und übersichtlich visualisieren. Nutzen Sie die interaktive Kartenansicht um die Karten nach Ihren wünschen zu visualisieren und für ein Fotoalbum oder Blogpage zu exportieren.

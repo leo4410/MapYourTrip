@@ -18,7 +18,10 @@ Die PostgreSQL Datenbank mit der PostGIS Erweiterung speichert die Daten in vers
 
 Die weiteren Tabellen haben momentan keinen Einfluss auf das Projekt und können bei einer allfälligen Erweiterung der Applikation zur Speicherung der entsprechenden Daten genutzt werden. Im nachfolgenden Datenabnkschema sind alle Beziehungen abgebildet.
 
-<img src="bilder/db_schema.png" alt="Datenbankschema" height="600">
+<a href="bilder/db_schema.png" target="_blank">
+  <img src="bilder/db_schema.png" alt="Datenbankschema" height="600" />
+</a>
+
 
 ### FastAPI Backend
 
