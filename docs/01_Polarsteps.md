@@ -5,9 +5,9 @@ title: MapYourTrip
 
 ## Bezug deiner Polarstepsdaten
 
-Willkommen bei MapYourTrip!
 
-Mit MapYourTrip kannst du deine Reisen ganz einfach digital verwalten, teilen und auf einer interaktiven Karte visualisieren. Damit du direkt loslegen kannst, kannst du die Reisedaten aus deiner Lieblings-App Polarsteps exportieren und hier importieren.
+
+Damit du direkt loslegen kannst, kannst du die Reisedaten aus deiner Lieblings-App Polarsteps exportieren und hier importieren.
 Diese Anleitung zeigt dir Schritt für Schritt, wie du deine Polarsteps-Daten herunterladen und anschliessend in MapYourTrip hochladen kannst.
 
 1. Öffne [Polarsteps](https://www.polarsteps.com/) oder direkt unter der URL `https://www.polarsteps.com/<your_username>`

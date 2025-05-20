@@ -4,7 +4,7 @@ import NavigationBar from "../components/NavigationBar";
 import "./HomePage.css";
 import { uploadZip, loadTrips } from "../helpers/ApiRequestHelper";
 
-function HomePage({selectedTrip, setSelectedTrip}) {
+function HomePage({ BE_URL, selectedTrip, setSelectedTrip }) {
   const navigate = useNavigate();
 
   // trip states
@@ -24,7 +24,7 @@ function HomePage({selectedTrip, setSelectedTrip}) {
 
   // function loading all trips
   useEffect(() => {
-    loadTrips().then((loaded_trips) => {
+    loadTrips(BE_URL).then((loaded_trips) => {
       setTrips(loaded_trips);
     });
   }, []);
@@ -66,9 +66,9 @@ function HomePage({selectedTrip, setSelectedTrip}) {
     formData.append("file", uploadedFile);
 
     // upload zip
-    const upload = await uploadZip(formData);
+    const upload = await uploadZip(BE_URL, formData);
 
-    loadTrips().then((loaded_trips) => {
+    loadTrips(BE_URL).then((loaded_trips) => {
       setTrips(loaded_trips);
     });
 
@@ -139,11 +139,11 @@ function HomePage({selectedTrip, setSelectedTrip}) {
                 <span>{trip.name}</span>
                 <div className="action-buttons">
                   {trip.id !== selectedTrip?.id && <button onClick={() => handleEditTrip(trip)}>
-                    Reise aktivieren
-                  </button>}
+                      Reise aktivieren
+                    </button>}
                   {trip.id === selectedTrip?.id && <button onClick={() => handleEditTrip(trip)}>
-                    Reise aktiv
-                  </button>}
+                      Reise aktiv
+                    </button>}
                   <button onClick={() => handleDeleteTrip(trip)}>
                     Reise löschen
                   </button>
@@ -187,8 +187,12 @@ function HomePage({selectedTrip, setSelectedTrip}) {
               />
               <div className="upload-buttons">
                 {showLoadingMessage && <p>Datei wird hochgeladen...</p>}
-                {!showLoadingMessage &&<button onClick={handleSaveUpload}>Speichern</button>}
-                {!showLoadingMessage && <button onClick={handleAbortUpload}>Abbrechen</button>}
+                {!showLoadingMessage && (
+                  <button onClick={handleSaveUpload}>Speichern</button>
+                )}
+                {!showLoadingMessage && (
+                  <button onClick={handleAbortUpload}>Abbrechen</button>
+                )}
               </div>
             </div>
           </div>

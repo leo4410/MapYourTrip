@@ -39,7 +39,7 @@ def insert_location(row, logger):
         conn.commit()
         cur.close()
         conn.close()
-        logger.info(f"Add location {row["lat"]}/{row["lon"]} to database")
+        logger.info(f'Add location {row["lat"]}/{row["lon"]} to database')
     except Exception as e:
         logger.error(f"Fehler beim Einfügen der Location: {e}")
         logger.error(f"Fehler bei Zeile: {row}")  

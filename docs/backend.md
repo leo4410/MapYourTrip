@@ -6,19 +6,24 @@ title: MapYourTrip
 
 ## MapYourTrip Server
 
-Der Server besteht aus einer PostgreSQL Datenbank, einem FastAPI Backend und einem Geoserver.
+Der Server besteht aus einer PostgreSQL Datenbank (PostGIS), einem FastAPI Backend und einem Geoserver.
 
 ### PostGIS Database
 
-Die PostgreSQL Datenbank mit der PostGIS Erweiterung speichert die Daten in verschiedenen Tabellen. Für das Projekt sind die nachfolgenden Tabellen von zentralen Bedeutung. 
+Die PostgreSQL Datenbank mit der PostGIS Erweiterung speichert die Daten in verschiedenen Tabellen. Für das Projekt sind die nachfolgenden Tabellen von zentralen Bedeutung. Diese Datenbank eignet sich für die speicherung von Räumlichen Daten wie die Punkte und Segmente.
 
 - ```location``` speichert Punktdaten, die aus Polarsteps exportiert wurden
 - ```segment``` speichert Liniendaten, welche die Punkte aus Polarsteps miteinander verbindet
 - ```trip``` ordnet Punkt- und Linien einer Reise aus Polarsteps zu
 
-Die weiteren Tabellen haben momentan keinen Einfluss auf das Projekt und können bei einer allfälligen Erweiterung der Applikation zur Speicherung der entsprechenden Daten genutzt werden. Im nachfolgenden Datenabnkschema sind alle Beziehungen abgebildet.
+Die weiteren Tabellen haben momentan keinen Einfluss auf das Projekt und können bei einer allfälligen Erweiterung der Applikation zur Speicherung der entsprechenden Daten genutzt werden. Im nachfolgenden Datenbankschema sind alle Beziehungen abgebildet (mit Linkscklick kann das Bild vergrössert werden).
 
-<img src="bilder/db_schema.png" alt="Datenbankschema" height="600">
+<a href="bilder/db_schema.png" target="_blank">
+  <img src="bilder/db_schema.png" alt="Datenbankschema" height="600" />
+</a>
+
+
+
 
 ### FastAPI Backend
 
@@ -36,4 +41,5 @@ Eine detaillierte API Dokumentation ist nach dem Starten des Backends gemäss In
 ### Geoserver
 
 Der Geoserver wird genutzt, um die Punkt- und Liniendaten der Segmente bereitzustellen. Eine beispielhafte Abfrage von Segmenten des Trips mit der Id 3 sieht so aus. 
+
 ```http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=MapYourTrip:segment&outputFormat=application/json&srsname=EPSG:4326&CQL_FILTER=fk_trip_id=2```
