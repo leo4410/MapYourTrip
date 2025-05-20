@@ -141,6 +141,4 @@ Vor dem Start müssen in der Datei `src/App.js` gegebenenfalls die Backend URIs 
 
 Im folgenden Video ist noch Visualisiert wie genau.
 
-<video width="600" autoplay loop muted playsinline>
-  <source src=".\docs\videos\ORS_API_key.mp4" type="video/mp4">
-</video>
+<video src="https://github.com/leo4410/MapYourTrip/blob/main/docs/videos/ORS_API_key.mp4" width="600" controls></video>
