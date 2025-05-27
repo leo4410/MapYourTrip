@@ -39,7 +39,7 @@ Eine detaillierte API Dokumentation ist nach dem Starten des Backends [Starten d
 
 GeoServer ist eine Open-Source-Server-Software zum Verwalten, Veröffentlichen und Austauschen von Geodaten. Es ermöglicht dir, räumliche Daten (z.B. Karten, Luftbilder, Vektordaten) übers Internet bereitzustellen und zu bearbeiten.
 
-- Open Source: Kostenlos, große Community
+- Open Source: Kostenlos, grosse Community
 
 - Datenquellen: Unterstützt viele Formate (Shapefile, PostGIS, GeoTIFF, usw.)
 
@@ -59,7 +59,7 @@ Der GeoServer stellt diverse Daten im OGC-Standart bereit und gewährt so die In
 - CSW (Catalog Service for the Web):
   Ermöglicht die Suche nach Geodaten(-Diensten) über Metadaten-Kataloge.
 
-Der GeoServer ist somit ein leistungsfähiger Server zur Verteilung von Geodaten und setzt die offenen OGC-Standards um, wodurch ein flexibler, standardisierter Austausch von **Karten**, **Features** und **Rastern** über das Internet/Schnittstelle möglich wird.
+Der GeoServer ist somit ein leistungsfähiger Server zur Verteilung von Geodaten und setzt die offenen OGC-Standards um, wodurch ein flexibler, standardisierter Austausch von **Karten**, **Features** und **Rastern** über das Internet, einer Schnittstelle möglich wird.
 
 ---
 
