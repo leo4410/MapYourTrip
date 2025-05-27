@@ -20,5 +20,7 @@ Die nachfolgenden Beispiele zeigen Abfragen an den OpenRouteService. Weitere Det
 
 - {service}: /directions, /elevation, /pois
 - {profile}: /Verkehrsmittel, /line or point, point
+  
 Unter der methode ´help(openrouteservice)´ können die möglichen profile (Verkehrsmittel) abgefragt werden.
+
 - ["driving-car", "driving-hgv", "foot-walking","foot-hiking", "cycling-regular","cycling-road","cycling-mountain","cycling-electric",]
