@@ -5,14 +5,13 @@ title: MapYourTrip
 
 ## Statistik
 
-Auf der Statistik Seite kann eine Übersicht über die Reise erstellt werden. Auf der Linken seite sind die Interaktiven Elemente verbaut und auf der Rechten Seite eine Voransicht der Statistiken.
+Auf der Statistikseite erhältst du eine übersichtliche Zusammenstellung deiner Reise. Auf der linken Seite findest du interaktive Steuerelemente, auf der rechten Seite eine Vorschau der generierten Statistiken.
 
-- **01 –Erstellen von Statistiken**
+- **01 – Erstellen von Statistiken:**  
+  Du kannst ein Bild, Koordinatenwerte und Distanzen in die Statistik laden.
 
-  Man hat die Option ein Bild, Koordinatenwerte sowie Distanzen in die Statistik zu laden. 
-
-<video width="900"   controls>
-  <source src="videos\StatPage_Stats.mp4" type="video/mp4">
+<video width="900" controls>
+  <source src="videos/StatPage_Stats.mp4" type="video/mp4">
 </video>
 
-[<- Vorherige Seite](03_MapPage.md) Kartenbereich | 
+[← Vorherige Seite](03_MapPage.md) • Kartenbereich
