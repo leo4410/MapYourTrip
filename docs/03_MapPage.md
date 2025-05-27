@@ -3,39 +3,36 @@ layout: default
 title: MapYourTrip
 ---
 
-## Kartenbereich 
+## Kartenbereich
 
-Im Kartenbereich finden sich verschiedene Interaktionen mit deinen Polarsteps Daten. Über die verschiedenen Register auf der linken Seite können die verschiedenen Elemente wie _Hintergrundkarte_, _Punkt- und Linienobjekte_ der Route geändert, sowie die _Route optimiert_ werden. Im letzten Schritt können die Karten als PNG-Bildatei heruntergeladen werden.
+Im Kartenbereich findest du verschiedene Interaktionen mit deinen Polarsteps-Daten. Über die Register auf der linken Seite kannst du Elemente wie _Hintergrundkarte_, _Punkt- und Linienobjekte_ der Route ändern sowie die _Route optimieren_. Abschliessend lassen sich die Karten als PNG-Datei herunterladen.
 
-- **01 – Wechsel der Hintergrundkarte**
+- **01 – Wechsel der Hintergrundkarte:**  
+  Du kannst zwischen OpenStreetMap, einer Luftbildkarte, Wasserfarben-Optik, Terrain in natürlichen Farben und einer minimalistischen Kartendarstellung wechseln.
 
-  Bei den Hintergrundkarten kann man zwischen OpenStreetMap, einem Lufbild, Wasserfarbenoptik, Terrain mit natürlichen Farben und einer minimalistischen Kartendarstellung wechseln.
-
-<video width="900"   controls>
+<video width="900" controls>
   <source src="videos/MapPage_Wechsel_Karte.mp4" type="video/mp4">
 </video>
 
-- **02 –Symbolisierung der Punkt- und Linienelemente**
+- **02 – Symbolisierung der Punkt- und Linienelemente:**  
+  Linien- und Punktsymbole lassen sich in Grösse und Farbe anpassen. Die Einstellungen werden nur lokal gespeichert und beim Neuladen der Seite auf den Standard zurückgesetzt.
 
-  Die Linien sowie Punktelemente können in ihrer Grösse sowie Farbe angepast werden. Die Informationen werden nur lokal gespeichert und bei einem Neustart oder Neuladen der Webseite werden die Einstellugen auf den Standart zurückgesetzt.
-
-<video width="900"   controls>
+<video width="900" controls>
   <source src="videos/MapPage_Symbolisierung.mp4" type="video/mp4">
 </video>
 
-- **03 –Optimierung der Route**
+- **03 – Optimierung der Route:**  
+  Die Routenoptimierung erfolgt über die OpenRouteService-Schnittstelle. Du kannst eine gerade Linie basierend auf dem gewählten Verkehrsmittel dem Verkehrsnetz anpassen. Wähle dafür die gewünschte Linie mit einem Linksklick aus. Anschliessend kannst du unter **Route optimieren** das Verkehrsmittel auswählen und die Optimierung starten.
 
-  Die Routenoptimierung wird über die Schnittstelle OpenRouteServce durchgeführt. Dabei kann man eine gerade Linie basierend auf dem gewählten Verkehrsmitel auf das Vehrkersnetz legen. Wähle dafür die gewünschte Linie über einen Linksklick aus. Im Anschluss kann über Route Optimieren das Verkehrsmittel ausgewählt werden und die Routenoptimierung ausgeführt werden.
-
-<video width="900"   controls>
+<video width="900" controls>
   <source src="videos/MapPage_Optimiere_Route.mp4" type="video/mp4">
 </video>
 
-- **04 –Export der Karte**
-  Über den Kartenexport kann man ein gewählter Auschnitt als PNG Herunterladen. Dabei stehen die Formate A4 hoch und quer zur Auswahl. In der Kartenansicht wird das Ausschnitsfenster angezeigt.
+- **04 – Export der Karte:**  
+  Über den Kartenexport kannst du einen gewählten Ausschnitt als PNG herunterladen. Dabei stehen die Formate A4 hoch und A4 quer zur Auswahl. In der Kartenansicht wird das Ausschnittsfenster angezeigt.
 
-<video width="900"   controls>
+<video width="900" controls>
   <source src="videos/MapPage_Export.mp4" type="video/mp4">
 </video>
 
-[<- Vorherige Seite](02_HomePage.md) Reiseverwaltung | Statistik [Nächste Seite ->](04_StatPage.md)
+[← Vorherige Seite](02_HomePage.md) • Reiseverwaltung | Statistik [Nächste Seite →](04_StatPage.md)
