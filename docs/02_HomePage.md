@@ -17,7 +17,7 @@ Auf der Seite **Verwaltung** kannst du neue Reisedaten hochladen und bereits hoc
 
 
 - **02 – Verwaltung aller Reisen:**  
-  Um eine Reise im Kartenbereich anzuzeigen, aktiviere sie mit einem Klick auf **Auswählen**. Du wirst direkt zum Kartenbereich weitergeleitet und kannst dort navigieren. Die aktivierte Reise lässt sich jederzeit ändern.
+  Um eine Reise im Kartenbereich anzuzeigen, aktiviere sie mit einem Klick auf **„Reise aktivieren“**. Du wirst direkt zum Kartenbereich weitergeleitet und kannst dort navigieren. Die aktivierte Reise lässt sich jederzeit ändern.
 
 <video width="900" controls>
   <source src="videos/HomePage_Aktivieren.mp4" type="video/mp4">
