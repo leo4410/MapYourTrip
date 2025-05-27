@@ -31,7 +31,7 @@ Das Backend stellt die folgenden API Endpunkte zur Verfügung.
 - `trips` als GET Abfrage aller Trips
 - `upload/zip` als POST Abfrage zum Upload einer ZIP Datei
 
-Eine detaillierte API Dokumentation ist nach dem Starten des Backends [Starten des Backends](https://github.com/leo4410/MapYourTrip/) gemäss Installationsanleitung unter [http://localhost:8000/docs](http://localhost:8000/docs) einsehbar.
+Eine detaillierte API Dokumentation ist nach dem [Starten des Backends](https://github.com/leo4410/MapYourTrip/) gemäss Installationsanleitung unter [http://localhost:8000/docs](http://localhost:8000/docs) einsehbar.
 
 ### Geoserver
 
