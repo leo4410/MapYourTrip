@@ -7,6 +7,8 @@ title: MapYourTrip
 
 React wird genutzt, um die Benutzeroberfläche aufzubauen und zu steuern, während npm dabei hilft, alle notwendigen Pakete und Abhängigkeiten zu verwalten. OpenLayers bindet die Kartendaten ein und bietet die Funktionalität für interaktive Kartennavigation an.
 
+Wie folgt ist die Code-Organisation im Front-End umgesetzt.
+
 - Das Frontend besteht aus den 3 Seiten und dazugehörigen CSS-Stildateien:
 
   **Verwaltung:** http://localhost:3000/
@@ -37,7 +39,7 @@ React wird genutzt, um die Benutzeroberfläche aufzubauen und zu steuern, währe
 
 React ermöglicht es Entwicklern, wiederverwendbare UI-Komponenten zu erstellen, die den Zustand der Anwendung effizient verwalten können. React wird verwendet, um eine reaktive, benutzerfreundliche Oberfläche zu schaffen, die sich dynamisch an die Interaktionen des Benutzers anpasst.
 
-## Node Package Manager 
+## Node Package Manager
 
 npm erleichtert das Installieren, Aktualisieren und Verwalten von Softwarepaketen, die für die Entwicklung des Frontends, einschliesslich React und OpenLayers, benötigt werden. npm verwaltet Abhängigkeiten für Node.js-Anwendungen.
 
